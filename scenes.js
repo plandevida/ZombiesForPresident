@@ -1,0 +1,4 @@
+function crearEscenas(Q) {
+
+}
+
