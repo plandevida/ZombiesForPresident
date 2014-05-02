@@ -27,9 +27,9 @@ function setupGame() {
 	crearEscenas(Q);
 
 	// Carga la escena inicial del
-	Q.loadTMX( "", function(stage) {
+	Q.loadTMX( "bg.png, bg2.png, bg3.png", function(stage) {
 		//Q.compileSheets("");
 
-		//Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: true});
+		Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});
 	});
 };
