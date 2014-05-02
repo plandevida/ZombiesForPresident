@@ -1,4 +1,4 @@
 ZombiesForPresident
 ===================
 
-Zombies want revenge
+Zombies wants revenge
