@@ -15,15 +15,19 @@ function setupGame() {
 
 
 	// Crea todos los componenetes del juego.
+	// Definida en components.js
 	crearComponentes(Q);
 
 	// Crea las animaciones de las entidades.
+	// Definida en animations.js
 	crearAnimaciones(Q);
 
 	// Crea todos los elementos del juego.
+	// Definida en entities.js
 	crearEntidades(Q);
 
 	// Crea todas las escenas del juego.
+	// Definida en scenes.js
 	crearEscenas(Q);
 
 	// Carga la escena inicial del
@@ -33,3 +37,4 @@ function setupGame() {
 		Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});
 	});
 };
+
