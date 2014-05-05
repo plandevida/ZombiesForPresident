@@ -1,6 +1,6 @@
 function crearEscenas(Q) {
 
-	Q.scene("level1-1", function(stage) {
+	Q.scene("level1-1", function(stage) {
 		//Q.stageTMX("level1-1.tmx", stage);
 
 		//var player = stage.insert(  ) );
