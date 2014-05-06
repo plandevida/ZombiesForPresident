@@ -5,36 +5,37 @@ window.addEventListener("load", function() {
 });
 
 function setupGame() {
-	var Q = Quintus( { development: true } ).include("Sprites, Scenes, Input, UI, Touch, TMX, Anim, 2D, Audio")
-					.setup( { maximize: true, height: 480 } )
-					.controls()
-					.touch()
-					.enableSound();
+	var Q = Quintus({ audioSupported: [ 'ogg', 'mp3'], development: true })
+                .include("Sprites, Scenes, Input, Anim, Touch, UI, TMX, 2D, Audio")
+                .setup({ maximize:true })
+                .controls()
+                .touch()
+                .enableSound(); 
 
 	//Q.debug = true;
-
-
+	
 	// Crea todos los componenetes del juego.
-	// Definida en components.js
 	crearComponentes(Q);
 
 	// Crea las animaciones de las entidades.
-	// Definida en animations.js
 	crearAnimaciones(Q);
 
 	// Crea todos los elementos del juego.
-	// Definida en entities.js
 	crearEntidades(Q);
 
 	// Crea todas las escenas del juego.
-	// Definida en scenes.js
 	crearEscenas(Q);
 
-	// Carga la escena inicial del
-	Q.loadTMX( "bg.png, bg2.png, bg3.png", function(stage) {
-		//Q.compileSheets("");
+	// Carga la escena inicial del juego
+	Q.loadTMX("cont.png, zfp.png, levelOK.tmx, zomb.png, zombie.json, main.ogg, main.mp3, miembros.png, shot.mp3, shot.ogg", function() { 
+  
+		  /*Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});*/
 
-		Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});
+		  Q.compileSheets("zomb.png", "zombie.json");
+
+		  Q.sheet("miembros", "miembros.png", { tilew: 20, tileh: 21});
+		  
+		  Q.stageScene("Intro");
 	});
 };
 
