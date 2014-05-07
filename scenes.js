@@ -5,6 +5,7 @@ function crearEscenas(Q) {
 
 		//var player = stage.insert(  ) );
 		
+		/*
 		stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*32, maxY: 480} );
 		stage.viewport.offsetX = -Q.width/4;
 		stage.centerOn(16, 360);
@@ -12,6 +13,59 @@ function crearEscenas(Q) {
 		stage.on("destroy", function() {
 			player.destroy();
 		});
+		*/
+
+		//Q.audio.play("main.mp3", {loop:true});
+	    Q.stageTMX('level1-1.tmx', stage);
+
+		var player = stage.insert(new Q.ZombiePlayer({ sheet: "zombie", sprite: "zombie", flip: "x" }));
+
+	    stage.add("viewport");
+	    stage.centerOn(500,400);
+	    stage.follow(player,{x: true, y: false});
+	});
+
+	Q.scene("Main_Menu", function(stage) { 
+	          
+	    stage.insert(new Q.Repeater({ asset: "zfp.png", w:1600, h:1000 }));
+
+	    var containerJugar = stage.insert(new Q.UI.Container({
+	            x: 320, y: 510
+	    }));
+
+	    var btJugar = containerJugar.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "Play" })); 
+
+	    var container1 = stage.insert(new Q.UI.Container({
+	            x: 420 , y: 510
+	    }));
+	 
+	    var btControles = container1.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "Controls" }));        
+
+	    btJugar.on("click",function() {
+	        Q.clearStages();
+	        Q.stageScene('level1-1');
+	    });
+
+	    btControles.on("click",function() {
+	        Q.clearStages();
+	        Q.stageScene('Controls');
+	    });
+	});
+
+	Q.scene("Controls",function(stage) { 
+	          
+	    stage.insert(new Q.Repeater({ asset: "cont.png",  w:1600, h:1000 }));
+
+	    var container = stage.insert(new Q.UI.Container({
+	            x: 380, y: 450
+	    }));
+	 
+	    var button = container.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "<= Back" })); 
+
+	     button.on("click",function() {
+	        Q.clearStages();
+	        Q.stageScene('Intro');
+	    });
 	});
 
 	Q.scene('UI',function(stage) {
