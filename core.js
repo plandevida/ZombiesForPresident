@@ -12,7 +12,7 @@ function setupGame() {
                 .touch()
                 .enableSound(); 
 
-	//Q.debug = true;
+	Q.debug = true;
 	
 	// Crea todos los componenetes del juego.
 	crearComponentes(Q);
@@ -27,7 +27,7 @@ function setupGame() {
 	crearEscenas(Q);
 
 	// Carga la escena inicial del juego
-	Q.loadTMX("cont.png, zfp.png, levelOK.tmx, zomb.png, zombie.json, main.ogg, main.mp3, miembros.png, shot.mp3, shot.ogg", function() { 
+	Q.loadTMX("bg3.png, cont.png, zfp.png, levelOK.tmx, zomb.png, zombie.json, main.ogg, main.mp3, miembros.png, shot.mp3, shot.ogg", function() { 
   
 		  /*Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});*/
 

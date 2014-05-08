@@ -1,22 +1,5 @@
 function crearEscenas(Q) {
-
-	Q.scene("level1-1", function(stage) {
-		//Q.stageTMX("level1-1.tmx", stage);
-
-		//var player = stage.insert(  ) );
-		
-		/*
-		stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*32, maxY: 480} );
-		stage.viewport.offsetX = -Q.width/4;
-		stage.centerOn(16, 360);
-
-		stage.on("destroy", function() {
-			player.destroy();
-		});
-		*/
-	});
-
-	Q.scene("Main_Menu", function(stage) { 
+	Q.scene("MainMenu", function(stage) { 
 	          
 	    stage.insert(new Q.Repeater({ asset: "zfp.png", w:1600, h:1000 }));
 
@@ -34,7 +17,7 @@ function crearEscenas(Q) {
 
 	    btJugar.on("click",function() {
 	        Q.clearStages();
-	        Q.stageScene('level1');
+	        Q.stageScene('level1-1');
 	    });
 
 	    btControles.on("click",function() {
@@ -55,7 +38,7 @@ function crearEscenas(Q) {
 
 	     button.on("click",function() {
 	        Q.clearStages();
-	        Q.stageScene('Intro');
+	        Q.stageScene('MainMenu');
 	    });
 	});
 
@@ -92,31 +75,24 @@ function crearEscenas(Q) {
 		}
 	});
 
-	/*Q.scene("HUD", function(stage) {
-
-		Q.state.set( { score: 0, lives: 3 } );
-
-		Q.UI.Text.extend("Score", {
-			init: function(p) {
-				this._super(p, {
-					label: 'score: 0',
-					x: 70,
-					y: 20
-				});
-
-				Q.state.on("change.score", this, "score");
-			},
-
-			score: function(score) {
-				this.p.label = "score: " + score;
-			}
-
-		});
-
-		stage.insert( new Q.Score() );
-	});*/
-
 	Q.scene("HUD",function(stage) {
+
+		Q.UI.Text.extend("Municion",{ 
+	      init: function(p) {
+	        this._super({
+	          label: "Municion: 0",
+	          color: "white",
+	          x: Q.width/2,
+	          y: 50
+	        });
+
+	        Q.state.on("change.municion",this,"municion");
+	      },
+
+	      municion: function(municion) {
+	        this.p.label = "Municion: " + municion;
+	      }
+		});
 
 	    var container = stage.insert(new Q.UI.Container({
 	        x: -500, y: 0, fill: "rgba(0,0,0,0.5)"
@@ -128,23 +104,7 @@ function crearEscenas(Q) {
 	   
 	});
 
-	Q.scene("Controls",function(stage) { 
-	          
-	    stage.insert(new Q.Repeater({ asset: "cont.png",  w:1600, h:1000 }));
-
-	    var container = stage.insert(new Q.UI.Container({
-	            x: 380, y: 450
-	    }));
-	 
-	    var button = container.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "<= Back" })); 
-
-	     button.on("click",function() {
-	        Q.clearStages();
-	        Q.stageScene('Intro');
-	    });
-	});
-
-	Q.scene("level1",function(stage) {          
+	Q.scene("level1-1",function(stage) {          
 
 	    //Q.audio.stop();
 	    Q.audio.play("main.mp3", {loop:true});
@@ -152,14 +112,16 @@ function crearEscenas(Q) {
 
 	    Q.state.reset({ municion: 0});
 
-		var player = stage.insert(new Q.Zombie({ flip: "x" }));
+		var player = stage.insert(new Q.ZombiePlayer({ flip: "x" }));
 
-	    stage.add("viewport");
-	    stage.centerOn(500,400); 
-	    stage.viewport.offsetX = -500; 
-	    stage.follow(player,{x: true, y: false}); 
+	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480} );
+	    stage.centerOn(500, 400); 
+	    stage.viewport.offsetX = -Q.width/4;
+
+	    stage.on("destroy", function() {
+			player.destroy();
+		});
 
 	    Q.stageScene("HUD", 2);
-
 	});
 }

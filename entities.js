@@ -52,17 +52,45 @@ function crearEntidades(Q) {
 	                   
 	});
 
+	Q.Sprite.extend("EnemigoBlack",{
+		init: function(p) {
+			this._super(p, {
+				sheet: "zombie",
+				vx: -40
+			});
+
+			this.on("hit");
+		},
+
+		hit: function(col) {
+			if ( col.obj.isA("ZombiePlayer") ) {
+				this.destroy();
+			}
+		},
+
+		step: function(dt) {
+			var player = Q("ZombiePlayer").first();
+
+			console.log(player.p.x );
+		}
+	});
+
 	/**************************************************
 	* Miembros para lanzar
 	***************************************************/
 	Q.Sprite.extend("Miembros", {
 	      init: function(p) {
-	          this._super(p, { sheet: "miembros", sprite: "miembros" });
+	          this._super(p, {
+	          	sheet: "miembros",
+	          	sprite: "miembros",
+	          	vx: -20,
+	          	cont: 1
+	          });
 	          
 	          this.add('2d, animation');
 	          
 	          this.on("bump.top, bump.left, bump.right",function(collision) {
-	            if(collision.obj.isA("Zombie")) {
+	            if(collision.obj.isA("ZombiePlayer")) {
 
 				  this.destroy();
 
@@ -72,7 +100,18 @@ function crearEntidades(Q) {
 	      },
 	       
 	      step: function(dt){
-	          /*this.flip = "x";*/
+
+	      	//gilipollez como una casa
+	      	if ( this.p.cont >= 10) {
+		      	if( this.p.flip ) {
+		      	  	this.p.flip = false;
+		  		}
+		  		else {
+		  			this.p.flip = "x";
+		  		}
+		  		this.p.cont = 1;
+	  		}
+	  		this.p.cont++;
 	      },
 	});
 }
