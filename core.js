@@ -12,7 +12,7 @@ function setupGame() {
                 .touch()
                 .enableSound(); 
 
-	Q.debug = true;
+Q.debug = true;
 	
 	// Crea todos los componenetes del juego.
 	crearComponentes(Q);
@@ -27,13 +27,15 @@ function setupGame() {
 	crearEscenas(Q);
 
 	// Carga la escena inicial del juego
-	Q.loadTMX("bg3.png, cont.png, zfp.png, levelOK.tmx, zomb.png, zombie.json, main.ogg, main.mp3, miembros.png, shot.mp3, shot.ogg", function() { 
+	Q.loadTMX("blocks1.png, bg3.png, cont.png, zfp.png, levelOK.tmx, zomb.png, zombie.json, \
+		main.ogg, main.mp3, miembros.png, shot.mp3, shot.ogg", function() { 
   
 		  /*Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});*/
 
 		  Q.compileSheets("zomb.png", "zombie.json");
 
 		  Q.sheet("miembros", "miembros.png", { tilew: 20, tileh: 21});
+		  Q.sheet("caja", "blocks1.png", { sx:0, sy: 10*34, tilew: 34, tileh: 34});
 		  
 		  Q.stageScene("MainMenu");
 	});

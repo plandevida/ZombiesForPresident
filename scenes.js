@@ -114,6 +114,8 @@ function crearEscenas(Q) {
 
 		var player = stage.insert(new Q.ZombiePlayer({ flip: "x" }));
 
+		/*stage.insert(new Q.Localizer({ x: 2*34, y: 17*34}));*/
+
 	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480} );
 	    stage.centerOn(500, 400); 
 	    stage.viewport.offsetX = -Q.width/4;
