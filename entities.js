@@ -7,11 +7,10 @@ function crearEntidades(Q) {
 	    init: function(p) {
 	      this._super(p, {
 	      	x:40, y:500,
-	      	sheet: "zombie", 
-	      	sprite: "zombie",
+	      	sheet: "zombieR", 
 	      	jumpSpeed: 0
 	      });
-	      this.add('2d, platformerControls, animation'); 
+	      this.add('2d, platformerControls'); 
 
 	      Q.input.on("fire", this, "launchHand");
 	      //this.on("draw");
@@ -90,7 +89,7 @@ function crearEntidades(Q) {
 		        }
 		    }
 
-	        } else if(this.p.vx > 0) {
+	        } /*else if(this.p.vx > 0) {
 	          this.p.flip="x";         
 	          this.play("run_right");
 	        } else if(this.p.vx < 0) {
@@ -98,6 +97,9 @@ function crearEntidades(Q) {
 	          this.play("run_left");
 	        } else {
 	          this.play("stand_" + this.p.direction); 
+	        }*/
+	        if(this.p.x <= 32) {
+	        	this.p.x = 32;
 	        }
 
 	        if ( this.p.y >= Q.height + 150 ) {
