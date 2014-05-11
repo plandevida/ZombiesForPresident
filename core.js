@@ -27,12 +27,12 @@ Q.debug = true;
 	crearEscenas(Q);
 
 	// Carga la escena inicial del juego
-	Q.loadTMX("blocks1.png, bg3.png, cont.png, zfp.png, levelOK.tmx, zomb.png, zombie.json, \
+	Q.loadTMX("blocks1.png, bg3.png, cont.png, zfp.png, level1.tmx, zombie_prov.png, zombie_prov.json, \
 		main.ogg, main.mp3, miembros.png, shot.mp3, shot.ogg", function() { 
   
 		  /*Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});*/
 
-		  Q.compileSheets("zomb.png", "zombie.json");
+		  Q.compileSheets("zombie_prov.png", "zombie_prov.json");
 
 		  Q.sheet("miembros", "miembros.png", { tilew: 20, tileh: 21});
 		  Q.sheet("caja", "blocks1.png", { sx:0, sy: 10*34, tilew: 34, tileh: 34});
