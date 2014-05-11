@@ -108,16 +108,16 @@ function crearEscenas(Q) {
 
 	    //Q.audio.stop();
 	    Q.audio.play("main.mp3", {loop:true});
-	    Q.stageTMX('levelOK.tmx', stage);
+	    Q.stageTMX('level1.tmx', stage);
 
 	    Q.state.reset({ municion: 0});
 
-		var player = stage.insert(new Q.ZombiePlayer({ flip: "x" }));
-
+	    var player = stage.insert(new Q.ZombiePlayer());
+		
 		/*stage.insert(new Q.Localizer({ x: 2*34, y: 17*34}));*/
 
-	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480} );
-	    stage.centerOn(500, 400); 
+	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*64, maxY: 480} );
+	    stage.centerOn(500, 500); 
 	    stage.viewport.offsetX = -Q.width/4;
 
 	    stage.on("destroy", function() {
