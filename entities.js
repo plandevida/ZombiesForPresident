@@ -1,5 +1,8 @@
 function crearEntidades(Q) {
 
+
+	Q.SPRITE_BOX = 128;
+
 	/**************************************************
 	* Zombie Principal
 	***************************************************/
@@ -8,13 +11,15 @@ function crearEntidades(Q) {
 	      this._super(p, { 
 	      	sheet: "zombieR",
 	      	x: 40,
-	      	y: 500
+	      	y: 500,
+	      	collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE
 	      });
 
 	      this.add('2d, platformerControls, tween'); 
 
-	      //Q.input.on("fire", this, "launchHand");  
-	      this.on("box.hit", "boxCollision");     
+	      //Q.input.on("fire", this, "launchHand");
+	      this.on("box.hit", "boxCollision");
+	      this.on("borrarControlesBajoTierra");
 	    },
 
 		/*launchHand: function() {
@@ -43,66 +48,74 @@ function crearEntidades(Q) {
 		},*/
 		boxCollision: function(forwards) {
 			
-			if(Q.inputs['up']) {
-				if(!this.p.climbing) {
-					this.p.climbing = true;
-					//this.del('platformerControls');
-					var that = this;
-					var newY = this.p.y - 66;
-					var newX;
+			if(Q.inputs['up'] && !this.p.climbing) {
+				this.p.climbing = true;
+				var that = this;
+				var newY = this.p.y - 66;
+				var newX;
 
-					if(forwards) newX = this.p.x + 64;
-					else         newX = this.p.x - 64;
-					
-			
-					this.animate({ y: newY }, 1, Q.Easing.Linear);
-					this.animate({ x: newX , y: newY }, 0.5, Q.Easing.Linear, { delay: 1, callback: function() {
-						that.p.climbing = false;
-						//that.add('platformerControls');
-					}});
-				}
+				if(forwards) newX = this.p.x + 64;
+				else         newX = this.p.x - 64;
+				
+		
+				this.p.ignoreControls = true;
+				this.animate({ y: newY }, 1, Q.Easing.Linear);
+				this.animate({ x: newX , y: newY }, 0.5, Q.Easing.Linear, { delay: 1, callback: function() {
+					that.p.climbing = false;
+					this.p.ignoreControls = false;
+				}});
 			}
 			
 		},
 
+		borrarControlesBajoTierra: function() {
+
+			this.del("controlesBajoTierra");
+
+			this.animate( { x: this.p.x, y: this.p.y-(64+32), angle: 0}, 1/2, Q.Linear, {callback: function() {
+				this.p.type = Q.SPRITE_DEFAULT;
+				this.p.collisionMask = Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE;
+				this.p.ignoreControls = false;
+				this.add("2d");
+			}});
+		},
+
 	    step: function(dt) {
 	        if(this.p.x <= 32) this.p.x = 32;
-	    } 
+	        if(this.p.y >= Q.height) { this.p.x = 32; this.p.y = 500; }
+
+	        if ( Q.inputs['down'] && !this.p.bajoTierra ) {
+
+	        	if ( Q.stage().locate(this.p.x, this.p.y + 32) ) {
+
+	        		this.p.bajoTierra = true;
+
+	        		this.p.type = Q.SPRITE_NONE;
+					this.p.collisionMask = Q.SPRITE_NONE;
+
+	        		this.p.ignoreControls = true;
+	        		this.del('2d');
+
+	        		this.animate( { x: this.p.x, y: this.p.y+64+32, angle: 90 }, 1/2, Q.Linear, { callback: function() {
+	        			this.add('controlesBajoTierra');
+	        		} } );
+	        	}
+	        	else {
+	        		console.log("no se encontró la caja");
+	        	}
+	        }
+	    }
 	                   
 	});
 
 	Q.Sprite.extend("Enemy",{
 		init: function(p) {
 			this._super(p, {
-				sheet: "enemy1",
-				shootTime: 5,
-				time: 0
+				sheet: "enemy1"
 			});
 
 			this.add('2d');
-
-		},
-
-		step: function(dt) {
-			this.p.time += dt;
-
-			if(this.p.time >= this.p.shootTime){
-				this.p.time = 0;
-
-				var zombie = Q("ZombiePlayer").first();
-
-				if(Math.abs(zombie.p.x - this.p.x) < 400) {
-					console.log("Bang Bang!!");
-					if(zombie.p.x < this.p.x) { // La bala va hacia la izquierda
-						this.p.direction = "left";
-						Q.stage(0).insert(new Q.Bullet({ x: this.p.x - 32 - 15, y: this.p.y-(this.p.h/4), vx: -100 }));
-					}
-					else { // La bala va hacia la derecha
-						this.p.direction = "right";
-						Q.stage(0).insert(new Q.Bullet({ x: this.p.x + 32, y: this.p.y, vx: +100 }));
-					}
-				}
-			}
+			this.add('comportamientoEnemigo');
 		}
 	});
 
@@ -153,15 +166,22 @@ function crearEntidades(Q) {
 		init: function(p) {
 			this._super(p, {
 				sheet: "bullet",
-				vx: 100
+				vx: 100,
+				type: Q.SPRITE_NONE,
+				collisionMask: Q.SPRITE_NONE
 			});
 		}
 	});
 
+	/**************************************************
+	* Elementos de escenario con lógica
+	***************************************************/
 	Q.Sprite.extend("Box", {
 		init: function(p) {
 			this._super(p, {
-				sheet: "box"
+				sheet: "box",
+				type: Q.SPRITE_BOX,
+				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ACTIVE
 			});
 
 			this.add('2d');
@@ -178,7 +198,6 @@ function crearEntidades(Q) {
 				}
 			});
 		}
-
 	});
 }
  

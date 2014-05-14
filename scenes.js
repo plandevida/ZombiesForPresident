@@ -95,7 +95,7 @@ function crearEscenas(Q) {
 		});
 
 	    var container = stage.insert(new Q.UI.Container({
-	        x: -500, y: 0, fill: "rgba(0,0,0,0.5)"
+	        x: -450, y: 0, fill: "rgba(0,0,0,0.5)"
 	    }));
 
 	    container.insert(new Q.Municion());
@@ -114,9 +114,6 @@ function crearEscenas(Q) {
 
 		var player = stage.insert(new Q.ZombiePlayer());
 
-		stage.insert(new Q.Box({ x: 300, y: 500 }));
-		stage.insert(new Q.Box({ x: 364, y: 500 }));
-		//stage.insert(new Q.Box({ x: 364, y: 436 }));
 		stage.insert(new Q.Enemy({ x: 600, y: 500 }));
 
 	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );

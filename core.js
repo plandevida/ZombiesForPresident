@@ -10,7 +10,7 @@ function setupGame() {
                 .setup({ maximize:true })
                 .controls()
                 .touch()
-                .enableSound(); 
+                .enableSound();
 
 	Q.debug = true;
 	
