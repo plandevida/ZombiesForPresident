@@ -31,6 +31,8 @@ function setupGame() {
   
 		  /*Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});*/
 
+
+		  // TODO esto debería ir a un JSON en cuanto sea posible
 		  Q.sheet("box",
 		  	      "tiles.png",
 		  	      {
