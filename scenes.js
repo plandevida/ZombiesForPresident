@@ -17,7 +17,7 @@ function crearEscenas(Q) {
 
 	    btJugar.on("click",function() {
 	        Q.clearStages();
-	        Q.stageScene('level1-1');
+	        Q.stageScene('level1');
 	    });
 
 	    btControles.on("click",function() {
@@ -104,21 +104,25 @@ function crearEscenas(Q) {
 	   
 	});
 
-	Q.scene("level1-1",function(stage) {          
+	Q.scene("level1",function(stage) {          
 
 	    //Q.audio.stop();
-	    Q.audio.play("main.mp3", {loop:true});
+	    //Q.audio.play("main.mp3", { loop:true });
 	    Q.stageTMX('level1.tmx', stage);
 
 	    Q.state.reset({ municion: 0});
 
-	    var player = stage.insert(new Q.ZombiePlayer());
-		
-		/*stage.insert(new Q.Localizer({ x: 2*34, y: 17*34}));*/
+		var player = stage.insert(new Q.ZombiePlayer());
 
-	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*64, maxY: 480} );
+		stage.insert(new Q.Box({ x: 300, y: 500 }));
+		stage.insert(new Q.Box({ x: 364, y: 500 }));
+		//stage.insert(new Q.Box({ x: 364, y: 436 }));
+		stage.insert(new Q.Enemy({ x: 600, y: 500 }));
+
+	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 	    stage.centerOn(500, 500); 
 	    stage.viewport.offsetX = -Q.width/4;
+	    stage.viewport.offsetY = 0;
 
 	    stage.on("destroy", function() {
 			player.destroy();

@@ -5,19 +5,19 @@ function crearEntidades(Q) {
 	***************************************************/
 	Q.Sprite.extend("ZombiePlayer",{
 	    init: function(p) {
-	      this._super(p, {
-	      	x:40, y:500,
-	      	sheet: "zombieR", 
-	      	jumpSpeed: 0
+	      this._super(p, { 
+	      	sheet: "zombieR",
+	      	x: 40,
+	      	y: 500
 	      });
-	      this.add('2d, platformerControls'); 
 
-	      Q.input.on("fire", this, "launchHand");
-	      //this.on("draw");
-	      this.on("trepar");
+	      this.add('2d, platformerControls, tween'); 
+
+	      //Q.input.on("fire", this, "launchHand");  
+	      this.on("box.hit", "boxCollision");     
 	    },
 
-		launchHand: function() {
+		/*launchHand: function() {
 
 			if(Q.state.get("municion") > 0)
 			{
@@ -40,160 +40,76 @@ function crearEntidades(Q) {
 
 				setTimeout(function() { obj.destroy(); }, 1300);
 		    }
+		},*/
+		boxCollision: function(forwards) {
+			
+			if(Q.inputs['up']) {
+				if(!this.p.climbing) {
+					this.p.climbing = true;
+					//this.del('platformerControls');
+					var that = this;
+					var newY = this.p.y - 66;
+					var newX;
+
+					if(forwards) newX = this.p.x + 64;
+					else         newX = this.p.x - 64;
+					
+			
+					this.animate({ y: newY }, 1, Q.Easing.Linear);
+					this.animate({ x: newX , y: newY }, 0.5, Q.Easing.Linear, { delay: 1, callback: function() {
+						that.p.climbing = false;
+						//that.add('platformerControls');
+					}});
+				}
+			}
+			
 		},
 
 	    step: function(dt) {
-	        if(Q.inputs['up']) {
-
-	        // 	var dir;
-
-	        // 	if (this.p.direction == "right") {
-	        // 		dir = 1;
-	        // 	}
-	        // 	else if (this.p.direction == "left") {
-	        // 		dir = -1;
-	        // 	}
-
-	        // 	console.log("posicion del player: " + this.p.x + " " + this.p.y + " hasta " + (this.p.x+this.p.w) + " " + (this.p.y+this.p.h));
-
-	        // 	console.log("la caja está en: " + 3*34 + " " + 17*34 + " hasta " + (3*34+34) + " " + (17*34+34) );
-
-	        // 	console.log("se busca una caja en: ");
-	        // 	console.log(this.p.x + dir * 34);
-	        // 	console.log(this.p.y+this.p.h*3/4);
-
-	        // 	Q.ctx.fillStyle = "red";
-      			// Q.ctx.beginPath();
-      			// Q.ctx.arc(this.p.x + dir * 34, this.p.y+this.p.h*3/4, 5,0,Math.PI*2); 
-      			// Q.ctx.fill();
-
-	        // 	var caja = Q.stage().locate( this.p.x + dir * 34, this.p.y+this.p.h*3/4, "CajaTrepable");
-
-	        // 	console.log(caja);
-	        // 	Q.pauseGam()
-	   		console.log(this.p.delaytrepar);
-
-	        if ( !this.p.delaytrepar ) {
-		        if(this.p.xcaja && this.p.ycaja) {
-		        	this.p.x = this.p.xcaja;
-		        	this.p.y = this.p.ycaja;
-		        	this.p.xcaja = null;
-		        	this.p.ycaja = null;
-
-		        	var self = this;
-
-		        	this.p.delaytrepar = true;
-		        	setTimeout( function() {
-		        		self.p.delaytrepar = undefined;
-		        	}, 500);
-		        }
-		    }
-
-	        } /*else if(this.p.vx > 0) {
-	          this.p.flip="x";         
-	          this.play("run_right");
-	        } else if(this.p.vx < 0) {
-	          this.p.flip="";           
-	          this.play("run_left");
-	        } else {
-	          this.play("stand_" + this.p.direction); 
-	        }*/
-	        if(this.p.x <= 32) {
-	        	this.p.x = 32;
-	        }
-
-	        if ( this.p.y >= Q.height + 150 ) {
-	        	this.p.x = 40;
-	        	this.p.y = 550;
-	        	//this.destroy();
-	        	//console.log("he muerto");
-	        }
-	    },
-
-	    draw: function(ctx) {
-	    	Q.ctx.fillStyle = "blue";
-      		Q.ctx.beginPath();
-      		Q.ctx.arc(this.p.x, this.p.y, 10,0,Math.PI*2); 
-      		Q.ctx.fill();
-
-      		this._super();
-	    },
-
-	    trepar: function(coords) {
-	    	this.p.xcaja = coords.x;
-	    	this.p.ycaja = coords.y;
-	    }
+	        if(this.p.x <= 32) this.p.x = 32;
+	    } 
 	                   
 	});
 
-	Q.Sprite.extend("Localizer", {
- 		init: function(p) {
- 			this._super(p, {
- 				x: 3*34,
- 				y: 17*34,
- 				w: 10,
- 				gravity: 0,
- 				type: Q.SPRITE_NONE,
- 				collisionMask: Q.SPRITE_NONE
- 			});
- 		},
- 
- 		draw: function(ctx) {
- 			ctx.fillStyle = "red";
- 	      ctx.beginPath();
- 	      ctx.arc(-this.p.cx,
-               -this.p.cy,
-               this.p.w/2,0,Math.PI*2); 
-       		ctx.fill();
- 		}
- 	});
-
-	Q.Sprite.extend("CajaTrepable", {
+	Q.Sprite.extend("Enemy",{
 		init: function(p) {
 			this._super(p, {
-				sheet: "caja"
-			});
-			this.add("2d");
-
-			this.on("bump.left, bump.right", this, "colisiones");
-		},
-
-		colisiones: function(col) {
-
-			if(col.obj.isA("ZombiePlayer")) {
-
-				  col.obj.trigger("trepar", {x:this.p.x, y:this.p.y});
-	        }
-		}
-	});
-
-	Q.Sprite.extend("EnemigoBlack",{
-		init: function(p) {
-			this._super(p, {
-				sheet: "zombie",
-				vx: -40
+				sheet: "enemy1",
+				shootTime: 5,
+				time: 0
 			});
 
-			this.on("hit");
-		},
+			this.add('2d');
 
-		hit: function(col) {
-			if ( col.obj.isA("ZombiePlayer") ) {
-				this.destroy();
-			}
 		},
 
 		step: function(dt) {
-			var player = Q("ZombiePlayer").first();
+			this.p.time += dt;
 
-			//console.log(player.p.x );
+			if(this.p.time >= this.p.shootTime){
+				this.p.time = 0;
+
+				var zombie = Q("ZombiePlayer").first();
+
+				if(Math.abs(zombie.p.x - this.p.x) < 400) {
+					console.log("Bang Bang!!");
+					if(zombie.p.x < this.p.x) { // La bala va hacia la izquierda
+						this.p.direction = "left";
+						Q.stage(0).insert(new Q.Bullet({ x: this.p.x - 32 - 15, y: this.p.y, vx: -100 }));
+					}
+					else { // La bala va hacia la derecha
+						this.p.direction = "right";
+						Q.stage(0).insert(new Q.Bullet({ x: this.p.x + 32, y: this.p.y, vx: +100 }));
+					}
+				}
+			}
 		}
 	});
 
 	/**************************************************
 	* Miembros para lanzar
 	***************************************************/
-	Q.Sprite.extend("Miembros", {
+	/*Q.Sprite.extend("Miembros", {
 	      init: function(p) {
 	          this._super(p, {
 	          	sheet: "miembros",
@@ -228,6 +144,41 @@ function crearEntidades(Q) {
 	  		}
 	  		this.p.cont++;
 	      },
+	});*/
+
+	/**************************************************
+	* Objetos
+	***************************************************/
+	Q.MovingSprite.extend("Bullet", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "bullet",
+				vx: 100
+			});
+		}
+	});
+
+	Q.Sprite.extend("Box", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "box"
+			});
+
+			this.add('2d');
+
+			this.on("bump.left", function(col) {
+				if(col.obj.isA("ZombiePlayer")) {
+					col.obj.trigger("box.hit", true);
+				}
+			});
+
+			this.on("bump.right", function(col) {
+				if(col.obj.isA("ZombiePlayer")) {
+					col.obj.trigger("box.hit", false);
+				}
+			});
+		}
+
 	});
 }
  

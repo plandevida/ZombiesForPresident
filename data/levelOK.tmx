@@ -2,11 +2,6 @@
 <map version="1.0" orientation="orthogonal" width="40" height="23" tilewidth="34" tileheight="34">
  <tileset firstgid="1" name="block1" tilewidth="34" tileheight="34">
   <image source="../images/blocks1.png" width="640" height="400"/>
-  <tile id="180">
-   <properties>
-    <property name="Class" value="CajaTrepable"/>
-   </properties>
-  </tile>
  </tileset>
  <tileset firstgid="199" name="block2" tilewidth="34" tileheight="34">
   <image source="../images/blocks2.png" width="640" height="400"/>
@@ -1608,7 +1603,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="181"/>
    <tile gid="76"/>
    <tile gid="79"/>
    <tile gid="75"/>
@@ -1647,8 +1642,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="181"/>
+   <tile gid="181"/>
    <tile gid="76"/>
    <tile gid="79"/>
    <tile gid="75"/>
@@ -1898,8 +1893,5 @@
   <object gid="423" x="850" y="612"/>
   <object gid="423" x="816" y="612"/>
   <object gid="408" x="918" y="612"/>
-  <object gid="181" x="102" y="612"/>
-  <object gid="181" x="136" y="612"/>
-  <object gid="181" x="136" y="578"/>
  </objectgroup>
 </map>
