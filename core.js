@@ -12,7 +12,7 @@ function setupGame() {
                 .touch()
                 .enableSound();
 
-	Q.debug = true;
+	//Q.debug = true;
 	
 	// Crea todos los componenetes del juego.
 	crearComponentes(Q);
@@ -27,41 +27,15 @@ function setupGame() {
 	crearEscenas(Q);
 
 	// Carga la escena inicial del juego
-	Q.loadTMX("bg3.png, cont.png, zfp.png, level1.tmx, zombie_prov.png, zombie_prov.json, enemies.png, bullet.png, main.ogg, main.mp3, miembros.png, shot.mp3, shot.ogg", function() { 
+	Q.loadTMX("bg3.png, cont.png, zfp.png, level1.tmx, zombie_prov.png, zombie_prov.json, tiles.png, box.json, enemies.png, enemy1.json, bullet.png, bullet.json, miembros.png, miembros.json, main.ogg, main.mp3, shot.mp3, shot.ogg", function() { 
   
 		  /*Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});*/
 
-
-		  // TODO esto debería ir a un JSON en cuanto sea posible
-		  Q.sheet("box",
-		  	      "tiles.png",
-		  	      {
-		  	      	tilew: 64,
-		  	      	tileh: 64,
-		  	      	sx: 64,
-		  	      	sy: 0
-		  	      });
-
-		  Q.sheet("enemy1",
-		  	      "enemies.png",
-		  	      {
-		  	      	tilew: 64,
-		  	      	tileh: 128,
-		  	      	sx: 0,
-		  	      	sy: 0
-		  	      });
-		  Q.sheet("bullet",
-		  		   "bullet.png",
-		  		   {
-		  		   	tilew: 15,
-		  		   	tileh: 10,
-		  		   	sx: 0,
-		  		   	sy: 0
-		  		   });
-
 		  Q.compileSheets("zombie_prov.png", "zombie_prov.json");
-
-		  Q.sheet("miembros", "miembros.png", { tilew: 20, tileh: 21});
+		  Q.compileSheets("tiles.png", "box.json");
+		  Q.compileSheets("enemies.png", "enemy1.json");
+	      Q.compileSheets("bullet.png", "bullet.json");
+	      Q.compileSheets("miembros.png", "miembros.json");
 		  
 		  Q.stageScene("MainMenu");
 	});

@@ -17,27 +17,27 @@ function crearEntidades(Q) {
 
 	      this.add('2d, platformerControls, tween'); 
 
-	      //Q.input.on("fire", this, "launchHand");
+	      Q.input.on("fire", this, "launchHand");
 	      this.on("box.hit", "boxCollision");
 	      this.on("borrarControlesBajoTierra");
 	    },
 
-		/*launchHand: function() {
+		launchHand: function() {
 
 			if(Q.state.get("municion") > 0)
 			{
-				Q.audio.play("shot.mp3");
+				//Q.audio.play("shot.mp3");
 
 				Q.state.dec("municion",1);
 
-			if(this.p.direction == "right") {
-					var obj = new Q.Miembros({ x:this.p.x+34, y:this.p.y});
+				if(this.p.direction == "right") {
+					var obj = new Q.Miembros({ x:this.p.x+66, y:this.p.y});
 					this.stage.insert(obj);
 					obj.add("tween");
 					obj.animate({ x:this.p.x+800, y:this.p.y-50, angle:360 }, 1.5);
 				}
 		        else if(this.p.direction == "left") {
-					var obj = new Q.Miembros({ x:this.p.x-34, y:this.p.y});
+					var obj = new Q.Miembros({ x:this.p.x-66, y:this.p.y});
 					this.stage.insert(obj);
 					obj.add("tween");
 					obj.animate({ x:this.p.x-800, y:this.p.y-50, angle:360 }, 1.5);
@@ -45,7 +45,8 @@ function crearEntidades(Q) {
 
 				setTimeout(function() { obj.destroy(); }, 1300);
 		    }
-		},*/
+		},
+
 		boxCollision: function(forwards) {
 			
 			if(Q.inputs['up'] && !this.p.climbing) {
@@ -104,17 +105,29 @@ function crearEntidades(Q) {
 	        		console.log("no se encontró la caja");
 	        	}
 	        }
+
+	        if(this.p.vx > 0) {
+	        	this.p.flip = "";
+	        }
+	        else if(this.p.vx < 0) {
+	        	this.p.flip = "x";
+	        }
 	    }
 	                   
 	});
 
+	/**************************************************
+	* Enemigos
+	***************************************************/
+
 	Q.Sprite.extend("Enemy",{
 		init: function(p) {
 			this._super(p, {
-				sheet: "enemy1"
+				sheet: "enemy1",
+				vx: 50
 			});
 
-			this.add('2d');
+			this.add('2d, aiBounce');
 			this.add('comportamientoEnemigo');
 		}
 	});
@@ -122,13 +135,10 @@ function crearEntidades(Q) {
 	/**************************************************
 	* Miembros para lanzar
 	***************************************************/
-	/*Q.Sprite.extend("Miembros", {
+	Q.Sprite.extend("Miembros", {
 	      init: function(p) {
 	          this._super(p, {
-	          	sheet: "miembros",
-	          	sprite: "miembros",
-	          	vx: -20,
-	          	cont: 1
+	          	sheet: "miembros"
 	          });
 	          
 	          this.add('2d, animation');
@@ -140,24 +150,28 @@ function crearEntidades(Q) {
 
 	              Q.state.inc("municion",1);
 	            }
-	          });
-	      },
-	       
-	      step: function(dt){
+	            else if(collision.obj.isA("Enemy")) {
 
-	      	//gilipollez como una casa
-	      	if ( this.p.cont >= 10) {
-		      	if( this.p.flip ) {
-		      	  	this.p.flip = false;
-		  		}
-		  		else {
-		  			this.p.flip = "x";
-		  		}
-		  		this.p.cont = 1;
-	  		}
-	  		this.p.cont++;
-	      },
-	});*/
+	            	this.destroy();
+
+	            	collision.obj.del('comportamientoEnemigo');
+	            	collision.obj.del('2d');
+	            	collision.obj.del('aiBounce');
+
+	            	collision.obj.destroy();
+
+	            	/*collision.obj.add("tween");
+					collision.obj.animate({ x:collision.obj.p.x, y:collision.obj.p.y+20, angle:90 }, 0.5);
+
+					setTimeout(function() { collision.obj.destroy(); }, 500);*/
+	            }
+	            else if(collision.obj.isA("Box")) {
+	            	this.destroy();
+	            }
+
+	          });
+	      }
+	});
 
 	/**************************************************
 	* Objetos

@@ -51,6 +51,13 @@ function crearComponentes(Q) {
 						}
 					}
 				}
+
+				if(this.p.vx > 0) {
+	        		this.p.flip = "x";
+		        }
+		        else if(this.p.vx < 0) {
+		        	this.p.flip = "";
+		        }
 			}
 		}
 	});
