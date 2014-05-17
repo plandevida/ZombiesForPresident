@@ -5,6 +5,7 @@
   <tile id="1">
    <properties>
     <property name="Class" value="Box"/>
+    <property name="sheet" value="box"/>
    </properties>
   </tile>
  </tileset>

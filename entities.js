@@ -20,6 +20,26 @@ function crearEntidades(Q) {
 	      Q.input.on("fire", this, "launchHand");
 	      this.on("box.hit", "boxCollision");
 	      this.on("borrarControlesBajoTierra");
+	      Q.state.on("change.vidas",this,"compruebaVida");
+
+	      this.on("bump.right, bump.left, bump.top",function(collision) {
+	            if(collision.obj.isA("Enemy")) {
+
+            		 Q.state.dec("vidas",1);
+            		 this.p.x = 40;
+            		 this.p.y = 500;
+	            }
+	      });
+	    },
+
+	    compruebaVida: function() {
+
+	    	if(Q.state.get("vidas") == 0) {
+	    		this.del('platformerControls'); 
+                this.del('2d');
+                this.destroy();
+               	Q.stageScene("UI", 2, { label: "You lose!", button: "Play again", bg: false, music: false});
+	    	}
 	    },
 
 		launchHand: function() {

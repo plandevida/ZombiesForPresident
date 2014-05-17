@@ -38,16 +38,19 @@ function crearComponentes(Q) {
 
 					var zombie = Q("ZombiePlayer").first();
 
-					// Si el zombie está más cerca de 400 px y no está por encima o por debajo del enemigo entonces dispara.
-					if( (Math.abs(zombie.p.x - this.p.x) < 400) && ((Math.abs(zombie.p.y - this.p.y) < this.p.h-2) && zombie.p.y < this.p.y) ) {
-						console.log("Bang Bang!!");
-						if(zombie.p.x < this.p.x) { // La bala va hacia la izquierda
-							this.p.direction = "left";
-							Q.stage(0).insert(new Q.Bullet({ x: this.p.x - 32 - 15, y: this.p.y-(this.p.h/4), vx: -100 }));
-						}
-						else { // La bala va hacia la derecha
-							this.p.direction = "right";
-							Q.stage(0).insert(new Q.Bullet({ x: this.p.x + 32, y: this.p.y, vx: +100 }));
+					if(zombie != null)
+					{
+						// Si el zombie está más cerca de 400 px y no está por encima o por debajo del enemigo entonces dispara.
+						if( (Math.abs(zombie.p.x - this.p.x) < 400) && ((Math.abs(zombie.p.y - this.p.y) < this.p.h-2) && zombie.p.y < this.p.y) ) {
+							console.log("Bang Bang!!");
+							if(zombie.p.x < this.p.x) { // La bala va hacia la izquierda
+								this.p.direction = "left";
+								Q.stage(0).insert(new Q.Bullet({ x: this.p.x - 32 - 15, y: this.p.y-(this.p.h/4), vx: -100 }));
+							}
+							else { // La bala va hacia la derecha
+								this.p.direction = "right";
+								Q.stage(0).insert(new Q.Bullet({ x: this.p.x + 32, y: this.p.y, vx: +100 }));
+							}
 						}
 					}
 				}

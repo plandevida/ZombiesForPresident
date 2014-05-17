@@ -53,16 +53,16 @@ function crearEscenas(Q) {
 		}));
 
 		var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC", label: stage.options.button, keyActionName: "confirm" }));
-		var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h, label: stage.options.label }));
+		var label = container.insert(new Q.UI.Text({x:0, y: -10 - button.p.h, label: stage.options.label }));
 
 		button.on("click",function() {
 			Q.clearStages();
-			Q.stageScene('level1-1');
-			Q.stageScene('HUD', 1);
-			if ( musicMainPlaying == false ) {
+			Q.stageScene('MainMenu');
+			//Q.stageScene('HUD', 1);
+			/*if ( musicMainPlaying == false ) {
 				Q.audio.stop();
 				Q.audio.play('music_main.ogg', { loop: true });
-			}
+			}*/
 		});
 
 		container.fit(20);
@@ -71,7 +71,7 @@ function crearEscenas(Q) {
 		//Q.audio.stop('music_main.ogg');
 		if ( stage.options.music == true ) {
 			musicMainPlaying = true;
-			Q.audio.play('music_main.ogg', {loop: true});
+			Q.audio.play('main.ogg', {loop: true});
 		}
 	});
 
@@ -94,13 +94,36 @@ function crearEscenas(Q) {
 	      }
 		});
 
+		Q.UI.Text.extend("Vidas",{ 
+	      init: function(p) {
+	        this._super({
+	          label: "Vidas: 3",
+	          color: "white",
+	          x: Q.width/2,
+	          y: 50
+	        });
+
+	        Q.state.on("change.vidas",this,"vidas");
+	      },
+
+	      vidas: function(vidas) {
+	        this.p.label = "Vidas: " + vidas;
+	      }
+		});
+
 	    var container = stage.insert(new Q.UI.Container({
-	        x: -450, y: 0, fill: "rgba(0,0,0,0.5)"
+	        x: -100, y: 0, fill: "rgba(0,0,0,0.5)"
+	    }));
+
+	    var containerVidas = stage.insert(new Q.UI.Container({
+	        x: 100, y: 0, fill: "rgba(0,0,0,0.5)"
 	    }));
 
 	    container.insert(new Q.Municion());
+	    containerVidas.insert(new Q.Vidas());
 
 	    container.fit(20);
+	    containerVidas.fit(20);
 	   
 	});
 
@@ -110,7 +133,7 @@ function crearEscenas(Q) {
 	    //Q.audio.play("main.mp3", { loop:true });
 	    Q.stageTMX('level1.tmx', stage);
 
-	    Q.state.reset({ municion: 0});
+	    Q.state.reset({ municion: 0, vidas:3 });
 
 		var player = stage.insert(new Q.ZombiePlayer());
 
