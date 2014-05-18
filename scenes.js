@@ -140,7 +140,7 @@ function crearEscenas(Q) {
 		//stage.insert(new Q.Enemy({ x: 600, y: 500 }));
 
 	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
-	    stage.centerOn(500, 500); 
+	    stage.centerOn(500, 350); 
 	    stage.viewport.offsetX = -Q.width/4;
 	    stage.viewport.offsetY = 0;
 

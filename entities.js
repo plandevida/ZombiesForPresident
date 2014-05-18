@@ -11,7 +11,7 @@ function crearEntidades(Q) {
 	      this._super(p, { 
 	      	sheet: "zombieR",
 	      	x: 40,
-	      	y: 500,
+	      	y: 300,
 	      	collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE
 	      });
 
@@ -103,7 +103,7 @@ function crearEntidades(Q) {
 
 	    step: function(dt) {
 	        if(this.p.x <= 32) this.p.x = 32;
-	        if(this.p.y >= Q.height) { this.p.x = 32; this.p.y = 500; }
+	        //if(this.p.y >= Q.height) { this.p.x = 32; this.p.y = 500; }
 
 	        if ( Q.inputs['down'] && !this.p.bajoTierra ) {
 
