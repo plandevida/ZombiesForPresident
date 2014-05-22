@@ -2,6 +2,7 @@ function crearEntidades(Q) {
 
 
 	Q.SPRITE_BOX = 128;
+	Q.SPRITE_DIRT = 256;
 
 	/**************************************************
 	* Zombie Principal
@@ -12,7 +13,8 @@ function crearEntidades(Q) {
 	      	sheet: "zombieR",
 	      	x: 40,
 	      	y: 300,
-	      	collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE
+	      	defaultMaskCollision: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE,
+	      	collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE
 	      });
 
 	      this.add('2d, platformerControls, tween'); 
@@ -95,8 +97,9 @@ function crearEntidades(Q) {
 
 			this.animate( { x: this.p.x, y: this.p.y-(64+32), angle: 0}, 1/2, Q.Linear, {callback: function() {
 				this.p.type = Q.SPRITE_DEFAULT;
-				this.p.collisionMask = Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE;
+				this.p.collisionMask = this.p.defaultMaskCollision;
 				this.p.ignoreControls = false;
+				this.p.bajoTierra = false;
 				this.add("2d");
 			}});
 		},
@@ -107,7 +110,9 @@ function crearEntidades(Q) {
 
 	        if ( Q.inputs['down'] && !this.p.bajoTierra ) {
 
-	        	if ( Q.stage().locate(this.p.x, this.p.y + 32) ) {
+	        	var bloque = Q.stage().locate(this.p.x, this.p.y + 67);
+
+	        	if ( bloque && bloque.p.type == Q.SPRITE_DIRT ) {
 
 	        		this.p.bajoTierra = true;
 
@@ -144,7 +149,8 @@ function crearEntidades(Q) {
 		init: function(p) {
 			this._super(p, {
 				sheet: "enemy1",
-				vx: 50
+				vx: 50,
+				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE | Q.SPRITE_DIRT | Q.SPRITE_PLAYER
 			});
 
 			this.add('2d, aiBounce');
@@ -214,6 +220,7 @@ function crearEntidades(Q) {
 		init: function(p) {
 			this._super(p, {
 				sheet: "box",
+				gravity: 0,
 				type: Q.SPRITE_BOX,
 				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ACTIVE
 			});
@@ -230,6 +237,16 @@ function crearEntidades(Q) {
 				if(col.obj.isA("ZombiePlayer")) {
 					col.obj.trigger("box.hit", false);
 				}
+			});
+		}
+	});
+
+	Q.Sprite.extend("Dirt", {
+		init: function(p) {
+			this._super(p, {
+				gravity: 0,
+				sheet: "dirt1",
+				type: Q.SPRITE_DIRT
 			});
 		}
 	});

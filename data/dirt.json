@@ -1,0 +1,6 @@
+{
+	"dirt1":{"sx":0,"sy":128,"tileW":64,"tileH":64},
+	"dirt2":{"sx":64,"sy":128,"tileW":64,"tileH":64},
+	"dirt3":{"sx":128,"sy":128,"tileW":64,"tileH":64},
+	"dirt4":{"sx":192,"sy":128,"tileW":64,"tileH":64}
+}
