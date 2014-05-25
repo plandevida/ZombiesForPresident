@@ -11,13 +11,16 @@ function crearEntidades(Q) {
 	    init: function(p) {
 	      this._super(p, { 
 	      	sheet: "zombieR",
+	      	sprite: "zombie",
+	      	points: [[-64,96],[-15,96],[-15,-32],[-64,-32]],
+	      	jumpSpeed: 0,
 	      	x: 40,
 	      	y: 300,
 	      	defaultMaskCollision: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE,
 	      	collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE
 	      });
 
-	      this.add('2d, platformerControls, tween'); 
+	      this.add('2d, platformerControls, tween, animation'); 
 
 	      Q.input.on("fire", this, "launchHand");
 	      this.on("box.hit", "boxCollision");
@@ -69,24 +72,18 @@ function crearEntidades(Q) {
 		    }
 		},
 
-		boxCollision: function(forwards) {
+		boxCollision: function(boxPosition) {
 			
 			if(Q.inputs['up'] && !this.p.climbing) {
 				this.p.climbing = true;
-				var that = this;
-				var newY = this.p.y - 66;
-				var newX;
+				this.play("climb_" + this.p.direction);
 
-				if(forwards) newX = this.p.x + 64;
-				else         newX = this.p.x - 64;
-				
-		
-				this.p.ignoreControls = true;
-				this.animate({ y: newY }, 1, Q.Easing.Linear);
-				this.animate({ x: newX , y: newY }, 0.5, Q.Easing.Linear, { delay: 1, callback: function() {
-					that.p.climbing = false;
-					this.p.ignoreControls = false;
-				}});
+				var that = this;
+				setTimeout(function() { that.p.x = boxPosition[0] + 32; 
+					                    that.p.y = boxPosition[1] - 128; 
+					                    that.play("stand_" + that.p.direction); 
+					                    that.p.climbing = false; }, 1250);
+
 			}
 			
 		},
@@ -105,7 +102,7 @@ function crearEntidades(Q) {
 		},
 
 	    step: function(dt) {
-	        if(this.p.x <= 32) this.p.x = 32;
+	        if(this.p.x <= 64) this.p.x = 64;
 	        //if(this.p.y >= Q.height) { this.p.x = 32; this.p.y = 500; }
 
 	        if ( Q.inputs['down'] && !this.p.bajoTierra ) {
@@ -131,12 +128,17 @@ function crearEntidades(Q) {
 	        	}
 	        }
 
-	        if(this.p.vx > 0) {
-	        	this.p.flip = "";
-	        }
-	        else if(this.p.vx < 0) {
-	        	this.p.flip = "x";
-	        }
+	        if(!this.p.climbing){
+		        if(this.p.vx > 0) {
+		        	this.play("stand_right");
+		        }
+		        else if(this.p.vx < 0) {
+		        	this.play("stand_left");
+		        }
+		        else {
+		        	this.play("stand_" + this.p.direction);
+		        }
+	    	}
 	    }
 	                   
 	});
@@ -229,13 +231,13 @@ function crearEntidades(Q) {
 
 			this.on("bump.left", function(col) {
 				if(col.obj.isA("ZombiePlayer")) {
-					col.obj.trigger("box.hit", true);
+					col.obj.trigger("box.hit", [this.p.x, this.p.y]);
 				}
 			});
 
 			this.on("bump.right", function(col) {
 				if(col.obj.isA("ZombiePlayer")) {
-					col.obj.trigger("box.hit", false);
+					col.obj.trigger("box.hit", [this.p.x, this.p.y]);
 				}
 			});
 		}
