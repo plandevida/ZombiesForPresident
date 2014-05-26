@@ -7,7 +7,6 @@ function crearComponentes(Q) {
 		},
 
 		emerger: function() {
-			console.log("saliendo del suelo");
 			this.entity.trigger("borrarControlesBajoTierra");
 		},
 
