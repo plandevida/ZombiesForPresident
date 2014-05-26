@@ -92,7 +92,7 @@ function crearEntidades(Q) {
 
 			this.del("controlesBajoTierra");
 
-			this.animate( { x: this.p.x, y: this.p.y-(64+32), angle: 0}, 1/2, Q.Linear, {callback: function() {
+			this.animate( { x: this.p.x, y: this.p.y-(this.p.h-25), angle: 0}, 1/2, Q.Linear, {callback: function() {
 				this.p.type = Q.SPRITE_DEFAULT;
 				this.p.collisionMask = this.p.defaultMaskCollision;
 				this.p.ignoreControls = false;
@@ -107,7 +107,9 @@ function crearEntidades(Q) {
 
 	        if ( Q.inputs['down'] && !this.p.bajoTierra ) {
 
-	        	var bloque = Q.stage().locate(this.p.x, this.p.y + 67);
+	        	var bloque = Q.stage().locate(this.p.x, this.p.y + this.p.h - this.p.h/4);
+
+	        	//Q.stage().insert(new Q.Box({ collisionMask: Q.SPRITE_NONE, type: Q.SPRITE_NONE, x: this.p.x, y: this.p.y + this.p.h - this.p.h/4 }));
 
 	        	if ( bloque && bloque.p.type == Q.SPRITE_DIRT ) {
 
@@ -119,7 +121,7 @@ function crearEntidades(Q) {
 	        		this.p.ignoreControls = true;
 	        		this.del('2d');
 
-	        		this.animate( { x: this.p.x, y: this.p.y+64+32, angle: 90 }, 1/2, Q.Linear, { callback: function() {
+	        		this.animate( { x: this.p.x, y: this.p.y+this.p.h-25, angle: 90 }, 1/2, Q.Linear, { callback: function() {
 	        			this.add('controlesBajoTierra');
 	        		} } );
 	        	}
