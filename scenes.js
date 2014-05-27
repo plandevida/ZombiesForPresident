@@ -131,7 +131,7 @@ function crearEscenas(Q) {
 
 	    //Q.audio.stop();
 	    //Q.audio.play("main.mp3", { loop:true });
-	    Q.stageTMX('level1.tmx', stage);
+	    Q.stageTMX('levelPrueba.tmx', stage);
 
 	    Q.state.reset({ municion: 0, vidas:3 });
 

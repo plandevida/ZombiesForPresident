@@ -100,15 +100,15 @@ function crearEntidades(Q) {
 		borrarControlesBajoTierra: function() {
 
 			console.log("saliendo del suelo");
-			this.del("controlesBajoTierra...");
+			this.del("controlesBajoTierra");
 
-			/*this.animate( { x: this.p.x, y: this.p.y-(this.p.h-25), angle: 0}, 1/2, Q.Linear, {callback: function() {
+			this.animate( { x: this.p.x, y: this.p.y-(this.p.h)+64, angle: 0}, 1/2, Q.Linear, {callback: function() {
 				this.p.type = Q.SPRITE_DEFAULT;
-				this.p.collisionMask = this.p.defaultMaskCollision;
+				this.p.collisionMask = this.p.defaultCollisionMask;
 				this.p.ignoreControls = false;
 				this.p.bajoTierra = false;
 				this.add("2d");
-			}});*/
+			}});
 		},
 
 		añadirControlesBajoTierra: function() {
