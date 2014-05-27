@@ -3,6 +3,7 @@ function crearEntidades(Q) {
 
 	Q.SPRITE_BOX = 128;
 	Q.SPRITE_DIRT = 256;
+	Q.SPRITE_BULLET = 512;
 
 	/**************************************************
 	* Zombie Principal
@@ -18,8 +19,8 @@ function crearEntidades(Q) {
 	      	jumpSpeed: 0,
 	      	x: 40,
 	      	y: 300,
-	      	defaultCollisionMask:     Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE,
-	      	undergroundCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE
+	      	defaultCollisionMask:     Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET,
+	      	undergroundCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET
 	      });
 
 	      this.p.points = this.p.defaultPoints;
@@ -34,8 +35,8 @@ function crearEntidades(Q) {
 
 	      Q.state.on("change.vidas",this,"compruebaVida");
 
-	      this.on("bump.right, bump.left, bump.top",function(collision) {
-	            if(collision.obj.isA("Enemy")) {
+	      this.on("hit",function(collision) {
+	            if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") ) {
 
             		 Q.state.dec("vidas",1);
             		 this.p.x = 40;
@@ -64,12 +65,14 @@ function crearEntidades(Q) {
 
 				if(this.p.direction == "right") {
 					var obj = new Q.Miembros({ x:this.p.x+66, y:this.p.y});
+					obj.p.disparado = true;
 					this.stage.insert(obj);
 					obj.add("tween");
 					obj.animate({ x:this.p.x+800, y:this.p.y-50, angle:360 }, 1.5);
 				}
 		        else if(this.p.direction == "left") {
 					var obj = new Q.Miembros({ x:this.p.x-66, y:this.p.y});
+					obj.p.disparado = true;
 					this.stage.insert(obj);
 					obj.add("tween");
 					obj.animate({ x:this.p.x-800, y:this.p.y-50, angle:360 }, 1.5);
@@ -186,38 +189,38 @@ function crearEntidades(Q) {
 	Q.Sprite.extend("Miembros", {
 	      init: function(p) {
 	          this._super(p, {
-	          	sheet: "miembros"
+	          	sheet: "miembros",
+				type: Q.SPRITE_BULLET,
+	          	collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX,
+	          	disparado: false
 	          });
 	          
 	          this.add('2d, animation');
 	          
-	          this.on("bump.top, bump.left, bump.right",function(collision) {
-	            if(collision.obj.isA("ZombiePlayer")) {
+	          this.on("hit", function(collision) {
+	          
+	          if ( this.p.disparado ) {
 
-				  this.destroy();
-
-	              Q.state.inc("municion",1);
-	            }
-	            else if(collision.obj.isA("Enemy")) {
-
-	            	this.destroy();
+	          	if(collision.obj.isA("Enemy")) {
 
 	            	collision.obj.del('comportamientoEnemigo');
 	            	collision.obj.del('2d');
 	            	collision.obj.del('aiBounce');
 
 	            	collision.obj.destroy();
-
-	            	/*collision.obj.add("tween");
-					collision.obj.animate({ x:collision.obj.p.x, y:collision.obj.p.y+20, angle:90 }, 0.5);
-
-					setTimeout(function() { collision.obj.destroy(); }, 500);*/
 	            }
-	            else if(collision.obj.isA("Box")) {
+
+	          	this.destroy();
+
+	          } else {
+	          	if ( collision.obj.isA("ZombiePlayer")) {
+
 	            	this.destroy();
-	            }
+	            	Q.state.inc("municion",1);
+	          }
+	      }
 
-	          });
+	        });
 	      }
 	});
 
@@ -229,9 +232,16 @@ function crearEntidades(Q) {
 			this._super(p, {
 				sheet: "bullet",
 				vx: 100,
-				type: Q.SPRITE_NONE,
-				collisionMask: Q.SPRITE_NONE
+				type: Q.SPRITE_BULLET,
+				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX
 			});
+
+			this.on('hit');
+		},
+
+		hit: function(col) {
+
+			this.destroy();
 		}
 	});
 
@@ -244,7 +254,7 @@ function crearEntidades(Q) {
 				sheet: "box",
 				gravity: 0,
 				type: Q.SPRITE_BOX,
-				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ACTIVE
+				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET
 			});
 
 			this.add('2d');

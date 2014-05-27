@@ -48,7 +48,7 @@ function crearComponentes(Q) {
 							}
 							else { // La bala va hacia la derecha
 								this.p.direction = "right";
-								Q.stage(0).insert(new Q.Bullet({ x: this.p.x + 32, y: this.p.y, vx: +100 }));
+								Q.stage(0).insert(new Q.Bullet({ x: this.p.x + 32, y: this.p.y-(this.p.h/4), vx: +100 }));
 							}
 						}
 					}
