@@ -491,12 +491,18 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="18"/>
+=======
+>>>>>>> 89a7d236afee86b8b3cece3ef125c01930dca715
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="18"/>
+=======
+>>>>>>> 89a7d236afee86b8b3cece3ef125c01930dca715
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -591,12 +597,15 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="15"/>
    <tile gid="18"/>
    <tile gid="19"/>
    <tile gid="19"/>
    <tile gid="18"/>
    <tile gid="15"/>
+=======
+>>>>>>> 89a7d236afee86b8b3cece3ef125c01930dca715
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -604,7 +613,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+<<<<<<< HEAD
+=======
+   <tile gid="11"/>
    <tile gid="0"/>
+>>>>>>> 89a7d236afee86b8b3cece3ef125c01930dca715
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -698,6 +711,16 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+<<<<<<< HEAD
+=======
+   <tile gid="11"/>
+   <tile gid="11"/>
+   <tile gid="11"/>
+   <tile gid="11"/>
+   <tile gid="5"/>
+   <tile gid="0"/>
+>>>>>>> 89a7d236afee86b8b3cece3ef125c01930dca715
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -948,7 +971,11 @@
    <tile gid="0"/>
    <tile gid="18"/>
    <tile gid="0"/>
+<<<<<<< HEAD
    <tile gid="0"/>
+=======
+   <tile gid="3"/>
+>>>>>>> 89a7d236afee86b8b3cece3ef125c01930dca715
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -10090,7 +10117,11 @@
   <object gid="2" x="1280" y="512"/>
   <object gid="2" x="1472" y="448"/>
   <object gid="2" x="2176" y="576"/>
+<<<<<<< HEAD
   <object gid="21" x="1920" y="320"/>
+=======
+  <object gid="21" x="1920" y="384"/>
+>>>>>>> 89a7d236afee86b8b3cece3ef125c01930dca715
   <object gid="21" x="2496" y="576"/>
   <object gid="2" x="2816" y="576"/>
   <object gid="22" x="1344" y="448"/>
@@ -10133,9 +10164,12 @@
   <object gid="10" x="6080" y="640"/>
   <object gid="10" x="6144" y="640"/>
   <object gid="10" x="6208" y="640"/>
+<<<<<<< HEAD
   <object gid="2" x="3712" y="576"/>
   <object gid="2" x="3712" y="512"/>
   <object gid="2" x="3712" y="448"/>
   <object gid="2" x="3712" y="384"/>
+=======
+>>>>>>> 89a7d236afee86b8b3cece3ef125c01930dca715
  </objectgroup>
 </map>
