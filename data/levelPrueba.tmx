@@ -38,6 +38,26 @@
     <property name="sheet" value="box"/>
    </properties>
   </tile>
+  <tile id="16">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </tile>
+  <tile id="17">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="21" name="enemies" tilewidth="64" tileheight="128">
   <image source="../images/enemies.png" width="64" height="128"/>
@@ -1029,6 +1049,13 @@
    <tile gid="18"/>
    <tile gid="18"/>
    <tile gid="18"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="18"/>
    <tile gid="18"/>
    <tile gid="18"/>
@@ -1036,20 +1063,13 @@
    <tile gid="18"/>
    <tile gid="18"/>
    <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
-   <tile gid="18"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="18"/>
    <tile gid="18"/>
    <tile gid="18"/>

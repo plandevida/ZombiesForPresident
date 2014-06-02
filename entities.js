@@ -48,8 +48,10 @@ function crearEntidades(Q) {
 	    compruebaVida: function() {
 
 	    	if(Q.state.get("vidas") == 0) {
-	    		this.del('platformerControls'); 
-                this.del('2d');
+	    		if(this.has('platformerControls') && this.has('2d')) {
+	    			this.del('platformerControls'); 
+                	this.del('2d');
+                }
                 this.destroy();
                	Q.stageScene("UI", 2, { label: "You lose!", button: "Play again", bg: false, music: false});
 	    	}
@@ -110,7 +112,7 @@ function crearEntidades(Q) {
 				this.p.collisionMask = this.p.defaultCollisionMask;
 				this.p.ignoreControls = false;
 				this.p.bajoTierra = false;
-				this.add("2d");
+				//this.add("2d");
 			}});
 		},
 
@@ -120,10 +122,11 @@ function crearEntidades(Q) {
 			this.p.bajoTierra = true;
 
     		this.p.type = Q.SPRITE_NONE;
-			this.p.collisionMask = Q.SPRITE_NONE;
+			this.p.collisionMask = Q.SPRITE_DEFAULT;
 
     		this.p.ignoreControls = true;
-    		this.del('2d');
+    		//this.del('2d');
+    		this.p.vx = 0;
 
     		this.animate( { x: this.p.x + 64, y: this.p.y+this.p.h-64, angle: 90 }, 1/2, Q.Linear, { callback: function() {
     			this.add('controlesBajoTierra');
@@ -282,5 +285,8 @@ function crearEntidades(Q) {
 			});
 		}
 	});
+
+
 }
+
  

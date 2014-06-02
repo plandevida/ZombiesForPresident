@@ -44,11 +44,17 @@ function crearComponentes(Q) {
 							console.log("Bang Bang!!");
 							if(zombie.p.x < this.p.x) { // La bala va hacia la izquierda
 								this.p.direction = "left";
-								Q.stage(0).insert(new Q.Bullet({ x: this.p.x - 32 - 15, y: this.p.y-(this.p.h/4), vx: -100 }));
+
+								newBullet = new Q.Bullet({ x: this.p.x - 32 - 15, y: this.p.y-(this.p.h/4), vx: -100 });
+								Q.stage(0).insert(newBullet);
+								setTimeout(function() { newBullet.destroy(); }, 5000);
 							}
 							else { // La bala va hacia la derecha
 								this.p.direction = "right";
-								Q.stage(0).insert(new Q.Bullet({ x: this.p.x + 32, y: this.p.y-(this.p.h/4), vx: +100 }));
+
+								newBullet = new Q.Bullet({ x: this.p.x + 32, y: this.p.y-(this.p.h/4), vx: +100 });
+								Q.stage(0).insert(newBullet);
+								setTimeout(function() { newBullet.destroy(); }, 5000);
 							}
 						}
 					}
