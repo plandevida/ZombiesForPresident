@@ -33,9 +33,7 @@ function crearEntidades(Q) {
 	      this.on("box.hit", "boxCollision");
 	      this.on("borrarControlesBajoTierra");
 
-	      Q.state.on("change.vidas",this,"compruebaVida");
-
-	      this.on("hit",function(collision) {
+	      this.on("bump.left, bump.right",function(collision) {
 	            if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") ) {
 
             		 Q.state.dec("vidas",1);
@@ -43,18 +41,6 @@ function crearEntidades(Q) {
             		 this.p.y = 500;
 	            }
 	      });
-	    },
-
-	    compruebaVida: function() {
-
-	    	if(Q.state.get("vidas") == 0) {
-	    		if(this.has('platformerControls') && this.has('2d')) {
-	    			this.del('platformerControls'); 
-                	this.del('2d');
-                }
-                this.destroy();
-               	Q.stageScene("UI", 2, { label: "You lose!", button: "Play again", bg: false, music: false});
-	    	}
 	    },
 
 		launchHand: function() {
@@ -134,6 +120,16 @@ function crearEntidades(Q) {
 		},
 
 	    step: function(dt) {
+
+	    	if(Q.state.get("vidas") == 0) {
+	    		if(this.has('platformerControls') && this.has('2d')) {
+	    			this.del('platformerControls'); 
+                	this.del('2d');
+                }
+                this.destroy();
+               	Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false});
+	    	}
+
 	        if(this.p.x <= 25) this.p.x = 25;
 
 	        if(!this.p.bajoTierra) {
@@ -183,6 +179,17 @@ function crearEntidades(Q) {
 
 			this.add('2d, aiBounce');
 			this.add('comportamientoEnemigo');
+
+			this.on("bump.bottom",function(collision) {
+	            if(collision.obj.isA("ZombiePlayer") ) {
+
+	            	this.del('comportamientoEnemigo');
+	            	this.del('2d');
+	            	this.del('aiBounce');
+
+	            	this.destroy();            		 
+	            }
+	      	});
 		}
 	});
 
