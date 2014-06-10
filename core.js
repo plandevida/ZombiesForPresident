@@ -27,7 +27,7 @@ function setupGame() {
 	crearEscenas(Q);
 
 	// Carga la escena inicial del juego
-	Q.loadTMX("bg3.png, cont.png, zfp.png, level1.tmx, levelPrueba.tmx, zombie.png, zombie.json, tiles.png, box.json, enemies.png, enemy1.json, bullet.png, bullet.json, miembros.png, miembros.json, dirt.json, main.ogg, main.mp3, shot.mp3, shot.ogg", function() { 
+	Q.loadTMX("plat.png, plataforma.json, puerta.png, puerta.json, cont.png, zfp.png, level2.tmx, levelPrueba.tmx, zombie.png, zombie.json, tiles.png, box.json, enemies.png, enemies2.png, enemy1.json, enemy2.json, bullet.png, bullet.json, miembros.png, miembros.json, dirt.json, main.ogg, main.mp3, shot.mp3, shot.ogg", function() { 
   
 		  /*Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});*/
 
@@ -35,8 +35,11 @@ function setupGame() {
 		  Q.compileSheets("tiles.png", "box.json");
 		  Q.compileSheets("tiles.png", "dirt.json");
 		  Q.compileSheets("enemies.png", "enemy1.json");
+		  Q.compileSheets("enemies2.png", "enemy2.json");
 	      Q.compileSheets("bullet.png", "bullet.json");
 	      Q.compileSheets("miembros.png", "miembros.json");
+	      Q.compileSheets("puerta.png", "puerta.json");
+	      Q.compileSheets("plat.png", "plataforma.json");
 		  
 		  Q.stageScene("MainMenu");
 	});

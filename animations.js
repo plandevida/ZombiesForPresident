@@ -9,5 +9,9 @@ function crearAnimaciones(Q) {
 	    stand_left: { frames: [12], rate: 1/5 }
 	});
 
+	Q.animations('port', {
+		abrir: { frames: [0,1,2,3], rate: 1/2 }
+	});
+
 }
 

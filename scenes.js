@@ -45,7 +45,7 @@ function crearEscenas(Q) {
 	Q.scene('UI',function(stage) {
 
 		if ( stage.options.bg === true ) {
-			stage.insert(new Q.Repeater( { asset: "bg3.png" } ));
+			stage.insert(new Q.Repeater( { asset: "zfp.png" } ));
 		}
 
 		var container = stage.insert(new Q.UI.Container({
@@ -136,6 +136,28 @@ function crearEscenas(Q) {
 	    Q.state.reset({ municion: 0, vidas:3 });
 
 		var player = stage.insert(new Q.ZombiePlayer());
+
+	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
+	    stage.centerOn(500, 350); 
+	    stage.viewport.offsetX = -Q.width/4;
+	    stage.viewport.offsetY = 0;
+
+	    stage.on("destroy", function() {
+			player.destroy();
+		});
+
+	    Q.stageScene("HUD", 2);
+	});
+
+	Q.scene("level2",function(stage) {          
+
+	    //Q.audio.stop();
+	    //Q.audio.play("main.mp3", { loop:true });
+	    Q.stageTMX('level2.tmx', stage);
+
+	    Q.state.reset({ municion: 0, vidas:3 });
+
+		var player = stage.insert(new Q.ZombiePlayer({ x:40, y:550 }));
 
 	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 	    stage.centerOn(500, 350); 

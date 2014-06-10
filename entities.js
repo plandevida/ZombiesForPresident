@@ -33,13 +33,18 @@ function crearEntidades(Q) {
 	      this.on("box.hit", "boxCollision");
 	      this.on("borrarControlesBajoTierra");
 
-	      this.on("bump.left, bump.right",function(collision) {
-	            if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") ) {
+	      this.on("bump.left, bump.right, bump.bottom",function(collision) {
+	            if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
 
             		 Q.state.dec("vidas",1);
             		 this.p.x = 40;
             		 this.p.y = 500;
 	            }
+
+	            if(collision.obj.isA("Puerta")) {
+					collision.obj.play("abrir");
+					setTimeout(function() { Q.stageScene("level2"); }, 1000);
+				}
 	      });
 	    },
 
@@ -193,6 +198,40 @@ function crearEntidades(Q) {
 		}
 	});
 
+	Q.Sprite.extend("Enemy2",{
+		init: function(p) {
+			this._super(p, {
+				sheet: "enemy2",
+				vx: 80,
+				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE | Q.SPRITE_DIRT | Q.SPRITE_PLAYER
+			});
+
+			this.add('2d, aiBounce');
+
+			this.contador = 0;
+			this.limite = 3;
+		},
+
+		step: function(dt) {
+
+			if(this.contador >= this.limite) {
+				this.contador = 0;
+				newBullet = new Q.Bullet({ x: this.p.x, y: this.p.y-(this.p.h-60), vy: -200 });
+				Q.stage(0).insert(newBullet);
+			}
+
+			this.contador += dt;
+
+			if(this.p.vx > 0) {
+	        		this.p.flip = "x";
+		    }
+		    else if(this.p.vx < 0) {
+		        	this.p.flip = "";
+		    }
+
+		} 
+	});
+
 	/**************************************************
 	* Miembros para lanzar
 	***************************************************/
@@ -214,6 +253,13 @@ function crearEntidades(Q) {
 	          	if(collision.obj.isA("Enemy")) {
 
 	            	collision.obj.del('comportamientoEnemigo');
+	            	collision.obj.del('2d');
+	            	collision.obj.del('aiBounce');
+
+	            	collision.obj.destroy();
+	            }
+	            else if(collision.obj.isA("Enemy2")) {
+
 	            	collision.obj.del('2d');
 	            	collision.obj.del('aiBounce');
 
@@ -241,7 +287,6 @@ function crearEntidades(Q) {
 		init: function(p) {
 			this._super(p, {
 				sheet: "bullet",
-				vx: 100,
 				type: Q.SPRITE_BULLET,
 				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX
 			});
@@ -293,6 +338,36 @@ function crearEntidades(Q) {
 		}
 	});
 
+	/**************************************************
+	* Puerta para pasar al siguiente nivel
+	***************************************************/
+
+	Q.Sprite.extend("Puerta", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "puerta",
+				sprite: "port"
+			});
+
+			this.add('animation');
+		}
+	});
+
+	/**************************************************
+	* Plataformas moviles
+	***************************************************/
+
+	Q.Sprite.extend("Plataforma", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "plataforma",
+				gravity: 0,
+				vx: 60
+			});
+
+			this.add('2d, aiBounce');
+		}
+	});
 
 }
 
