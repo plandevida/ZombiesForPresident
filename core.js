@@ -27,7 +27,7 @@ function setupGame() {
 	crearEscenas(Q);
 
 	// Carga la escena inicial del juego
-	Q.loadTMX("plat.png, plataforma.json, puerta.png, puerta.json, cont.png, zfp.png, level2.tmx, levelPrueba.tmx, zombie.png, zombie.json, tiles.png, box.json, enemies.png, enemies2.png, enemy1.json, enemy2.json, bullet.png, bullet.json, miembros.png, miembros.json, dirt.json, main.ogg, main.mp3, shot.mp3, shot.ogg", function() { 
+	Q.loadTMX("plat.png, plataforma.json, puerta.png, puerta.json, cont.png, creditos.png, zfp.png, level2.tmx, levelPrueba.tmx, zombie.png, zombie.json, tiles.png, box.json, enemies.png, enemies2.png, enemy1.json, enemy2.json, bullet.png, bullet.json, miembros.png, miembros.json, dirt.json, main.ogg, main.mp3, shot.mp3, shot.ogg", function() { 
   
 		  /*Q.stageScene("UI", 1, { label: "Iniciar el juego", button: "Empezar", bg: true, music: false});*/
 

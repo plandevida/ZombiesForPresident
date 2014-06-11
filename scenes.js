@@ -4,16 +4,22 @@ function crearEscenas(Q) {
 	    stage.insert(new Q.Repeater({ asset: "zfp.png", w:1600, h:1000 }));
 
 	    var containerJugar = stage.insert(new Q.UI.Container({
-	            x: 320, y: 510
+	            x: 240, y: 510
 	    }));
 
 	    var btJugar = containerJugar.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "Play" })); 
 
 	    var container1 = stage.insert(new Q.UI.Container({
-	            x: 420 , y: 510
+	            x: 460 , y: 510
 	    }));
 	 
-	    var btControles = container1.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "Controls" }));        
+	    var btControles = container1.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "Controls" })); 
+
+	    var containerCreditos = stage.insert(new Q.UI.Container({
+	            x: 580 , y: 510
+	    }));
+	 
+	    var btCreditos = containerCreditos.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "Creditos" }));        
 
 	    btJugar.on("click",function() {
 	        Q.clearStages();
@@ -22,13 +28,23 @@ function crearEscenas(Q) {
 
 	    btControles.on("click",function() {
 	        Q.clearStages();
-	        Q.stageScene('Controls');
+	        Q.stageScene('ContOrCred', { label: "esCont" });
+	    });
+
+	    btCreditos.on("click",function() {
+	        Q.clearStages();
+	        Q.stageScene('ContOrCred', { label: "esCred" });
 	    });
 	});
 
-	Q.scene("Controls",function(stage) { 
-	          
-	    stage.insert(new Q.Repeater({ asset: "cont.png",  w:1600, h:1000 }));
+	Q.scene("ContOrCred",function(stage) { 
+
+	    if(stage.options.label == "esCont") {    
+	    	stage.insert(new Q.Repeater({ asset: "cont.png",  w:1600, h:1000 }));
+	    }
+	    else if(stage.options.label == "esCred") {  
+	    	stage.insert(new Q.Repeater({ asset: "creditos.png",  w:1600, h:1000 }));
+	    }
 
 	    var container = stage.insert(new Q.UI.Container({
 	            x: 380, y: 450
