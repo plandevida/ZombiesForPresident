@@ -155,7 +155,7 @@ function crearEscenas(Q) {
 
 	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 	    stage.centerOn(500, 350); 
-	    stage.viewport.offsetX = -Q.width/4;
+	    stage.viewport.offsetX = 0;
 	    stage.viewport.offsetY = 0;
 
 	    stage.on("destroy", function() {
@@ -177,7 +177,7 @@ function crearEscenas(Q) {
 
 	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 	    stage.centerOn(500, 350); 
-	    stage.viewport.offsetX = -Q.width/4;
+	    stage.viewport.offsetX = 0;
 	    stage.viewport.offsetY = 0;
 
 	    stage.on("destroy", function() {

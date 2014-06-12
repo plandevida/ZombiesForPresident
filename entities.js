@@ -216,7 +216,7 @@ function crearEntidades(Q) {
 
 			if(this.contador >= this.limite) {
 				this.contador = 0;
-				newBullet = new Q.Bullet({ x: this.p.x, y: this.p.y-(this.p.h-60), vy: -200 });
+				newBullet = new Q.Bullet({ x: this.p.x, y: this.p.y-(this.p.h-60), vy: -200, angle: 90 });
 				Q.stage(0).insert(newBullet);
 			}
 
