@@ -37,8 +37,12 @@ function crearEntidades(Q) {
 	            if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
 
             		 Q.state.dec("vidas",1);
-            		 this.p.x = 40;
-            		 this.p.y = 500;
+            		 //this.p.x = 40;
+            		 //this.p.y = 500;
+            		 this.destroy();
+            		 var newZombiePlayer = new Q.ZombiePlayer();
+            		 Q.stage(0).insert(newZombiePlayer);
+            		 Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 	            }
 
 	            if(collision.obj.isA("Puerta")) {
