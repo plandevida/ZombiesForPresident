@@ -287,15 +287,25 @@ function crearEntidades(Q) {
 		init: function(p) {
 			this._super(p, {
 				sheet: "bullet",
+				sprite: "bullet",
 				type: Q.SPRITE_BULLET,
-				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX
+				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX,
+				points: [[-7,-4],[-7,4],[7,4],[7,-4]]
 			});
 
+			this.add('animation');
 			this.on('hit');
+			this.on('bullet.die','die');
 		},
 
 		hit: function(col) {
 
+			this.p.vx = 0;
+			this.p.vx = 0;
+			this.play('explosion');
+		},
+
+		die: function() {
 			this.destroy();
 		}
 	});
