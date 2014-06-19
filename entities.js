@@ -40,7 +40,7 @@ function crearEntidades(Q) {
             		 //this.p.x = 40;
             		 //this.p.y = 500;
             		 this.destroy();
-            		 var newZombiePlayer = new Q.ZombiePlayer();
+            		 var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:450 });
             		 Q.stage(0).insert(newZombiePlayer);
             		 Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 	            }
@@ -306,7 +306,13 @@ function crearEntidades(Q) {
 
 			this.p.vx = 0;
 			this.p.vx = 0;
-			this.play('explosion');
+
+			if(!col.obj.isA("Box")) {
+				this.play('explosion');
+			}
+			else {
+				this.destroy();
+			}
 		},
 
 		die: function() {
