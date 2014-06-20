@@ -2,8 +2,9 @@ function crearAnimaciones(Q) {
 
 	Q.animations('zombie', {
 		stand: { frames: [0], rate: 1/5 },
-		walk:  { frames: [0,1], rate: 1/2 },
-		climb: { frames: [10,11,12,13,14,15,16], rate: 1/3, loop: false }
+		walk:  { frames: [1,0], rate: 1/2 },
+		climb: { frames: [10,11,12,13,14,15,16], rate: 1/3, loop: false },
+		dig:   { frames: [20,21,22,23], rate: 1/5, loop: false, trigger: "dig.done" }
 	    
 	});
 

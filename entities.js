@@ -14,7 +14,9 @@ function crearEntidades(Q) {
 	      	sheet: "zombieR",
 	      	sprite: "zombie",
 	      	defaultPoints: [[-20,-60],[-20,64],[20,64],[20,-60]],
-	      	undergroundPoints: [[-20,24],[-20,64],[104,64],[104,24]],
+	      	diggingPoints: [[-20,-40],[-20,64],[20,64],[20,-40]],
+	      	undergroundRightPoints:  [[-20,88],[-20,128],[96,128],[96,88]],
+	      	undergroundLeftPoints:   [[-96,88],[-96,128],[20,128],[20,64]],
 	      	jumpSpeed: 0,
 	      	x: 40,
 	      	y: 300,
@@ -31,39 +33,46 @@ function crearEntidades(Q) {
 	      Q.input.on("down", this, "down");
 	      Q.input.on("up", this, "up");
 
-	      this.on("box.hit", "boxCollision");
-	      this.on("borrarControlesBajoTierra");
-
 	      this.on("bump.left, bump.right, bump.bottom", "hit");
+	      this.on("dig.done","underground");
 	    },
 
 	    down: function() {
 	    	console.log("has pulsado abajo");
-	    	var bloque = Q.stage().locate(this.p.x, this.p.y + 70);
-	    	if ( bloque && bloque.p.type == Q.SPRITE_DIRT ) {
-        		console.log("Puedo meterme bajo tierra");
-        		this.añadirControlesBajoTierra();
-        	}
-        	else {
-        		console.log("No puedo meterme bajo tierra");
+
+	    	if(this.p.direction == "right") var bloque = Q.stage().locate(this.p.x, this.p.y + 70);
+	    	else                            var bloque = Q.stage().locate(this.p.x + 40, this.p.y + 70);
+
+	    	if (bloque && bloque.p.type == Q.SPRITE_DIRT) {
+ 
+				this.p.bajoTierra = true;
+
+				this.p.points = this.p.diggingPoints;
+				this.play("dig");
         	}
 	    },
 
 	    up: function() {
 	    	console.log("has pulsado arriba");
 	    	if(this.p.bajoTierra) {
+
 	    		var bloque = Q.stage().locate(this.p.x, this.p.y - 10);
-	    		if( bloque && bloque.p.type != Q.SPRITE_ENEMY ) {
-	    			console.log("No puedo subir");
-	    		}
-	    		else {
-	    			console.log("Puedo subir");
-	    			//Faltan cosas 
+	    		if(!bloque || (bloque && bloque.p.type != Q.SPRITE_ENEMY)) {
+
+	    			this.play("stand");
+	    			this.p.points = this.p.defaultPoints;
+	    			this.p.collisionMask = this.p.defaultCollisionMask;
+	    			this.p.bajoTierra = false;
 	    		}
 	    	}
-	    	else {
-	    		// Por eficiencia aqui deberia de ir el codigo de subirse a las cajas
-	    		// En cuanto pueda lo muevo
+	    	else if (!this.p.climbing) {
+
+	    		if(this.p.direction == "right") var bloque = Q.stage().locate(this.p.x + 64, this.p.y + 10);
+	    		else                            var bloque = Q.stage().locate(this.p.x - 64, this.p.y + 10);
+
+	    		if ( bloque && bloque.p.type == Q.SPRITE_BOX ) {
+	    			this.climb([bloque.p.x, bloque.p.y]);
+	    		}
 	    	}
 	    },
 
@@ -94,9 +103,10 @@ function crearEntidades(Q) {
 		    }
 		},
 
-		boxCollision: function(boxPosition) {
+		climb: function(boxPosition) {
 			
 			if(Q.inputs['up'] && !this.p.climbing) {
+
 				this.p.climbing = true;
 				this.play("climb");
 
@@ -105,8 +115,8 @@ function crearEntidades(Q) {
 				setTimeout(function() { that.p.x = boxPosition[0]; 
 					                    that.p.y = boxPosition[1] - 95; 
 					                    that.play("stand"); 
-					                    that.p.climbing = false; }, 1000);
-
+					                    that.p.climbing = false; },
+					       1000);
 			}
 			
 		},
@@ -141,28 +151,14 @@ function crearEntidades(Q) {
 			}});
 		},
 
-		añadirControlesBajoTierra: function() {
-
-			console.log("entrando al suelo...");
-			this.p.bajoTierra = true;
-
+		underground: function() {
+			if(this.p.direction == "right") this.p.points = this.p.undergroundRightPoints;
+			else                            this.p.points = this.p.undergroundLeftPoints;
 			this.p.collisionMask = this.p.undergroundCollisionMask;
-			this.p.points = this.p.undergroundPoints;
-
-    		/*this.p.type = Q.SPRITE_NONE;
-			this.p.collisionMask = Q.SPRITE_DEFAULT;
-
-    		this.p.ignoreControls = true;
-    		//this.del('2d');
-    		this.p.vx = 0;
-
-    		this.animate( { x: this.p.x + 64, y: this.p.y+this.p.h-64, angle: 90 }, 1/2, Q.Linear, { callback: function() {
-    			this.add('controlesBajoTierra');
-    		} } );*/
+			//this.play(...)
 		},
 
 	    step: function(dt) {
-
 	    	if(Q.state.get("vidas") == 0) {
 	    		if(this.has('platformerControls') && this.has('2d')) {
 	    			this.del('platformerControls'); 
@@ -174,35 +170,19 @@ function crearEntidades(Q) {
 
 	        if(this.p.x <= 25) this.p.x = 25;
 
-	        if(!this.p.bajoTierra) {
-	        	//Miramos si el jugador quiere meterse bajo tierra
-		        /*if (Q.inputs['down']) {
-		        	//Obtenemos el bloque que hay justo debajo del personaje
-		        	var bloque = Q.stage().locate(this.p.x, this.p.y + this.p.h - this.p.h/4);
-		        	//Si es un bloque de tierra entonces podremos meter al personaje bajo tierra
-		        	if ( bloque && bloque.p.type == Q.SPRITE_DIRT ) {
-		        		this.añadirControlesBajoTierra();
-		        	}
-		        	else {
-		        		console.log("No se encontró tierra debajo");
-		        	}
-		        }*/
-
-
-		    	if(!this.p.climbing) {
-		    		if(this.p.vx > 0) {
-		    			this.p.flip = "";
-		    			this.play("walk");
-		    		}
-		    	    else if(this.p.vx < 0) {
-		    	    	this.p.flip = "x";
-		    	    	this.play("walk");
-		    	    }
-		    	    else {
-		    	    	this.play("stand");
-		    	    }
-		    	}
-
+	        if(!this.p.bajoTierra && !this.p.climbing) {
+	        
+	    		if(this.p.vx > 0) {
+	    			this.p.flip = "";
+	    			this.play("walk");
+	    		}
+	    	    else if(this.p.vx < 0) {
+	    	    	this.p.flip = "x";
+	    	    	this.play("walk");
+	    	    }
+	    	    else {
+	    	    	this.play("stand");
+	    	    }
 	   		}
 
 	    }
@@ -368,12 +348,12 @@ function crearEntidades(Q) {
 			});
 
 			this.add('2d');
-
+			/*
 			this.on("bump.left,bum.right", function(col) {
 				if(col.obj.isA("ZombiePlayer")) {
 					col.obj.trigger("box.hit", [this.p.x, this.p.y]);
 				}
-			});
+			});*/
 
 		}
 	});
