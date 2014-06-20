@@ -12,7 +12,7 @@ function crearAnimaciones(Q) {
 	});
 
 	Q.animations('bullet', {
-		explosion: { frames: [1,2,3,4,5,6,7,8,9,10,11,12], rate: 1/15, loop: false, trigger: "bullet.die" }
+		explosion: { frames: [1,2,3,4,5,6,7,8,9,10,11,12], rate: 1/20, loop: false, trigger: "bullet.die" }
 	});
 }
 

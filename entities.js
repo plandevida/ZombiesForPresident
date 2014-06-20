@@ -14,11 +14,12 @@ function crearEntidades(Q) {
 	      	sheet: "zombieR",
 	      	sprite: "zombie",
 	      	defaultPoints: [[-20,-60],[-20,64],[20,64],[20,-60]],
+	      	undergroundPoints: [[-20,24],[-20,64],[104,64],[104,24]],
 	      	jumpSpeed: 0,
 	      	x: 40,
 	      	y: 300,
 	      	defaultCollisionMask:     Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET,
-	      	undergroundCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET
+	      	undergroundCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET
 	      });
 
 	      this.p.points = this.p.defaultPoints;
@@ -27,27 +28,43 @@ function crearEntidades(Q) {
 	      this.add('2d, platformerControls, tween, animation'); 
 
 	      Q.input.on("fire", this, "launchHand");
+	      Q.input.on("down", this, "down");
+	      Q.input.on("up", this, "up");
 
 	      this.on("box.hit", "boxCollision");
 	      this.on("borrarControlesBajoTierra");
 
 	      this.on("bump.left, bump.right, bump.bottom", "hit");
+	    },
 
-	      this.on("bump.left, bump.right, bump.bottom",function(collision) {
-	            if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
+	    down: function() {
+	    	console.log("has pulsado abajo");
+	    	var bloque = Q.stage().locate(this.p.x, this.p.y + 70);
+	    	if ( bloque && bloque.p.type == Q.SPRITE_DIRT ) {
+        		console.log("Puedo meterme bajo tierra");
+        		this.añadirControlesBajoTierra();
+        	}
+        	else {
+        		console.log("No puedo meterme bajo tierra");
+        	}
+	    },
 
-            		 Q.state.dec("vidas",1);
-            		 this.destroy();
-            		 var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:450 });
-            		 Q.stage(0).insert(newZombiePlayer);
-            		 Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
-	            }
-
-	            if(collision.obj.isA("Puerta")) {
-					collision.obj.play("abrir");
-					setTimeout(function() { Q.stageScene("level2"); }, 1000);
-				}
-	      });
+	    up: function() {
+	    	console.log("has pulsado arriba");
+	    	if(this.p.bajoTierra) {
+	    		var bloque = Q.stage().locate(this.p.x, this.p.y - 10);
+	    		if( bloque && bloque.p.type != Q.SPRITE_ENEMY ) {
+	    			console.log("No puedo subir");
+	    		}
+	    		else {
+	    			console.log("Puedo subir");
+	    			//Faltan cosas 
+	    		}
+	    	}
+	    	else {
+	    		// Por eficiencia aqui deberia de ir el codigo de subirse a las cajas
+	    		// En cuanto pueda lo muevo
+	    	}
 	    },
 
 		launchHand: function() {
@@ -99,7 +116,7 @@ function crearEntidades(Q) {
 
 	    		Q.state.dec("vidas",1);
 	    		this.destroy();
-	    		var newZombiePlayer = new Q.ZombiePlayer();
+	    		var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:450 });
 	    		Q.stage(0).insert(newZombiePlayer);
 	    		Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 	        }
@@ -129,7 +146,10 @@ function crearEntidades(Q) {
 			console.log("entrando al suelo...");
 			this.p.bajoTierra = true;
 
-    		this.p.type = Q.SPRITE_NONE;
+			this.p.collisionMask = this.p.undergroundCollisionMask;
+			this.p.points = this.p.undergroundPoints;
+
+    		/*this.p.type = Q.SPRITE_NONE;
 			this.p.collisionMask = Q.SPRITE_DEFAULT;
 
     		this.p.ignoreControls = true;
@@ -138,7 +158,7 @@ function crearEntidades(Q) {
 
     		this.animate( { x: this.p.x + 64, y: this.p.y+this.p.h-64, angle: 90 }, 1/2, Q.Linear, { callback: function() {
     			this.add('controlesBajoTierra');
-    		} } );
+    		} } );*/
 		},
 
 	    step: function(dt) {
@@ -156,7 +176,7 @@ function crearEntidades(Q) {
 
 	        if(!this.p.bajoTierra) {
 	        	//Miramos si el jugador quiere meterse bajo tierra
-		        if (Q.inputs['down']) {
+		        /*if (Q.inputs['down']) {
 		        	//Obtenemos el bloque que hay justo debajo del personaje
 		        	var bloque = Q.stage().locate(this.p.x, this.p.y + this.p.h - this.p.h/4);
 		        	//Si es un bloque de tierra entonces podremos meter al personaje bajo tierra
@@ -166,7 +186,7 @@ function crearEntidades(Q) {
 		        	else {
 		        		console.log("No se encontró tierra debajo");
 		        	}
-		        }
+		        }*/
 
 
 		    	if(!this.p.climbing) {
@@ -319,7 +339,7 @@ function crearEntidades(Q) {
 
 		hit: function(col) {
 
-			this.p.vx = 0;
+			this.p.vy = 0;
 			this.p.vx = 0;
 
 			if(!col.obj.isA("Box")) {
@@ -349,17 +369,12 @@ function crearEntidades(Q) {
 
 			this.add('2d');
 
-			this.on("bump.left", function(col) {
+			this.on("bump.left,bum.right", function(col) {
 				if(col.obj.isA("ZombiePlayer")) {
 					col.obj.trigger("box.hit", [this.p.x, this.p.y]);
 				}
 			});
 
-			this.on("bump.right", function(col) {
-				if(col.obj.isA("ZombiePlayer")) {
-					col.obj.trigger("box.hit", [this.p.x, this.p.y]);
-				}
-			});
 		}
 	});
 
