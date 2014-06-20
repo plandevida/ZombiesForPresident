@@ -13,9 +13,7 @@ function crearEntidades(Q) {
 	      this._super(p, { 
 	      	sheet: "zombieR",
 	      	sprite: "zombie",
-	      	//rightPoints: [[-64,96],[-15,96],[-15,-32],[-64,-32]],
-	      	//leftPoints:  [[15,96],[64,96],[64,-32],[15,-32]],
-	      	defaultPoints: [[-25,96],[25,96],[25,-32],[-25,-32]],
+	      	defaultPoints: [[-20,-60],[-20,64],[20,64],[20,-60]],
 	      	jumpSpeed: 0,
 	      	x: 40,
 	      	y: 300,
@@ -32,24 +30,7 @@ function crearEntidades(Q) {
 
 	      this.on("box.hit", "boxCollision");
 	      this.on("borrarControlesBajoTierra");
-
-	      this.on("bump.left, bump.right, bump.bottom",function(collision) {
-	            if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
-
-            		 Q.state.dec("vidas",1);
-            		 //this.p.x = 40;
-            		 //this.p.y = 500;
-            		 this.destroy();
-            		 var newZombiePlayer = new Q.ZombiePlayer();
-            		 Q.stage(0).insert(newZombiePlayer);
-            		 Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
-	            }
-
-	            if(collision.obj.isA("Puerta")) {
-					collision.obj.play("abrir");
-					setTimeout(function() { Q.stageScene("level2"); }, 1000);
-				}
-	      });
+	      this.on("bump.left, bump.right, bump.bottom", "hit");
 	    },
 
 		launchHand: function() {
@@ -83,18 +64,33 @@ function crearEntidades(Q) {
 			
 			if(Q.inputs['up'] && !this.p.climbing) {
 				this.p.climbing = true;
-				//this.play("climb_" + this.p.direction);
 				this.play("climb");
 
 				var that = this;
 	
 				setTimeout(function() { that.p.x = boxPosition[0]; 
-					                    that.p.y = boxPosition[1] - 128; 
+					                    that.p.y = boxPosition[1] - 95; 
 					                    that.play("stand"); 
-					                    that.p.climbing = false; }, 1250);
+					                    that.p.climbing = false; }, 1000);
 
 			}
 			
+		},
+
+		hit: function(collision) {
+			if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
+
+	    		Q.state.dec("vidas",1);
+	    		this.destroy();
+	    		var newZombiePlayer = new Q.ZombiePlayer();
+	    		Q.stage(0).insert(newZombiePlayer);
+	    		Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
+	        }
+
+	        if(collision.obj.isA("Puerta")) {
+				collision.obj.play("abrir");
+				setTimeout(function() { Q.stageScene("level2"); }, 1000);
+			}
 		},
 
 		borrarControlesBajoTierra: function() {
@@ -159,9 +155,11 @@ function crearEntidades(Q) {
 		    	if(!this.p.climbing) {
 		    		if(this.p.vx > 0) {
 		    			this.p.flip = "";
+		    			this.play("walk");
 		    		}
 		    	    else if(this.p.vx < 0) {
 		    	    	this.p.flip = "x";
+		    	    	this.play("walk");
 		    	    }
 		    	    else {
 		    	    	this.play("stand");

@@ -12,7 +12,7 @@ function setupGame() {
                 .touch()
                 .enableSound();
 
-	//Q.debug = true;
+	Q.debug = true;
 	
 	// Crea todos los componenetes del juego.
 	crearComponentes(Q);

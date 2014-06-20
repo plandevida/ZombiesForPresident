@@ -96,7 +96,7 @@ function crearEscenas(Q) {
 		Q.UI.Text.extend("Municion",{ 
 	      init: function(p) {
 	        this._super({
-	          label: "Municion: 0",
+	          label: "Municion: 100",
 	          color: "white",
 	          x: Q.width/2,
 	          y: 50
