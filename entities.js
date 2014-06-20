@@ -30,7 +30,24 @@ function crearEntidades(Q) {
 
 	      this.on("box.hit", "boxCollision");
 	      this.on("borrarControlesBajoTierra");
+
 	      this.on("bump.left, bump.right, bump.bottom", "hit");
+
+	      this.on("bump.left, bump.right, bump.bottom",function(collision) {
+	            if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
+
+            		 Q.state.dec("vidas",1);
+            		 this.destroy();
+            		 var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:450 });
+            		 Q.stage(0).insert(newZombiePlayer);
+            		 Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
+	            }
+
+	            if(collision.obj.isA("Puerta")) {
+					collision.obj.play("abrir");
+					setTimeout(function() { Q.stageScene("level2"); }, 1000);
+				}
+	      });
 	    },
 
 		launchHand: function() {
@@ -304,7 +321,13 @@ function crearEntidades(Q) {
 
 			this.p.vx = 0;
 			this.p.vx = 0;
-			this.play('explosion');
+
+			if(!col.obj.isA("Box")) {
+				this.play('explosion');
+			}
+			else {
+				this.destroy();
+			}
 		},
 
 		die: function() {
