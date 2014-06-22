@@ -21,7 +21,8 @@ function crearEntidades(Q) {
 	      	x: 40,
 	      	y: 300,
 	      	defaultCollisionMask:     Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET,
-	      	undergroundCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET
+	      	undergroundCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET,
+	      	bajoTierra: 0 // 0 = no esta bajo tierra, 1 = esta metiendose bajo tierra, 2 = se ha metido bajo tierra
 	      });
 
 	      this.p.points = this.p.defaultPoints;
@@ -40,12 +41,24 @@ function crearEntidades(Q) {
 	    down: function() {
 	    	console.log("has pulsado abajo");
 
-	    	if(this.p.direction == "right") var bloque = Q.stage().locate(this.p.x, this.p.y + 70);
-	    	else                            var bloque = Q.stage().locate(this.p.x + 40, this.p.y + 70);
+	    	/* 
+	    	   Para poder meternos bajo tierra tenemos que comprobar que estamos sobre un bloque de tierra, y ademas
+	    	   que hay suficiente hueco para poder meternos, para lo que necesitamos saber si el bloque que esta justo 
+	    	   debajo (var bloque) y el que esta a dos bloques de distancia de este (var bloque2) son ambos bloques de 
+	    	   tierra. También tenemos que tener en cuenta la dirección para hacer los cálculos correctamente
+	    	*/
+	    	if(this.p.direction == "right") {
+	    		var bloque = Q.stage().locate(this.p.x, this.p.y + 70);
+	    		var bloque2 = Q.stage().locate(this.p.x + 124, this.p.y + 70); 
+	    	}
+	    	else {
+	    		var bloque = Q.stage().locate(this.p.x + 40, this.p.y + 70);
+	    		var bloque2 = Q.stage().locate(this.p.x - 64, this.p.y + 70);
+	    	}                          
 
-	    	if (bloque && bloque.p.type == Q.SPRITE_DIRT) {
+	    	if ((bloque && bloque.p.type == Q.SPRITE_DIRT) && (bloque2 && bloque2.p.type == Q.SPRITE_DIRT))  {
  
-				this.p.bajoTierra = true;
+				this.p.bajoTierra = 1;
 
 				this.p.points = this.p.diggingPoints;
 				this.play("dig");
@@ -59,10 +72,10 @@ function crearEntidades(Q) {
 	    		var bloque = Q.stage().locate(this.p.x, this.p.y - 10);
 	    		if(!bloque || (bloque && bloque.p.type != Q.SPRITE_ENEMY)) {
 
-	    			this.play("stand");
+	    			this.play("up");
 	    			this.p.points = this.p.defaultPoints;
 	    			this.p.collisionMask = this.p.defaultCollisionMask;
-	    			this.p.bajoTierra = false;
+	    			this.p.bajoTierra = 0;
 	    		}
 	    	}
 	    	else if (!this.p.climbing) {
@@ -152,10 +165,10 @@ function crearEntidades(Q) {
 		},
 
 		underground: function() {
+			this.p.bajoTierra = 2;
 			if(this.p.direction == "right") this.p.points = this.p.undergroundRightPoints;
 			else                            this.p.points = this.p.undergroundLeftPoints;
 			this.p.collisionMask = this.p.undergroundCollisionMask;
-			//this.play(...)
 		},
 
 	    step: function(dt) {
@@ -170,7 +183,7 @@ function crearEntidades(Q) {
 
 	        if(this.p.x <= 25) this.p.x = 25;
 
-	        if(!this.p.bajoTierra && !this.p.climbing) {
+	        if(this.p.bajoTierra == 0 && !this.p.climbing) {
 	        
 	    		if(this.p.vx > 0) {
 	    			this.p.flip = "";
@@ -182,6 +195,19 @@ function crearEntidades(Q) {
 	    	    }
 	    	    else {
 	    	    	this.play("stand");
+	    	    }
+	   		}
+	   		if (this.p.bajoTierra == 2) {
+	   			if(this.p.vx > 0) {
+	    			this.p.flip = "";
+	    			this.play("walk_u");
+	    		}
+	    	    else if(this.p.vx < 0) {
+	    	    	this.p.flip = "x";
+	    	    	this.play("walk_u");
+	    	    }
+	    	    else {
+	    	    	this.play("stand_u");
 	    	    }
 	   		}
 
