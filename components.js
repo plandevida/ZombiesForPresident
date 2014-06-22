@@ -132,16 +132,72 @@ function crearComponentes(Q) {
 	Q.component("comportamientoEnemigo", {
 		added: function() {
 			this.entity.on("step", this.entity, "stepEnemy");
-
+			this.entity.p.direction = "right";
 			this.entity.p.shootTime = 5;
 			this.entity.p.time = 0;
+			this.entity.p.vxvalue = this.entity.p.vx;
 		},
 
 		extend: {
 			stepEnemy: function(dt) {
 				this.p.time += dt;
 
-				if(this.p.time >= this.p.shootTime){
+				var zombie = Q("ZombiePlayer").first();
+
+				if(zombie) {
+					if (this.p.direction == "left" && (zombie.p.x < this.p.x && (this.p.x - zombie.p.x) < 200)) {
+
+						this.p.vx = 0;
+						this.del('aiBounce');
+						this.play("shot");
+					}
+					else if (this.p.direction == "right"  && (zombie.p.x > this.p.x && (zombie.p.x - this.p.x) < 200)) {
+
+						this.p.vx = 0;
+						this.del('aiBounce');
+						this.play("shot");
+					}
+					else {
+						if(!this.has('aiBounce')) {
+							this.add('aiBounce');
+							this.p.vx = this.p.vxvalue;
+						}
+						if(this.p.vx > 0) {
+							this.p.direction = "right";
+			    			this.p.flip = "";
+			    			this.play("walk");
+			    		}
+			    	    else if(this.p.vx < 0) {
+			    	    	this.p.direction = "left";
+			    	    	this.p.flip = "x";
+			    	    	this.play("walk");
+			    	    }
+			    	    else {
+			    	    	this.play("stand");
+			    	    }
+					}
+				}
+				else {
+					if(!this.has('aiBounce')) {
+						this.add('aiBounce');
+						this.p.vx = this.p.vxvalue;
+					}
+					if(this.p.vx > 0) {
+						this.p.direction = "right";
+		    			this.p.flip = "";
+		    			this.play("walk");
+		    		}
+		    	    else if(this.p.vx < 0) {
+		    	    	this.p.direction = "left";
+		    	    	this.p.flip = "x";
+		    	    	this.play("walk");
+		    	    }
+		    	    else {
+		    	    	this.play("stand");
+		    	    }
+				}
+
+				/*if(this.p.time >= this.p.shootTime){
 					this.p.time = 0;
 
 					var zombie = Q("ZombiePlayer").first();
@@ -167,7 +223,7 @@ function crearComponentes(Q) {
 							}
 						}
 					}
-				}
+				}*/
 			}
 		}
 	});

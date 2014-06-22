@@ -115,20 +115,6 @@ function crearEntidades(Q) {
 	            	this.destroy();            		 
 	            }
 	      	});
-		},
-
-		step: function(dt) {
-			if(this.p.vx > 0) {
-    			this.p.flip = "";
-    			this.play("walk");
-    		}
-    	    else if(this.p.vx < 0) {
-    	    	this.p.flip = "x";
-    	    	this.play("walk");
-    	    }
-    	    else {
-    	    	this.play("stand");
-    	    }
 		}
 	});
 
