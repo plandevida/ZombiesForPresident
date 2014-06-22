@@ -13,126 +13,20 @@ function crearEntidades(Q) {
 	      this._super(p, { 
 	      	sheet: "zombieR",
 	      	sprite: "zombie",
-	      	defaultPoints: [[-20,-60],[-20,64],[20,64],[20,-60]],
-	      	diggingPoints: [[-20,-40],[-20,64],[20,64],[20,-40]],
-	      	undergroundRightPoints:  [[-20,88],[-20,128],[96,128],[96,88]],
-	      	undergroundLeftPoints:   [[-96,88],[-96,128],[20,128],[20,88]],
 	      	jumpSpeed: 0,
 	      	x: 40,
 	      	y: 300,
-	      	defaultCollisionMask:     Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET,
-	      	undergroundCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET,
-	      	bajoTierra: 0 // 0 = no esta bajo tierra, 1 = esta metiendose bajo tierra, 2 = se ha metido bajo tierra
+	      	defaultCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET,
+	      	defaultPoints: [[-20,-60],[-20,64],[20,64],[20,-60]]
 	      });
 
 	      this.p.points = this.p.defaultPoints;
 	      this.p.collisionMask = this.p.defaultCollisionMask;
 
-	      this.add('2d, platformerControls, tween, animation'); 
-
-	      Q.input.on("fire", this, "launchHand");
-	      Q.input.on("down", this, "down");
-	      Q.input.on("up", this, "up");
+	      this.add('2d, platformerControls, tween, animation, zombieControls'); 
 
 	      this.on("bump.left, bump.right, bump.bottom", "hit");
-	      this.on("dig.done","underground");
 	    },
-
-	    down: function() {
-	    	console.log("has pulsado abajo");
-
-	    	/* 
-	    	   Para poder meternos bajo tierra tenemos que comprobar que estamos sobre un bloque de tierra, y ademas
-	    	   que hay suficiente hueco para poder meternos, para lo que necesitamos saber si el bloque que esta justo 
-	    	   debajo (var bloque) y el que esta a dos bloques de distancia de este (var bloque2) son ambos bloques de 
-	    	   tierra. También tenemos que tener en cuenta la dirección para hacer los cálculos correctamente
-	    	*/
-	    	if(this.p.direction == "right") {
-	    		var bloque = Q.stage().locate(this.p.x, this.p.y + 70);
-	    		var bloque2 = Q.stage().locate(this.p.x + 124, this.p.y + 70); 
-	    	}
-	    	else {
-	    		var bloque = Q.stage().locate(this.p.x + 40, this.p.y + 70);
-	    		var bloque2 = Q.stage().locate(this.p.x - 64, this.p.y + 70);
-	    	}                          
-
-	    	if ((bloque && bloque.p.type == Q.SPRITE_DIRT) && (bloque2 && bloque2.p.type == Q.SPRITE_DIRT))  {
- 
-				this.p.bajoTierra = 1;
-
-				this.p.points = this.p.diggingPoints;
-				this.play("dig");
-        	}
-	    },
-
-	    up: function() {
-	    	console.log("has pulsado arriba");
-	    	if(this.p.bajoTierra) {
-
-	    		var bloque = Q.stage().locate(this.p.x, this.p.y - 10);
-	    		if(!bloque || (bloque && bloque.p.type != Q.SPRITE_ENEMY)) {
-
-	    			this.play("up");
-	    			this.p.points = this.p.defaultPoints;
-	    			this.p.collisionMask = this.p.defaultCollisionMask;
-	    			this.p.bajoTierra = 0;
-	    		}
-	    	}
-	    	else if (!this.p.climbing) {
-
-	    		if(this.p.direction == "right") var bloque = Q.stage().locate(this.p.x + 64, this.p.y + 10);
-	    		else                            var bloque = Q.stage().locate(this.p.x - 64, this.p.y + 10);
-
-	    		if ( bloque && bloque.p.type == Q.SPRITE_BOX ) {
-	    			this.climb([bloque.p.x, bloque.p.y]);
-	    		}
-	    	}
-	    },
-
-		launchHand: function() {
-
-			if(Q.state.get("municion") > 0)
-			{
-				//Q.audio.play("shot.mp3");
-
-				Q.state.dec("municion",1);
-
-				if(this.p.direction == "right") {
-					var obj = new Q.Miembros({ x:this.p.x+66, y:this.p.y});
-					obj.p.disparado = true;
-					this.stage.insert(obj);
-					obj.add("tween");
-					obj.animate({ x:this.p.x+800, y:this.p.y-50, angle:360 }, 1.5);
-				}
-		        else if(this.p.direction == "left") {
-					var obj = new Q.Miembros({ x:this.p.x-66, y:this.p.y});
-					obj.p.disparado = true;
-					this.stage.insert(obj);
-					obj.add("tween");
-					obj.animate({ x:this.p.x-800, y:this.p.y-50, angle:360 }, 1.5);
-		        }
-
-				setTimeout(function() { obj.destroy(); }, 1300);
-		    }
-		},
-
-		climb: function(boxPosition) {
-			
-			if(Q.inputs['up'] && !this.p.climbing) {
-
-				this.p.climbing = true;
-				this.play("climb");
-
-				var that = this;
-	
-				setTimeout(function() { that.p.x = boxPosition[0]; 
-					                    that.p.y = boxPosition[1] - 95; 
-					                    that.play("stand"); 
-					                    that.p.climbing = false; },
-					       1000);
-			}
-			
-		},
 
 		hit: function(collision) {
 			if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
@@ -150,27 +44,6 @@ function crearEntidades(Q) {
 			}
 		},
 
-		borrarControlesBajoTierra: function() {
-
-			console.log("saliendo del suelo");
-			this.del("controlesBajoTierra");
-
-			this.animate( { x: this.p.x, y: this.p.y-(this.p.h)+64, angle: 0}, 1/2, Q.Linear, {callback: function() {
-				this.p.type = Q.SPRITE_DEFAULT;
-				this.p.collisionMask = this.p.defaultCollisionMask;
-				this.p.ignoreControls = false;
-				this.p.bajoTierra = false;
-				//this.add("2d");
-			}});
-		},
-
-		underground: function() {
-			this.p.bajoTierra = 2;
-			if(this.p.direction == "right") this.p.points = this.p.undergroundRightPoints;
-			else                            this.p.points = this.p.undergroundLeftPoints;
-			this.p.collisionMask = this.p.undergroundCollisionMask;
-		},
-
 	    step: function(dt) {
 	    	if(Q.state.get("vidas") == 0) {
 	    		if(this.has('platformerControls') && this.has('2d')) {
@@ -181,7 +54,7 @@ function crearEntidades(Q) {
                	Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false});
 	    	}
 
-	        if(this.p.x <= 25) this.p.x = 25;
+	        if(this.p.x <= 30) this.p.x = 30;
 
 	        if(this.p.bajoTierra == 0 && !this.p.climbing) {
 	        
@@ -230,7 +103,7 @@ function crearEntidades(Q) {
 			});
 
 			this.add('2d, aiBounce, animation');
-			//this.add('comportamientoEnemigo');
+			this.add('comportamientoEnemigo');
 
 			this.on("bump.bottom",function(collision) {
 	            if(collision.obj.isA("ZombiePlayer") ) {
