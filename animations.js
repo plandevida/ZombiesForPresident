@@ -8,6 +8,16 @@ function crearAnimaciones(Q) {
 	    
 	});
 
+	Q.animations('enemy1', {
+		stand: { frames: [0], rate: 1/5 },
+		walk:  { frames: [1,2,3,4,5,6], rate: 1/2 }
+	});
+
+	Q.animations('enemy2', {
+		stand: { frames: [0], rate: 1/5 },
+		walk:  { frames: [1,2,3,4,5,6], rate: 1/2 }
+	});
+
 	Q.animations('port', {
 		abrir: { frames: [0,1,2,3], rate: 1/2 }
 	});

@@ -197,12 +197,14 @@ function crearEntidades(Q) {
 		init: function(p) {
 			this._super(p, {
 				sheet: "enemy1",
+				sprite: "enemy1",
 				vx: 50,
+				points: [[-20,-60],[-20,64],[20,64],[20,-60]],
 				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE | Q.SPRITE_DIRT | Q.SPRITE_PLAYER
 			});
 
-			this.add('2d, aiBounce');
-			this.add('comportamientoEnemigo');
+			this.add('2d, aiBounce, animation');
+			//this.add('comportamientoEnemigo');
 
 			this.on("bump.bottom",function(collision) {
 	            if(collision.obj.isA("ZombiePlayer") ) {
@@ -214,6 +216,20 @@ function crearEntidades(Q) {
 	            	this.destroy();            		 
 	            }
 	      	});
+		},
+
+		step: function(dt) {
+			if(this.p.vx > 0) {
+    			this.p.flip = "";
+    			this.play("walk");
+    		}
+    	    else if(this.p.vx < 0) {
+    	    	this.p.flip = "x";
+    	    	this.play("walk");
+    	    }
+    	    else {
+    	    	this.play("stand");
+    	    }
 		}
 	});
 
@@ -221,11 +237,13 @@ function crearEntidades(Q) {
 		init: function(p) {
 			this._super(p, {
 				sheet: "enemy2",
-				vx: 80,
+				sprite: "enemy2",
+				points: [[-20,-60],[-20,64],[20,64],[20,-60]],
+				vx: 50,
 				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE | Q.SPRITE_DIRT | Q.SPRITE_PLAYER
 			});
 
-			this.add('2d, aiBounce');
+			this.add('2d, aiBounce, animation');
 
 			this.contador = 0;
 			this.limite = 3;
@@ -242,11 +260,16 @@ function crearEntidades(Q) {
 			this.contador += dt;
 
 			if(this.p.vx > 0) {
-	        		this.p.flip = "x";
-		    }
-		    else if(this.p.vx < 0) {
-		        	this.p.flip = "";
-		    }
+    			this.p.flip = "";
+    			this.play("walk");
+    		}
+    	    else if(this.p.vx < 0) {
+    	    	this.p.flip = "x";
+    	    	this.play("walk");
+    	    }
+    	    else {
+    	    	this.play("stand");
+    	    }
 
 		} 
 	});
