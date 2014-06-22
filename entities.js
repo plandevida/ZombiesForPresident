@@ -16,7 +16,7 @@ function crearEntidades(Q) {
 	      	defaultPoints: [[-20,-60],[-20,64],[20,64],[20,-60]],
 	      	diggingPoints: [[-20,-40],[-20,64],[20,64],[20,-40]],
 	      	undergroundRightPoints:  [[-20,88],[-20,128],[96,128],[96,88]],
-	      	undergroundLeftPoints:   [[-96,88],[-96,128],[20,128],[20,64]],
+	      	undergroundLeftPoints:   [[-96,88],[-96,128],[20,128],[20,88]],
 	      	jumpSpeed: 0,
 	      	x: 40,
 	      	y: 300,
