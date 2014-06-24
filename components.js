@@ -109,15 +109,15 @@ function crearComponentes(Q) {
 
 				if(this.entity.p.direction == "right") {
 
-					var obj = new Q.Miembros({ x: this.entity.p.x+66, y: this.entity.p.y });
-					obj.entity.p.disparado = true;
+					var obj = new Q.Miembros({ x: this.entity.p.x+66, y: this.entity.p.y-30 });
+					obj.p.disparado = true;
 					this.entity.stage.insert(obj);
 					obj.add("tween");
 					obj.animate({ x: this.entity.p.x+800, y: this.entity.p.y-50, angle:360 }, 1.5);
 				}
 		        else if(this.entity.p.direction == "left") {
 
-					var obj = new Q.Miembros({ x: this.entity.p.x-66, y: this.entity.p.y});
+					var obj = new Q.Miembros({ x: this.entity.p.x-66, y: this.entity.p.y-30});
 					obj.p.disparado = true;
 					this.entity.stage.insert(obj);
 					obj.add("tween");

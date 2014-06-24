@@ -33,7 +33,7 @@ function crearEntidades(Q) {
 
 	    		Q.state.dec("vidas",1);
 	    		this.destroy();
-	    		var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:450 });
+	    		var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:500 });
 	    		Q.stage(0).insert(newZombiePlayer);
 	    		Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 	        }
