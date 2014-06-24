@@ -22,24 +22,27 @@ function crearComponentes(Q) {
 	    	   debajo (var bloque) y el que esta a dos bloques de distancia de este (var bloque2) son ambos bloques de 
 	    	   tierra. También tenemos que tener en cuenta la dirección para hacer los cálculos correctamente
 	    	*/
-	    	if(this.entity.p.direction == "right") {
+	    	if(!this.entity.p.bajoTierra) {
 
-	    		var bloque = Q.stage().locate(this.entity.p.x, this.entity.p.y + 70);
-	    		var bloque2 = Q.stage().locate(this.entity.p.x + 124, this.entity.p.y + 70); 
-	    	}
-	    	else {
+		    	if(this.entity.p.direction == "right") {
 
-	    		var bloque = Q.stage().locate(this.entity.p.x + 40, this.entity.p.y + 70);
-	    		var bloque2 = Q.stage().locate(this.entity.p.x - 64, this.entity.p.y + 70);
-	    	}                          
+		    		var bloque = Q.stage().locate(this.entity.p.x, this.entity.p.y + 70);
+		    		var bloque2 = Q.stage().locate(this.entity.p.x + 124, this.entity.p.y + 70); 
+		    	}
+		    	else {
 
-	    	if ((bloque && bloque.p.type == Q.SPRITE_DIRT) && (bloque2 && bloque2.p.type == Q.SPRITE_DIRT))  {
- 
-				this.entity.p.bajoTierra = 1;
+		    		var bloque = Q.stage().locate(this.entity.p.x + 40, this.entity.p.y + 70);
+		    		var bloque2 = Q.stage().locate(this.entity.p.x - 64, this.entity.p.y + 70);
+		    	}                          
 
-				this.entity.p.points = this.entity.p.diggingPoints;
-				this.entity.play("dig");
-        	}
+		    	if ((bloque && bloque.p.type == Q.SPRITE_DIRT) && (bloque2 && bloque2.p.type == Q.SPRITE_DIRT))  {
+	 
+					this.entity.p.bajoTierra = 1;
+
+					this.entity.p.points = this.entity.p.diggingPoints;
+					this.entity.play("dig");
+	        	}
+	        }
 	    },
 
 	    up: function() {
@@ -120,12 +123,30 @@ function crearComponentes(Q) {
 						this.p.vx = 0;
 						this.del('aiBounce');
 						this.play("shot");
+
+						if(this.p.time >= this.p.shootTime) {
+								this.p.time = 0;
+								newBullet = new Q.Bullet({ x: this.p.x-56, y: this.p.y-10, vx: -100 });
+								Q.stage(0).insert(newBullet);
+								setTimeout(function() { newBullet.destroy(); }, 4000);
+						}
+						
+						this.p.time += dt;
 					}
 					else if (this.p.direction == "right"  && (zombie.p.x > this.p.x && (zombie.p.x - this.p.x) < 200)) {
 
 						this.p.vx = 0;
 						this.del('aiBounce');
 						this.play("shot");
+
+						if(this.p.time >= this.p.shootTime) {
+								this.p.time = 0;
+								newBullet = new Q.Bullet({ x: this.p.x+56, y: this.p.y-10, vx: 100 });
+								Q.stage(0).insert(newBullet);
+								setTimeout(function() { newBullet.destroy(); }, 4000);
+						}
+						
+						this.p.time += dt;
 					}
 					else {
 						if(!this.has('aiBounce')) {
