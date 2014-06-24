@@ -9,7 +9,6 @@ function crearComponentes(Q) {
 	      	this.entity.p.bajoTierra = 0;
 	      	this.entity.p.undergroundCollisionMask = Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET;
 
-	      	Q.input.on("fire", this, "launchHand");
 	      	Q.input.on("down", this, "down");
 	        Q.input.on("up",   this, "up");
 
@@ -97,35 +96,6 @@ function crearComponentes(Q) {
 				this.entity.p.points = this.entity.p.undergroundLeftPoints;
 
 			this.entity.p.collisionMask = this.entity.p.undergroundCollisionMask;
-		},
-
-		launchHand: function() {
-			console.log("pillo el evento");
-			if(Q.state.get("municion") > 0)
-			{
-				//Q.audio.play("shot.mp3");
-
-				Q.state.dec("municion",1);
-
-				if(this.entity.p.direction == "right") {
-
-					var obj = new Q.Miembros({ x: this.entity.p.x+66, y: this.entity.p.y-30 });
-					obj.p.disparado = true;
-					this.entity.stage.insert(obj);
-					obj.add("tween");
-					obj.animate({ x: this.entity.p.x+800, y: this.entity.p.y-50, angle:360 }, 1.5);
-				}
-		        else if(this.entity.p.direction == "left") {
-
-					var obj = new Q.Miembros({ x: this.entity.p.x-66, y: this.entity.p.y-30});
-					obj.p.disparado = true;
-					this.entity.stage.insert(obj);
-					obj.add("tween");
-					obj.animate({ x: this.entity.p.x-800, y: this.entity.p.y-50, angle:360 }, 1.5);
-		        }
-
-				setTimeout(function() { obj.destroy(); }, 1300);
-		    }
 		}
 	});
 

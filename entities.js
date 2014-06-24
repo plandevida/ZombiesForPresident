@@ -26,7 +26,38 @@ function crearEntidades(Q) {
 	      this.add('2d, platformerControls, tween, animation, zombieControls'); 
 
 	      this.on("bump.left, bump.right, bump.bottom", "hit");
+
+	      Q.input.on("fire", this, "launchHand");
 	    },
+
+	    launchHand: function() {
+			console.log("pillo el evento");
+			if(Q.state.get("municion") > 0)
+			{
+				//Q.audio.play("shot.mp3");
+
+				Q.state.dec("municion",1);
+
+				if(this.p.direction == "right") {
+
+					var obj = new Q.Miembros({ x: this.p.x+66, y: this.p.y-30 });
+					obj.p.disparado = true;
+					Q.stage(0).insert(obj);
+					obj.add("tween");
+					obj.animate({ x: this.p.x+800, y: this.p.y-50, angle:360 }, 1.5);
+				}
+		        else if(this.p.direction == "left") {
+
+					var obj = new Q.Miembros({ x: this.p.x-66, y: this.p.y-30});
+					obj.p.disparado = true;
+					Q.stage(0).insert(obj);
+					obj.add("tween");
+					obj.animate({ x: this.p.x-800, y: this.p.y-50, angle:360 }, 1.5);
+		        }
+
+				setTimeout(function() { obj.destroy(); }, 1300);
+		    }
+		},
 
 		hit: function(collision) {
 			if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
