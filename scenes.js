@@ -186,4 +186,22 @@ function crearEscenas(Q) {
 
 	    Q.stageScene("HUD", 2);
 	});
+
+	Q.scene("final",function(stage) {          
+
+	    //Q.audio.stop();
+	    //Q.audio.play("boss.mp3", { loop:true });
+	    Q.stageTMX('final.tmx', stage);
+
+	    Q.state.set("municion", 4);
+	    Q.state.set("vidas", 3);
+
+		var player = stage.insert(new Q.ZombiePlayer({ x:240, y:450 }));
+	
+		stage.add("viewport");
+
+	    stage.on("destroy", function() {
+			player.destroy();
+		});
+	});
 }
