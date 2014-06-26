@@ -41,7 +41,7 @@ function crearEntidades(Q) {
 
 				if(this.p.direction == "right") {
 
-					var obj = new Q.Miembros({ x: this.p.x + 30, y: this.p.y - 30, vx: 250, vy: -5 });
+					var obj = new Q.Miembros({ x: this.p.x + 70, y: this.p.y - 30, vx: 250, vy: -5 });
 					obj.p.disparado = true;
 					Q.stage(0).insert(obj);
 					//obj.add("tween");
@@ -49,7 +49,7 @@ function crearEntidades(Q) {
 				}
 		        else if(this.p.direction == "left") {
 
-					var obj = new Q.Miembros({ x: this.p.x - 30, y: this.p.y - 30, vx: -250, vy: -5 });
+					var obj = new Q.Miembros({ x: this.p.x - 70, y: this.p.y - 30, vx: -250, vy: -5 });
 					obj.p.disparado = true;
 					Q.stage(0).insert(obj);
 					//obj.add("tween");
@@ -297,7 +297,7 @@ function crearEntidades(Q) {
 				gravity: 0.01,
 			});
 
-			this.add('2d, animation');
+			this.add('animation');
 			this.on('hit');
 			this.on('bullet.die','die');
 		},
