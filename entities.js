@@ -212,8 +212,11 @@ function crearEntidades(Q) {
 				sprite: "flying_enemy",
 				vx: -30,
 				shootingTime: 3,
-				time:0,
-				gravity: 0
+				time: 0,
+				changeDirectionTime: 5,
+				time2: 0,
+				gravity: 0,
+				direction: "left"
 			});
 
 			this.add('2d, animation');
@@ -222,13 +225,21 @@ function crearEntidades(Q) {
 		},
 
 		step: function(dt) {
+
 			this.p.time += dt;
+			this.p.time2 += dt;
 
 			if(this.p.time > this.p.shootingTime) {
 				this.p.time = 0;
 				newBullet = new Q.Bullet({ sheet: "bullet2", sprite: "bullet2", x: this.p.x, y: this.p.y + 40, vy: 120 });
 				Q.stage(0).insert(newBullet);
 			}
+
+			if(this.p.time2 > this.p.changeDirectionTime) {
+				this.p.time2 = 0; 
+				this.p.vx = - this.p.vx;
+			}
+			
 			
 		}
 
