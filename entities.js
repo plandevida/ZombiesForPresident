@@ -4,6 +4,7 @@ function crearEntidades(Q) {
 	Q.SPRITE_BOX = 128;
 	Q.SPRITE_DIRT = 256;
 	Q.SPRITE_BULLET = 512;
+	Q.SPRITE_SPECIAL_STONE = 1024;
 
 	var avisaDeFinal = false;
 
@@ -18,7 +19,7 @@ function crearEntidades(Q) {
 	      	jumpSpeed: 0,
 	      	x: 40,
 	      	y: 300,
-	      	defaultCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET,
+	      	defaultCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET | Q.SPRITE_SPECIAL_STONE,
 	      	defaultPoints: [[-20,-60],[-20,64],[20,64],[20,-60]]
 	      });
 
@@ -305,12 +306,12 @@ function crearEntidades(Q) {
 				sheet: "bullet",
 				sprite: "bullet",
 				type: Q.SPRITE_BULLET,
-				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX,
+				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_DIRT,
 				points: [[-7,-4],[-7,4],[7,4],[7,-4]],
 				gravity: 0.01,
 			});
 
-			this.add('animation');
+			this.add('2d,animation');
 			this.on('hit');
 			this.on('bullet.die','die');
 		},
@@ -346,13 +347,6 @@ function crearEntidades(Q) {
 			});
 
 			this.add('2d');
-			/*
-			this.on("bump.left,bum.right", function(col) {
-				if(col.obj.isA("ZombiePlayer")) {
-					col.obj.trigger("box.hit", [this.p.x, this.p.y]);
-				}
-			});*/
-
 		}
 	});
 
@@ -362,6 +356,17 @@ function crearEntidades(Q) {
 				gravity: 0,
 				sheet: "dirt1",
 				type: Q.SPRITE_DIRT
+			});
+		}
+	});
+
+    // Son bloques que dejan pasar las balas de los enemigos a través de ellos
+	Q.Sprite.extend("SpecialStone", {
+		init: function(p) {
+			this._super(p, {
+				gravity: 0,
+				sheet: "specialStone",
+				type: Q.SPRITE_SPECIAL_STONE
 			});
 		}
 	});

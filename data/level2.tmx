@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="100" height="15" tilewidth="64" tileheight="64">
  <tileset firstgid="1" name="tiles" tilewidth="64" tileheight="64">
-  <image source="../images/tiles.png" width="256" height="320"/>
+  <image source="../images/tiles.png" width="256" height="384"/>
   <tile id="1">
    <properties>
     <property name="Class" value="Box"/>
     <property name="sheet" value="box"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Class" value="Box"/>
+    <property name="sheet" value="box2"/>
    </properties>
   </tile>
   <tile id="8">
@@ -38,8 +44,14 @@
     <property name="sheet" value="box"/>
    </properties>
   </tile>
+  <tile id="20">
+   <properties>
+    <property name="Class" value="SpecialStone"/>
+    <property name="sheet" value="specialStone"/>
+   </properties>
+  </tile>
  </tileset>
- <tileset firstgid="21" name="enemies" tilewidth="64" tileheight="128">
+ <tileset firstgid="25" name="enemies" tilewidth="64" tileheight="128">
   <image source="../images/enemies.png" width="1920" height="1024"/>
   <tile id="0">
    <properties>
@@ -55,7 +67,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="261" name="enemies2" tilewidth="64" tileheight="128">
+ <tileset firstgid="265" name="enemies2" tilewidth="64" tileheight="128">
   <image source="../images/enemies2.png" width="1920" height="1024"/>
   <tile id="0">
    <properties>
@@ -71,7 +83,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="501" name="miembros" tilewidth="20" tileheight="21">
+ <tileset firstgid="505" name="miembros" tilewidth="20" tileheight="21">
   <image source="../images/miembros.png" width="20" height="21"/>
   <tile id="0">
    <properties>
@@ -80,7 +92,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="502" name="plataforma" tilewidth="100" tileheight="34">
+ <tileset firstgid="506" name="plataforma" tilewidth="100" tileheight="34">
   <image source="../images/plat.png" width="100" height="34"/>
   <tile id="0">
    <properties>
@@ -89,7 +101,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="503" name="puertaFinal" tilewidth="110" tileheight="142">
+ <tileset firstgid="507" name="puertaFinal" tilewidth="110" tileheight="142">
   <image source="../images/puerta.png" width="470" height="150"/>
   <tile id="0">
    <properties>
@@ -113,7 +125,7 @@
    <tile gid="13"/>
    <tile gid="13"/>
    <tile gid="13"/>
-   <tile gid="13"/>
+   <tile gid="14"/>
    <tile gid="16"/>
    <tile gid="16"/>
    <tile gid="16"/>
@@ -213,6 +225,21 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="13"/>
+   <tile gid="14"/>
+   <tile gid="15"/>
+   <tile gid="15"/>
+   <tile gid="15"/>
+   <tile gid="15"/>
+   <tile gid="14"/>
+   <tile gid="14"/>
+   <tile gid="14"/>
+   <tile gid="14"/>
+   <tile gid="14"/>
+   <tile gid="14"/>
+   <tile gid="15"/>
+   <tile gid="15"/>
+   <tile gid="16"/>
+   <tile gid="13"/>
    <tile gid="13"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -227,8 +254,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -238,41 +263,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="13"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -295,6 +285,28 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="13"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="13"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -313,7 +325,12 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="13"/>
-   <tile gid="13"/>
+   <tile gid="14"/>
+   <tile gid="14"/>
+   <tile gid="14"/>
+   <tile gid="14"/>
+   <tile gid="14"/>
+   <tile gid="14"/>
    <tile gid="15"/>
    <tile gid="15"/>
    <tile gid="15"/>
@@ -322,11 +339,6 @@
    <tile gid="15"/>
    <tile gid="15"/>
    <tile gid="15"/>
-   <tile gid="15"/>
-   <tile gid="15"/>
-   <tile gid="15"/>
-   <tile gid="15"/>
-   <tile gid="15"/>
    <tile gid="13"/>
    <tile gid="13"/>
    <tile gid="0"/>
@@ -412,23 +424,23 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -815,17 +827,17 @@
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1610,103 +1622,75 @@
   </data>
  </layer>
  <objectgroup name="Objetos" width="100" height="15">
-  <object gid="2" x="320" y="640"/>
-  <object gid="2" x="256" y="640"/>
-  <object gid="2" x="320" y="576"/>
-  <object gid="2" x="384" y="640"/>
-  <object gid="2" x="384" y="576"/>
-  <object gid="2" x="384" y="512"/>
-  <object gid="2" x="448" y="512"/>
-  <object gid="2" x="448" y="576"/>
-  <object gid="2" x="1216" y="512"/>
-  <object gid="2" x="1216" y="576"/>
-  <object gid="2" x="1280" y="640"/>
-  <object gid="2" x="1280" y="576"/>
-  <object gid="2" x="1280" y="512"/>
-  <object gid="2" x="1344" y="576"/>
-  <object gid="2" x="1344" y="640"/>
-  <object gid="2" x="1408" y="640"/>
-  <object gid="2" x="512" y="128"/>
-  <object gid="2" x="448" y="128"/>
-  <object gid="2" x="576" y="128"/>
-  <object gid="2" x="640" y="128"/>
-  <object gid="2" x="704" y="128"/>
-  <object gid="2" x="768" y="128"/>
-  <object gid="2" x="832" y="128"/>
-  <object gid="2" x="896" y="128"/>
-  <object gid="2" x="1216" y="128"/>
-  <object gid="2" x="1152" y="128"/>
-  <object gid="2" x="1088" y="128"/>
-  <object gid="2" x="1024" y="128"/>
-  <object gid="2" x="960" y="128"/>
-  <object gid="2" x="1728" y="640"/>
-  <object gid="2" x="1792" y="576"/>
-  <object gid="2" x="1856" y="512"/>
-  <object gid="2" x="1856" y="576"/>
-  <object gid="2" x="1856" y="640"/>
-  <object gid="2" x="1920" y="448"/>
-  <object gid="2" x="1920" y="640"/>
-  <object gid="2" x="1920" y="576"/>
-  <object gid="2" x="1920" y="512"/>
-  <object gid="2" x="1984" y="640"/>
-  <object gid="2" x="1984" y="576"/>
-  <object gid="2" x="1984" y="512"/>
-  <object gid="2" x="1984" y="448"/>
-  <object gid="2" x="1984" y="384"/>
-  <object gid="2" x="2496" y="384"/>
-  <object gid="2" x="2112" y="384"/>
-  <object gid="2" x="2816" y="640"/>
-  <object gid="501" x="1600" y="640"/>
-  <object gid="2" x="64" y="384"/>
-  <object gid="2" x="64" y="320"/>
-  <object gid="2" x="64" y="256"/>
-  <object gid="2" x="64" y="192"/>
-  <object gid="2" x="64" y="128"/>
-  <object gid="2" x="3200" y="640"/>
-  <object gid="2" x="3264" y="576"/>
-  <object gid="2" x="3328" y="512"/>
-  <object gid="2" x="2560" y="320"/>
-  <object gid="2" x="3968" y="640"/>
-  <object gid="2" x="4032" y="576"/>
-  <object gid="2" x="4096" y="512"/>
-  <object gid="2" x="4160" y="448"/>
-  <object gid="2" x="5568" y="448"/>
-  <object gid="2" x="5632" y="512"/>
-  <object gid="2" x="5696" y="576"/>
-  <object gid="2" x="5760" y="640"/>
-  <object gid="2" x="4224" y="128"/>
-  <object gid="2" x="4288" y="128"/>
-  <object gid="2" x="4352" y="128"/>
-  <object gid="2" x="4416" y="128"/>
-  <object gid="2" x="4480" y="128"/>
-  <object gid="2" x="4544" y="128"/>
-  <object gid="2" x="4608" y="128"/>
-  <object gid="2" x="4672" y="128"/>
-  <object gid="2" x="4736" y="128"/>
-  <object gid="2" x="4800" y="128"/>
-  <object gid="2" x="4864" y="128"/>
-  <object gid="2" x="4928" y="128"/>
-  <object gid="2" x="4992" y="128"/>
-  <object gid="2" x="5056" y="128"/>
-  <object gid="2" x="5120" y="128"/>
-  <object gid="2" x="5184" y="128"/>
-  <object gid="2" x="5504" y="128"/>
-  <object gid="2" x="5440" y="128"/>
-  <object gid="2" x="5376" y="128"/>
-  <object gid="2" x="5312" y="128"/>
-  <object gid="2" x="5248" y="128"/>
-  <object gid="502" x="4354" y="420"/>
-  <object gid="502" x="4767" y="420"/>
-  <object gid="502" x="5247" y="420"/>
-  <object gid="262" x="576" y="640"/>
-  <object gid="262" x="768" y="640"/>
-  <object gid="262" x="1088" y="640"/>
-  <object gid="262" x="4288" y="640"/>
-  <object gid="262" x="4736" y="640"/>
-  <object gid="262" x="4992" y="640"/>
-  <object gid="262" x="5376" y="640"/>
-  <object gid="22" x="2304" y="384"/>
-  <object gid="22" x="2368" y="640"/>
-  <object gid="503" x="6208" y="640"/>
+  <object gid="505" x="1600" y="640"/>
+  <object gid="506" x="4354" y="420"/>
+  <object gid="506" x="4767" y="420"/>
+  <object gid="506" x="5247" y="420"/>
+  <object gid="266" x="576" y="640"/>
+  <object gid="266" x="768" y="640"/>
+  <object gid="266" x="1088" y="640"/>
+  <object gid="266" x="4288" y="640"/>
+  <object gid="266" x="4736" y="640"/>
+  <object gid="266" x="4992" y="640"/>
+  <object gid="266" x="5376" y="640"/>
+  <object gid="26" x="2304" y="384"/>
+  <object gid="26" x="2368" y="640"/>
+  <object gid="507" x="6208" y="640"/>
+  <object gid="3" x="64" y="384"/>
+  <object gid="3" x="64" y="321"/>
+  <object gid="3" x="64" y="256"/>
+  <object gid="3" x="64" y="192"/>
+  <object gid="3" x="64" y="128"/>
+  <object gid="3" x="448" y="577"/>
+  <object gid="3" x="449" y="513"/>
+  <object gid="3" x="385" y="641"/>
+  <object gid="3" x="386" y="577"/>
+  <object gid="3" x="320" y="640"/>
+  <object gid="3" x="1216" y="513"/>
+  <object gid="3" x="1216" y="577"/>
+  <object gid="3" x="1279" y="577"/>
+  <object gid="3" x="1280" y="640"/>
+  <object gid="3" x="1345" y="640"/>
+  <object gid="505" x="1540" y="640"/>
+  <object gid="3" x="1729" y="639"/>
+  <object gid="3" x="1792" y="576"/>
+  <object gid="3" x="1857" y="512"/>
+  <object gid="3" x="1920" y="449"/>
+  <object gid="3" x="1857" y="576"/>
+  <object gid="3" x="1857" y="641"/>
+  <object gid="3" x="1921" y="640"/>
+  <object gid="3" x="1920" y="577"/>
+  <object gid="3" x="1921" y="513"/>
+  <object gid="3" x="1984" y="385"/>
+  <object gid="3" x="1985" y="447"/>
+  <object gid="3" x="1985" y="513"/>
+  <object gid="3" x="1985" y="577"/>
+  <object gid="3" x="1985" y="639"/>
+  <object gid="3" x="2112" y="385"/>
+  <object gid="3" x="2560" y="320"/>
+  <object gid="3" x="2495" y="385"/>
+  <object gid="3" x="2817" y="641"/>
+  <object gid="3" x="3328" y="512"/>
+  <object gid="3" x="3265" y="577"/>
+  <object gid="3" x="3201" y="640"/>
+  <object gid="3" x="4159" y="448"/>
+  <object gid="3" x="4096" y="513"/>
+  <object gid="3" x="4031" y="576"/>
+  <object gid="3" x="3969" y="641"/>
+  <object gid="3" x="5569" y="448"/>
+  <object gid="3" x="5633" y="512"/>
+  <object gid="3" x="5697" y="576"/>
+  <object gid="3" x="5761" y="640"/>
+  <object gid="21" x="513" y="512"/>
+  <object gid="21" x="576" y="513"/>
+  <object gid="21" x="640" y="513"/>
+  <object gid="21" x="705" y="513"/>
+  <object gid="21" x="769" y="513"/>
+  <object gid="21" x="833" y="512"/>
+  <object gid="21" x="897" y="512"/>
+  <object gid="21" x="960" y="513"/>
+  <object gid="21" x="1024" y="513"/>
+  <object gid="21" x="1088" y="512"/>
+  <object gid="21" x="1153" y="512"/>
  </objectgroup>
 </map>

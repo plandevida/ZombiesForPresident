@@ -24,6 +24,7 @@ function crearEscenas(Q) {
 	    btJugar.on("click",function() {
 	        Q.clearStages();
 	        Q.stageScene('level1');
+	        //Q.stageScene('level2');
 	    });
 
 	    btControles.on("click",function() {
