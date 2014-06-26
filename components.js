@@ -126,7 +126,7 @@ function crearComponentes(Q) {
 
 						if(this.p.time >= this.p.shootTime) {
 								this.p.time = 0;
-								newBullet = new Q.Bullet({ x: this.p.x - 60, y: this.p.y + 5, vx: -100 });
+								newBullet = new Q.Bullet({ x: this.p.x - 60, y: this.p.y - 10, vx: -100 });
 								Q.stage(0).insert(newBullet);
 								setTimeout(function() { newBullet.destroy(); }, 4000);
 						}
@@ -141,7 +141,7 @@ function crearComponentes(Q) {
 
 						if(this.p.time >= this.p.shootTime) {
 								this.p.time = 0;
-								newBullet = new Q.Bullet({ x: this.p.x + 60, y: this.p.y + 5, vx: 100 });
+								newBullet = new Q.Bullet({ x: this.p.x + 60, y: this.p.y - 10, vx: 100 });
 								Q.stage(0).insert(newBullet);
 								setTimeout(function() { newBullet.destroy(); }, 4000);
 						}
