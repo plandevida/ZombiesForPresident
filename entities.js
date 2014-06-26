@@ -5,6 +5,7 @@ function crearEntidades(Q) {
 	Q.SPRITE_DIRT = 256;
 	Q.SPRITE_BULLET = 512;
 	Q.SPRITE_SPECIAL_STONE = 1024;
+	Q.SPRITE_PLATAFORMA = 2048;
 
 	var avisaDeFinal = false;
 
@@ -19,7 +20,7 @@ function crearEntidades(Q) {
 	      	jumpSpeed: 0,
 	      	x: 40,
 	      	y: 300,
-	      	defaultCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET | Q.SPRITE_SPECIAL_STONE,
+	      	defaultCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET | Q.SPRITE_SPECIAL_STONE | Q.SPRITE_PLATAFORMA,
 	      	defaultPoints: [[-20,-60],[-20,64],[20,64],[20,-60]]
 	      });
 
@@ -406,7 +407,9 @@ function crearEntidades(Q) {
 			this._super(p, {
 				sheet: "plataforma",
 				gravity: 0,
-				vx: 60
+				vx: 60,
+				type: Q.SPRITE_PLATAFORMA,
+				collisionMask: Q.SPRITE_PLATAFORMA | Q.SPRITE_DEFAULT
 			});
 
 			this.add('2d, aiBounce');
