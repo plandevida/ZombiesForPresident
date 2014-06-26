@@ -41,7 +41,7 @@ function crearEntidades(Q) {
 
 				if(this.p.direction == "right") {
 
-					var obj = new Q.Miembros({ x: this.p.x + 70, y: this.p.y - 30, vx: 250, vy: -5 });
+					var obj = new Q.Miembros({ x: this.p.x + 70, y: this.p.y - 50, vx: 250, vy: -5 });
 					obj.p.disparado = true;
 					Q.stage(0).insert(obj);
 					//obj.add("tween");
@@ -49,12 +49,14 @@ function crearEntidades(Q) {
 				}
 		        else if(this.p.direction == "left") {
 
-					var obj = new Q.Miembros({ x: this.p.x - 70, y: this.p.y - 30, vx: -250, vy: -5 });
+					var obj = new Q.Miembros({ x: this.p.x - 70, y: this.p.y - 50, vx: -250, vy: -5 });
 					obj.p.disparado = true;
 					Q.stage(0).insert(obj);
 					//obj.add("tween");
 					//obj.animate({ x: this.p.x-800, y: this.p.y-50, angle:360 }, 1.5);
 		        }
+
+		        setTimeout(function() { obj.destroy(); }, 2500);
 		    }
 		},
 
