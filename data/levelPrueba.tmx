@@ -61,12 +61,6 @@
  </tileset>
  <tileset firstgid="21" name="enemies" tilewidth="64" tileheight="128">
   <image source="../images/enemies.png" width="1920" height="1024"/>
-  <tile id="0">
-   <properties>
-    <property name="Class" value="Enemy"/>
-    <property name="sheet" value="enemy1"/>
-   </properties>
-  </tile>
   <tile id="1">
    <properties>
     <property name="Class" value="Enemy"/>
@@ -96,6 +90,15 @@
     <property name="Class" value="Puerta"/>
     <property name="sheet" value="puerta"/>
     <property name="sprite" value="port"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="266" name="Flying_enemy" tilewidth="64" tileheight="64">
+  <image source="../images/flying_enemy.png" width="128" height="64"/>
+  <tile id="0">
+   <properties>
+    <property name="Class" value="Flying_enemy"/>
+    <property name="sheet" value="flying_enemy"/>
    </properties>
   </tile>
  </tileset>
@@ -10190,5 +10193,6 @@
   <object gid="22" x="4736" y="576"/>
   <object gid="22" x="5376" y="576"/>
   <object gid="22" x="5760" y="576"/>
+  <object gid="266" x="832" y="217"/>
  </objectgroup>
 </map>

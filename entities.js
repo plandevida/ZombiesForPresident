@@ -27,13 +27,12 @@ function crearEntidades(Q) {
 
 	      this.add('2d, platformerControls, tween, animation, zombieControls'); 
 
-	      this.on("bump.left, bump.right, bump.bottom", "hit");
+	      this.on("hit", "hit");
 
 	      Q.input.on("fire", this, "launchHand");
 	    },
 
 	    launchHand: function() {
-			console.log("pillo el evento");
 			if(Q.state.get("municion") > 0)
 			{
 				//Q.audio.play("shot.mp3");
@@ -42,22 +41,20 @@ function crearEntidades(Q) {
 
 				if(this.p.direction == "right") {
 
-					var obj = new Q.Miembros({ x: this.p.x+66, y: this.p.y-30 });
+					var obj = new Q.Miembros({ x: this.p.x + 30, y: this.p.y - 30, vx: 250, vy: -5 });
 					obj.p.disparado = true;
 					Q.stage(0).insert(obj);
-					obj.add("tween");
-					obj.animate({ x: this.p.x+800, y: this.p.y-50, angle:360 }, 1.5);
+					//obj.add("tween");
+					//obj.animate({ x: this.p.x+800, y: this.p.y-50, angle:360 }, 1.5);
 				}
 		        else if(this.p.direction == "left") {
 
-					var obj = new Q.Miembros({ x: this.p.x-66, y: this.p.y-30});
+					var obj = new Q.Miembros({ x: this.p.x - 30, y: this.p.y - 30, vx: -250, vy: -5 });
 					obj.p.disparado = true;
 					Q.stage(0).insert(obj);
-					obj.add("tween");
-					obj.animate({ x: this.p.x-800, y: this.p.y-50, angle:360 }, 1.5);
+					//obj.add("tween");
+					//obj.animate({ x: this.p.x-800, y: this.p.y-50, angle:360 }, 1.5);
 		        }
-
-				setTimeout(function() { obj.destroy(); }, 1300);
 		    }
 		},
 
@@ -208,6 +205,35 @@ function crearEntidades(Q) {
 		} 
 	});
 
+	Q.Sprite.extend("Flying_enemy", {
+		init: function(p) {
+			this._super(p, {
+				sheet: "flying_enemy",
+				sprite: "flying_enemy",
+				vx: -30,
+				shootingTime: 3,
+				time:0,
+				gravity: 0
+			});
+
+			this.add('2d, animation');
+			this.play('walk');
+
+		},
+
+		step: function(dt) {
+			this.p.time += dt;
+
+			if(this.p.time > this.p.shootingTime) {
+				this.p.time = 0;
+				newBullet = new Q.Bullet({ sheet: "bullet2", sprite: "bullet2", x: this.p.x, y: this.p.y + 40, vy: 120 });
+				Q.stage(0).insert(newBullet);
+			}
+			
+		}
+
+	});
+
 	/**************************************************
 	* Miembros para lanzar
 	***************************************************/
@@ -217,7 +243,8 @@ function crearEntidades(Q) {
 	          	sheet: "miembros",
 				type: Q.SPRITE_BULLET,
 	          	collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX,
-	          	disparado: false
+	          	disparado: false,
+	          	gravity: 0.05
 	          });
 	          
 	          this.add('2d, animation');
@@ -266,10 +293,11 @@ function crearEntidades(Q) {
 				sprite: "bullet",
 				type: Q.SPRITE_BULLET,
 				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX,
-				points: [[-7,-4],[-7,4],[7,4],[7,-4]]
+				points: [[-7,-4],[-7,4],[7,4],[7,-4]],
+				gravity: 0.01,
 			});
 
-			this.add('animation');
+			this.add('2d, animation');
 			this.on('hit');
 			this.on('bullet.die','die');
 		},
