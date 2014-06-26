@@ -117,7 +117,7 @@ function crearComponentes(Q) {
 
 				var zombie = Q("ZombiePlayer").first();
 
-				if(zombie) {
+				if(zombie && (!zombie.p.bajoTierra && zombie .p.y > this.p.y - this.p.h)) {
 					if (this.p.direction == "left" && (zombie.p.x < this.p.x && (this.p.x - zombie.p.x) < 200)) {
 
 						this.p.vx = 0;
@@ -126,7 +126,7 @@ function crearComponentes(Q) {
 
 						if(this.p.time >= this.p.shootTime) {
 								this.p.time = 0;
-								newBullet = new Q.Bullet({ x: this.p.x-56, y: this.p.y-10, vx: -100 });
+								newBullet = new Q.Bullet({ x: this.p.x - 60, y: this.p.y + 5, vx: -100 });
 								Q.stage(0).insert(newBullet);
 								setTimeout(function() { newBullet.destroy(); }, 4000);
 						}
@@ -141,7 +141,7 @@ function crearComponentes(Q) {
 
 						if(this.p.time >= this.p.shootTime) {
 								this.p.time = 0;
-								newBullet = new Q.Bullet({ x: this.p.x+56, y: this.p.y-10, vx: 100 });
+								newBullet = new Q.Bullet({ x: this.p.x + 60, y: this.p.y + 5, vx: 100 });
 								Q.stage(0).insert(newBullet);
 								setTimeout(function() { newBullet.destroy(); }, 4000);
 						}
