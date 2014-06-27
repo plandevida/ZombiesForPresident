@@ -105,7 +105,6 @@ function crearEntidades(Q) {
     			var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:500 });
     			Q.stage(0).insert(newZombiePlayer);
     			Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
-    			Q.state.set("municion", 0);
     		}
 		},
 
@@ -347,7 +346,7 @@ function crearEntidades(Q) {
 			this.p.vy = 0;
 			this.p.vx = 0;
 
-			if(!col.obj.isA("Box")) {
+			if(!col.obj.isA("Box") && !col.obj.isA("ZombiePlayer")) {
 				this.play('explosion');
 			}
 			else {
