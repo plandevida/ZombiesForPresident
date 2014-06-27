@@ -7,7 +7,8 @@ function crearAnimaciones(Q) {
 		dig:   { frames: [20,21,22,23], rate: 1/5, loop: false, trigger: "dig.done" },
 		stand_u: { frames: [25], rate: 1/5 },
 		walk_u:  { frames: [24,25], rate: 1/2 },
-		up: { frames: [20], rate: 1/5 }
+		up: { frames: [20], rate: 1/5 },
+		dead: { frames: [2,3,4], rate: 1/2, loop: false, trigger: "zombie.die" }
 	    
 	});
 

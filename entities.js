@@ -21,6 +21,7 @@ function crearEntidades(Q) {
 	      	jumpSpeed: 0,
 	      	x: 40,
 	      	y: 300,
+	      	dead: false,
 	      	defaultCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET | Q.SPRITE_SPECIAL_STONE | Q.SPRITE_PLATAFORMA,
 	      	defaultPoints: [[-20,-60],[-20,64],[20,64],[20,-60]]
 	      });
@@ -31,6 +32,7 @@ function crearEntidades(Q) {
 	      this.add('2d, platformerControls, tween, animation, zombieControls'); 
 
 	      this.on("hit", "hit");
+	      this.on("zombie.die", "die");
 
 	      Q.input.on("fire", this, "launchHand");
 	    },
@@ -67,18 +69,13 @@ function crearEntidades(Q) {
 			if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
 
 	    		Q.state.dec("vidas",1);
-	    		this.destroy();
 
-	    		if(avisaDeFinal) {
-	    			var newZombiePlayer = new Q.ZombiePlayer({ x:240, y:450 });
-	    			Q.stage(0).insert(newZombiePlayer);	
-	    			Q.state.set("municion", 4);
-	    		}
-	    		else {
-	    			var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:500 });
-	    			Q.stage(0).insert(newZombiePlayer);
-	    			Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
-	        	}
+	    		this.p.dead = true;
+	    		this.p.type = Q.SPRITE_NONE;
+				this.del('2d');
+				this.del('zombieControls');
+				this.del('platformerConstrols');
+	    		this.play("dead");
 	        }
 
 	        if(collision.obj.isA("Puerta")) {
@@ -94,45 +91,63 @@ function crearEntidades(Q) {
 			}
 		},
 
+		die: function() {
+			this.destroy();
+
+    		if(avisaDeFinal) {
+    			var newZombiePlayer = new Q.ZombiePlayer({ x:240, y:450 });
+    			Q.stage(0).insert(newZombiePlayer);	
+    			Q.state.set("municion", 4);
+    		}
+    		else {
+    			var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:500 });
+    			Q.stage(0).insert(newZombiePlayer);
+    			Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
+    			Q.state.set("municion", 0);
+    		}
+		},
+
 	    step: function(dt) {
-	    	if(Q.state.get("vidas") == 0) {
-	    		if(this.has('platformerControls') && this.has('2d')) {
-	    			this.del('platformerControls'); 
-                	this.del('2d');
-                }
-                this.destroy();
-                avisaDeFinal = false;
-               	Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false, winOrLose: "lose"});
-	    	}
+	    	if(!this.p.dead) {
+		    	if(Q.state.get("vidas") == 0) {
+		    		if(this.has('platformerControls') && this.has('2d')) {
+		    			this.del('platformerControls'); 
+	                	this.del('2d');
+	                }
+	                this.destroy();
+	                avisaDeFinal = false;
+	               	Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false, winOrLose: "lose"});
+		    	}
 
-	        if(this.p.x <= 30) this.p.x = 30;
+		        if(this.p.x <= 30) this.p.x = 30;
 
-	        if(this.p.bajoTierra == 0 && !this.p.climbing) {
-	        
-	    		if(this.p.vx > 0) {
-	    			this.p.flip = "";
-	    			this.play("walk");
-	    		}
-	    	    else if(this.p.vx < 0) {
-	    	    	this.p.flip = "x";
-	    	    	this.play("walk");
-	    	    }
-	    	    else {
-	    	    	this.play("stand");
-	    	    }
-	   		}
-	   		if (this.p.bajoTierra == 2) {
-	   			if(this.p.vx > 0) {
-	    			this.p.flip = "";
-	    			this.play("walk_u");
-	    		}
-	    	    else if(this.p.vx < 0) {
-	    	    	this.p.flip = "x";
-	    	    	this.play("walk_u");
-	    	    }
-	    	    else {
-	    	    	this.play("stand_u");
-	    	    }
+		        if(this.p.bajoTierra == 0 && !this.p.climbing) {
+		        
+		    		if(this.p.vx > 0) {
+		    			this.p.flip = "";
+		    			this.play("walk");
+		    		}
+		    	    else if(this.p.vx < 0) {
+		    	    	this.p.flip = "x";
+		    	    	this.play("walk");
+		    	    }
+		    	    else {
+		    	    	this.play("stand");
+		    	    }
+		   		}
+		   		if (this.p.bajoTierra == 2) {
+		   			if(this.p.vx > 0) {
+		    			this.p.flip = "";
+		    			this.play("walk_u");
+		    		}
+		    	    else if(this.p.vx < 0) {
+		    	    	this.p.flip = "x";
+		    	    	this.play("walk_u");
+		    	    }
+		    	    else {
+		    	    	this.play("stand_u");
+		    	    }
+		   		}
 	   		}
 
 	    }
@@ -163,10 +178,10 @@ function crearEntidades(Q) {
 		},
 
 		hit: function() {
+			this.p.dead = true;
 			this.p.type = Q.SPRITE_NONE;
 			this.del('2d');
 	        this.del('aiBounce');
-	        this.p.dead = true;
 	        this.del('comportamientoEnemigo');
 			this.play("dead");
 		},
