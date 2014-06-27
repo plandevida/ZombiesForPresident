@@ -104,7 +104,7 @@ function crearComponentes(Q) {
 
 	Q.component("comportamientoEnemigo", {
 		added: function() {
-			this.entity.on("step", this.entity, "stepEnemy");
+			//this.entity.on("step", this.entity, "stepEnemy");
 
 			this.entity.p.direction = "right";
 			this.entity.p.shootTime = 5;
@@ -134,7 +134,7 @@ function crearComponentes(Q) {
 	    	    }
 			},
 
-			stepEnemy: function(dt) {
+			step: function(dt) {
 				if(!this.p.dead){
 					this.p.time += dt;
 

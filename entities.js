@@ -38,7 +38,7 @@ function crearEntidades(Q) {
 	    launchHand: function() {
 			if(Q.state.get("municion") > 0)
 			{
-				//Q.audio.play("shot.mp3");
+				Q.audio.play("shot.mp3");
 
 				Q.state.dec("municion",1);
 
