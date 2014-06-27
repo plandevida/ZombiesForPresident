@@ -102,7 +102,7 @@ function crearEntidades(Q) {
                 }
                 this.destroy();
                 avisaDeFinal = false;
-               	Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false});
+               	Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false, winOrLose: "lose"});
 	    	}
 
 	        if(this.p.x <= 30) this.p.x = 30;
@@ -498,7 +498,7 @@ function crearEntidades(Q) {
 
 					avisaDeFinal = false;
 
-					Q.stageScene("UI", 1, { label: "-- YOU WIN --", button: "Play again", bg: false, music: false});
+					Q.stageScene("UI", 1, { label: "-- YOU WIN --", button: "Play again", bg: false, music: false, winOrLose: "win"});
 				}
 			}
 		} 

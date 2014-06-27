@@ -61,6 +61,15 @@ function crearEscenas(Q) {
 
 	Q.scene('UI',function(stage) {
 
+		if ( stage.options.winOrLose == "win" ) {
+			Q.audio.stop();
+	    	Q.audio.play("zob.mp3");
+		}
+		else if ( stage.options.winOrLose == "lose" ) {
+			Q.audio.stop();
+	    	Q.audio.play("risa.mp3");
+		}
+
 		if ( stage.options.bg === true ) {
 			stage.insert(new Q.Repeater( { asset: "zfp.png" } ));
 		}
@@ -146,8 +155,9 @@ function crearEscenas(Q) {
 
 	Q.scene("level1",function(stage) {          
 
-	    //Q.audio.stop();
-	    //Q.audio.play("main.mp3", { loop:true });
+	    Q.audio.stop();
+	    Q.audio.play("main.mp3", { loop:true });
+
 	    Q.stageTMX('levelPrueba.tmx', stage);
 
 	    Q.state.reset({ municion: 0, vidas:3 });
@@ -168,8 +178,9 @@ function crearEscenas(Q) {
 
 	Q.scene("level2",function(stage) {          
 
-	    //Q.audio.stop();
-	    //Q.audio.play("main.mp3", { loop:true });
+	    Q.audio.stop();
+	    Q.audio.play("main.mp3", { loop:true });
+
 	    Q.stageTMX('level2.tmx', stage);
 
 	    Q.state.reset({ municion: 0, vidas:3 });
@@ -190,8 +201,9 @@ function crearEscenas(Q) {
 
 	Q.scene("final",function(stage) {          
 
-	    //Q.audio.stop();
-	    //Q.audio.play("boss.mp3", { loop:true });
+	    Q.audio.stop();
+	    Q.audio.play("boss.mp3", { loop:true });
+	    
 	    Q.stageTMX('final.tmx', stage);
 
 	    Q.state.set("municion", 4);
