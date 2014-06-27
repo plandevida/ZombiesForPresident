@@ -141,10 +141,12 @@ function crearEntidades(Q) {
 		   			if(this.p.vx > 0) {
 		    			this.p.flip = "";
 		    			this.play("walk_u");
+		    			this.p.points = this.p.undergroundRightPoints;
 		    		}
 		    	    else if(this.p.vx < 0) {
 		    	    	this.p.flip = "x";
 		    	    	this.play("walk_u");
+		    	    	this.p.points = this.p.undergroundLeftPoints;
 		    	    }
 		    	    else {
 		    	    	this.play("stand_u");
