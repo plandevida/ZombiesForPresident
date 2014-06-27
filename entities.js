@@ -68,6 +68,7 @@ function crearEntidades(Q) {
 		hit: function(collision) {
 			if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
 
+				this.debind();
 	    		Q.state.dec("vidas",1);
 
 	    		this.p.dead = true;
@@ -79,6 +80,7 @@ function crearEntidades(Q) {
 	        }
 
 	        if(collision.obj.isA("Puerta")) {
+	        	var player = this;
 				collision.obj.play("abrir");
 				setTimeout(function() { Q.stageScene("level2"); }, 1000);
 			}

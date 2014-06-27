@@ -25,6 +25,7 @@ function crearEscenas(Q) {
 	        Q.clearStages();
 	        Q.stageScene('level1');
 	        //Q.stageScene('level2');
+	        //Q.stageScene('final');
 	    });
 
 	    btControles.on("click",function() {
@@ -185,7 +186,7 @@ function crearEscenas(Q) {
 
 	    Q.state.reset({ municion: 0, vidas:3 });
 
-		var player = stage.insert(new Q.ZombiePlayer({ x:40, y:550 }));
+		var player = stage.insert(new Q.ZombiePlayer({ x:128, y: 0 }));
 
 	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 	    stage.centerOn(500, 350); 
