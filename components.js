@@ -105,6 +105,7 @@ function crearComponentes(Q) {
 	Q.component("comportamientoEnemigo", {
 		added: function() {
 			this.entity.on("step", this.entity, "stepEnemy");
+
 			this.entity.p.direction = "right";
 			this.entity.p.shootTime = 5;
 			this.entity.p.time = 0;
@@ -112,109 +113,64 @@ function crearComponentes(Q) {
 		},
 
 		extend: {
+
+			continuar: function() {
+				if(!this.has('aiBounce')) {
+					this.add('aiBounce');
+					this.p.vx = this.p.vxvalue;
+				}
+				if(this.p.vx > 0) {
+					this.p.direction = "right";
+	    			this.p.flip = "";
+	    			this.play("walk");
+	    		}
+	    	    else if(this.p.vx < 0) {
+	    	    	this.p.direction = "left";
+	    	    	this.p.flip = "x";
+	    	    	this.play("walk");
+	    	    }
+	    	    else {
+	    	    	this.play("stand");
+	    	    }
+			},
+
 			stepEnemy: function(dt) {
-				this.p.time += dt;
+				if(!this.p.dead){
+					this.p.time += dt;
 
-				var zombie = Q("ZombiePlayer").first();
+					var zombie = Q("ZombiePlayer").first();
 
-				if(zombie && (!zombie.p.bajoTierra && zombie .p.y > this.p.y - this.p.h)) {
-					if (this.p.direction == "left" && (zombie.p.x < this.p.x && (this.p.x - zombie.p.x) < 200)) {
+					if(zombie && (!zombie.p.bajoTierra && zombie .p.y > this.p.y - this.p.h)) {
+						if (this.p.direction == "left" && (zombie.p.x < this.p.x && (this.p.x - zombie.p.x) < 200)) {
 
-						this.p.vx = 0;
-						this.del('aiBounce');
-						this.play("shot");
+							this.p.vx = 0;
+							this.del('aiBounce');
+							this.play("shot");
 
-						if(this.p.time >= this.p.shootTime) {
+							if(this.p.time >= this.p.shootTime) {
 								this.p.time = 0;
 								newBullet = new Q.Bullet({ x: this.p.x - 60, y: this.p.y - 10, vx: -100 });
 								Q.stage(0).insert(newBullet);
 								setTimeout(function() { newBullet.destroy(); }, 4000);
+							}
 						}
-						
-						this.p.time += dt;
-					}
-					else if (this.p.direction == "right"  && (zombie.p.x > this.p.x && (zombie.p.x - this.p.x) < 200)) {
+						else if (this.p.direction == "right"  && (zombie.p.x > this.p.x && (zombie.p.x - this.p.x) < 200)) {
 
-						this.p.vx = 0;
-						this.del('aiBounce');
-						this.play("shot");
+							this.p.vx = 0;
+							this.del('aiBounce');
+							this.play("shot");
 
-						if(this.p.time >= this.p.shootTime) {
+							if(this.p.time >= this.p.shootTime) {
 								this.p.time = 0;
 								newBullet = new Q.Bullet({ x: this.p.x + 60, y: this.p.y - 10, vx: 100 });
 								Q.stage(0).insert(newBullet);
 								setTimeout(function() { newBullet.destroy(); }, 4000);
-						}
-						
-						this.p.time += dt;
-					}
-					else {
-						if(!this.has('aiBounce')) {
-							this.add('aiBounce');
-							this.p.vx = this.p.vxvalue;
-						}
-						if(this.p.vx > 0) {
-							this.p.direction = "right";
-			    			this.p.flip = "";
-			    			this.play("walk");
-			    		}
-			    	    else if(this.p.vx < 0) {
-			    	    	this.p.direction = "left";
-			    	    	this.p.flip = "x";
-			    	    	this.play("walk");
-			    	    }
-			    	    else {
-			    	    	this.play("stand");
-			    	    }
-					}
-				}
-				else {
-					if(!this.has('aiBounce')) {
-						this.add('aiBounce');
-						this.p.vx = this.p.vxvalue;
-					}
-					if(this.p.vx > 0) {
-						this.p.direction = "right";
-		    			this.p.flip = "";
-		    			this.play("walk");
-		    		}
-		    	    else if(this.p.vx < 0) {
-		    	    	this.p.direction = "left";
-		    	    	this.p.flip = "x";
-		    	    	this.play("walk");
-		    	    }
-		    	    else {
-		    	    	this.play("stand");
-		    	    }
-				}
-
-				/*if(this.p.time >= this.p.shootTime){
-					this.p.time = 0;
-
-					var zombie = Q("ZombiePlayer").first();
-
-					if(zombie != null)
-					{
-						// Si el zombie está más cerca de 400 px y no está por encima o por debajo del enemigo entonces dispara.
-						if( (Math.abs(zombie.p.x - this.p.x) < 400) && ((Math.abs(zombie.p.y - this.p.y) < this.p.h-2) && zombie.p.y < this.p.y) ) {
-							console.log("Bang Bang!!");
-							if(zombie.p.x < this.p.x) { // La bala va hacia la izquierda
-								this.p.direction = "left";
-
-								newBullet = new Q.Bullet({ x: this.p.x - 32 - 15, y: this.p.y+32, vx: -100 });
-								Q.stage(0).insert(newBullet);
-								setTimeout(function() { newBullet.destroy(); }, 4000);
-							}
-							else { // La bala va hacia la derecha
-								this.p.direction = "right";
-
-								newBullet = new Q.Bullet({ x: this.p.x + 32, y: this.p.y+32, vx: +100 });
-								Q.stage(0).insert(newBullet);
-								setTimeout(function() { newBullet.destroy(); }, 4000);
 							}
 						}
+						else this.continuar();
 					}
-				}*/
+					else this.continuar();
+				}
 			}
 		}
 	});

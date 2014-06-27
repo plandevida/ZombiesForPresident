@@ -14,7 +14,8 @@ function crearAnimaciones(Q) {
 	Q.animations('enemy1', {
 		stand: { frames: [0], rate: 1/5 },
 		walk:  { frames: [1,2,3,4,5,6], rate: 1/2 },
-		shot:  { frames: [7], rate: 1/2 }
+		shot:  { frames: [7], rate: 1/2 },
+		dead:  { frames: [10,11,12], rate: 1/2, loop: false, trigger: "enemy1.die" }
 	});
 
 	Q.animations('enemy2', {

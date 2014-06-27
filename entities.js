@@ -6,6 +6,7 @@ function crearEntidades(Q) {
 	Q.SPRITE_BULLET = 512;
 	Q.SPRITE_SPECIAL_STONE = 1024;
 	Q.SPRITE_PLATAFORMA = 2048;
+	Q.SPRITE_ENEMY = 4096;
 
 	var avisaDeFinal = false;
 
@@ -148,6 +149,8 @@ function crearEntidades(Q) {
 				sheet: "enemy1",
 				sprite: "enemy1",
 				vx: 50,
+				dead: false,
+				type: Q.SPRITE_ENEMY,
 				points: [[-20,-60],[-20,64],[20,64],[20,-60]],
 				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE | Q.SPRITE_DIRT | Q.SPRITE_PLAYER
 			});
@@ -155,16 +158,21 @@ function crearEntidades(Q) {
 			this.add('2d, aiBounce, animation');
 			this.add('comportamientoEnemigo');
 
-			this.on("bump.bottom",function(collision) {
-	            if(collision.obj.isA("ZombiePlayer") ) {
+			this.on("enemy1.hit", "hit");
+			this.on("enemy1.die", "die");
+		},
 
-	            	this.del('comportamientoEnemigo');
-	            	this.del('2d');
-	            	this.del('aiBounce');
+		hit: function() {
+			this.p.type = Q.SPRITE_NONE;
+			this.del('2d');
+	        this.del('aiBounce');
+	        this.p.dead = true;
+	        this.del('comportamientoEnemigo');
+			this.play("dead");
+		},
 
-	            	this.destroy();            		 
-	            }
-	      	});
+		die: function() {
+			this.destroy();
 		}
 	});
 
@@ -253,49 +261,47 @@ function crearEntidades(Q) {
 	* Miembros para lanzar
 	***************************************************/
 	Q.Sprite.extend("Miembros", {
-	      init: function(p) {
-	          this._super(p, {
+	    init: function(p) {
+	        this._super(p, {
 	          	sheet: "miembros",
 				type: Q.SPRITE_BULLET,
-	          	collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX,
+	          	collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ENEMY,
 	          	disparado: false,
 	          	gravity: 0.05
-	          });
+	        });
 	          
-	          this.add('2d, animation');
+	        this.add('2d, animation');
 	          
-	          this.on("hit", function(collision) {
+	        this.on("hit", function(collision) {
 	          
-	          if ( this.p.disparado ) {
+	        	if ( this.p.disparado ) {
 
-	          	if(collision.obj.isA("Enemy")) {
+		          	if(collision.obj.isA("Enemy")) {
 
-	            	collision.obj.del('comportamientoEnemigo');
-	            	collision.obj.del('2d');
-	            	collision.obj.del('aiBounce');
+		            	collision.obj.trigger("enemy1.hit");
+		            }
+		            else if(collision.obj.isA("Enemy2")) {
 
-	            	collision.obj.destroy();
+		            	collision.obj.del('2d');
+		            	collision.obj.del('aiBounce');
+
+		            	collision.obj.destroy();
+		            }
+
+	          		this.destroy();
+
 	            }
-	            else if(collision.obj.isA("Enemy2")) {
+	            else {
 
-	            	collision.obj.del('2d');
-	            	collision.obj.del('aiBounce');
+		          	if ( collision.obj.isA("ZombiePlayer")) {
 
-	            	collision.obj.destroy();
+		            	this.destroy();
+		            	Q.state.inc("municion",1);
+		            }
 	            }
-
-	          	this.destroy();
-
-	          } else {
-	          	if ( collision.obj.isA("ZombiePlayer")) {
-
-	            	this.destroy();
-	            	Q.state.inc("municion",1);
-	          }
-	      }
 
 	        });
-	      }
+	    }
 	});
 
 	/**************************************************
@@ -344,7 +350,7 @@ function crearEntidades(Q) {
 				sheet: "box",
 				gravity: 0,
 				type: Q.SPRITE_BOX,
-				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET
+				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_BOX | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET | Q.SPRITE_ENEMY
 			});
 
 			this.add('2d');
