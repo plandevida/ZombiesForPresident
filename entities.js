@@ -69,13 +69,12 @@ function crearEntidades(Q) {
 			if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
 
 				this.debind();
-	    		Q.state.dec("vidas",1);
 
 	    		this.p.dead = true;
 	    		this.p.type = Q.SPRITE_NONE;
-				this.del('2d');
-				this.del('zombieControls');
-				this.del('platformerConstrols');
+				//this.del('2d');
+				//this.del('zombieControls');
+				//this.del('platformerConstrols');
 	    		this.play("dead");
 	        }
 
@@ -106,6 +105,8 @@ function crearEntidades(Q) {
     			Q.stage(0).insert(newZombiePlayer);
     			Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
     		}
+
+    		Q.state.dec("vidas",1);
 		},
 
 	    step: function(dt) {
