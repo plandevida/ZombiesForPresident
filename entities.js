@@ -49,16 +49,12 @@ function crearEntidades(Q) {
 					var obj = new Q.Miembros({ x: this.p.x + 70, y: this.p.y - 50, vx: 250, vy: -5 });
 					obj.p.disparado = true;
 					Q.stage(0).insert(obj);
-					//obj.add("tween");
-					//obj.animate({ x: this.p.x+800, y: this.p.y-50, angle:360 }, 1.5);
 				}
 		        else if(this.p.direction == "left") {
 
 					var obj = new Q.Miembros({ x: this.p.x - 70, y: this.p.y - 50, vx: -250, vy: -5 });
 					obj.p.disparado = true;
 					Q.stage(0).insert(obj);
-					//obj.add("tween");
-					//obj.animate({ x: this.p.x-800, y: this.p.y-50, angle:360 }, 1.5);
 		        }
 
 		        setTimeout(function() { obj.destroy(); }, 2500);
@@ -66,34 +62,82 @@ function crearEntidades(Q) {
 		},
 
 		hit: function(collision) {
-			if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
+			if(!this.p.dead) {
+				if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
 
-				this.debind();
+		    		this.p.dead = true;
+		    		this.debind();
+		    		this.p.type = Q.SPRITE_NONE;
+					this.del('2d');
+					this.del('zombieControls');
+					this.del('platformerControls');
+		    		this.play("dead");
+		        }
 
-	    		this.p.dead = true;
-	    		this.p.type = Q.SPRITE_NONE;
-				//this.del('2d');
-				//this.del('zombieControls');
-				//this.del('platformerConstrols');
-	    		this.play("dead");
-	        }
+		        if(collision.obj.isA("Puerta")) {
+		        	var player = this;
+					collision.obj.play("abrir");
+					setTimeout(function() { Q.stageScene("level2"); }, 1000);
+				}
 
-	        if(collision.obj.isA("Puerta")) {
-	        	var player = this;
-				collision.obj.play("abrir");
-				setTimeout(function() { Q.stageScene("level2"); }, 1000);
-			}
+				if(collision.obj.isA("PuertaFinal")) {
 
-			if(collision.obj.isA("PuertaFinal")) {
-
-				avisaDeFinal = true;
-				collision.obj.play("abrir");
-				setTimeout(function() { Q.stageScene("final"); }, 1000);
+					avisaDeFinal = true;
+					collision.obj.play("abrir");
+					setTimeout(function() { Q.stageScene("final"); }, 1000);
+				}
 			}
 		},
 
 		die: function() {
+			Q.state.dec("vidas",1);
+			console.log("me destruyo");
+
 			this.destroy();
+
+			if(avisaDeFinal) {
+				console.log("estamos en el final");
+				if(Q.state.get("vidas") == 0) {
+					console.log("pierdo");
+					avisaDeFinal = false;
+
+					var boss = Q("Boss").first();
+               		if (boss) { console.log("hay boss"); boss.play("win"); }
+               		else console.log("no hay boss");
+               		
+				}
+				else {
+					console.log("no pierdo");
+					var newZombiePlayer = new Q.ZombiePlayer({ x:240, y:450 });
+    				Q.stage(0).insert(newZombiePlayer);	
+    				Q.state.set("municion", 4);
+				}
+			}
+			else {
+				console.log("no estamos en el final");
+				if(Q.state.get("vidas") == 0) {
+					console.log("pierdo");
+					Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false, winOrLose: "lose"});
+				}
+				else {
+					console.log("no pierdo");
+					var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:500 });
+    				Q.stage(0).insert(newZombiePlayer);
+    				Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
+				}
+			}
+
+			/*if(Q.state.get("vidas") == 0) {
+	    		if(this.has('platformerControls') && this.has('2d')) {
+	    			this.del('platformerControls'); 
+                	this.del('2d');
+                }
+                
+                avisaDeFinal = false;
+               	var boss = Q("Boss").first();
+               	boss.play("win");
+		    }
+		    this.destroy;
 
     		if(avisaDeFinal) {
     			var newZombiePlayer = new Q.ZombiePlayer({ x:240, y:450 });
@@ -104,22 +148,13 @@ function crearEntidades(Q) {
     			var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:500 });
     			Q.stage(0).insert(newZombiePlayer);
     			Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
-    		}
+    		}*/
 
-    		Q.state.dec("vidas",1);
+    		
 		},
 
 	    step: function(dt) {
-	    	if(!this.p.dead) {
-		    	if(Q.state.get("vidas") == 0) {
-		    		if(this.has('platformerControls') && this.has('2d')) {
-		    			this.del('platformerControls'); 
-	                	this.del('2d');
-	                }
-	                this.destroy();
-	                avisaDeFinal = false;
-	               	Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false, winOrLose: "lose"});
-		    	}
+	    	if(!this.p.dead) {	
 
 		        if(this.p.x <= 30) this.p.x = 30;
 
@@ -449,14 +484,18 @@ function crearEntidades(Q) {
 		init: function(p) {
 			this._super(p, {
 				sheet: "boss",
+				sprite: "boss",
 				points: [[-20,-60],[-20,64],[20,64],[20,-60]],
-				vx: 200,
+				vx: 150,
+				shooting: false,
+				direction: "right",
 				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE | Q.SPRITE_DIRT | Q.SPRITE_PLAYER
 			});
 
 			this.add('2d, aiBounce, animation');
 			this.add("tween");
 			this.on('hit');
+			this.on('win');
 
 			this.vidas = 3;
 			this.contador = 0;
@@ -467,10 +506,18 @@ function crearEntidades(Q) {
 
 		step: function(dt) {
 
+			if(this.p.vx > 0) {
+        		this.p.flip = "";
+		    }
+		    else if(this.p.vx < 0) {
+		        this.p.flip = "x";
+		    }
+
 			if(this.contador >= this.limite) {
 				this.contador = 0;				
 				this.p.y -= 250;
 			}
+
 
 			if(this.contadorDisp >= this.entreDisp) {
 				this.contadorDisp = 0;
@@ -479,11 +526,15 @@ function crearEntidades(Q) {
 
 				if(zombie != null) {
 
+					this.p.shooting = true;
+
 					if(zombie.p.x < this.p.x) {
-						newBullet = new Q.Bullet({ x: this.p.x - 32 - 15, y: this.p.y-(this.p.h/4), vx: -100 });
+
+						newBullet = new Q.Bullet({ x: this.p.x - 60, y: this.p.y - 10, vx: -150 });
 					}
 					else {
-						newBullet = new Q.Bullet({ x: this.p.x + 32, y: this.p.y-(this.p.h/4), vx: 100 });
+
+						newBullet = new Q.Bullet({ x: this.p.x + 60, y: this.p.y - 10, vx: 150 });
 					}
 
 					Q.stage(0).insert(newBullet);
@@ -492,14 +543,6 @@ function crearEntidades(Q) {
 
 			this.contador += dt;
 			this.contadorDisp += dt;
-
-			if(this.p.vx > 0) {
-	        		this.p.flip = "";
-		    }
-		    else if(this.p.vx < 0) {
-		        	this.p.flip = "x";
-		    }
-
 		},
 
 		hit: function(col) {
@@ -521,7 +564,12 @@ function crearEntidades(Q) {
 					Q.stageScene("UI", 1, { label: "-- YOU WIN --", button: "Play again", bg: false, music: false, winOrLose: "win"});
 				}
 			}
-		} 
+		},
+
+		win: function() {
+			console.log("he recibido el evento");
+			Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false, winOrLose: "lose"});
+		}
 	});
 
 }

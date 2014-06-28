@@ -29,6 +29,10 @@ function crearAnimaciones(Q) {
 		walk: {frames: [0,1], rate: 1/2 }
 	});
 
+	Q.animations('boss', {
+		win: { frames: [0,1,0,1,0,1], rate: 1/2, loop: false, trigger: 'win' }
+	});
+
 	Q.animations('port', {
 		abrir: { frames: [0,1,2,3], rate: 1/2 }
 	});
