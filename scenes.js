@@ -212,6 +212,7 @@ function crearEscenas(Q) {
 	    Q.state.set("vidas", 3);
 
 		var player = stage.insert(new Q.ZombiePlayer({ x:240, y:450 }));
+		stage.insert(new Q.Boss({ x: 1000, y: 450 }));
 	
 		stage.add("viewport");
 
