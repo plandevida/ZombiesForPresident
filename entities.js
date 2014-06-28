@@ -449,6 +449,7 @@ function crearEntidades(Q) {
 		init: function(p) {
 			this._super(p, {
 				sheet: "boss",
+				points: [[-20,-60],[-20,64],[20,64],[20,-60]],
 				vx: 200,
 				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE | Q.SPRITE_DIRT | Q.SPRITE_PLAYER
 			});
@@ -493,10 +494,10 @@ function crearEntidades(Q) {
 			this.contadorDisp += dt;
 
 			if(this.p.vx > 0) {
-	        		this.p.flip = "x";
+	        		this.p.flip = "";
 		    }
 		    else if(this.p.vx < 0) {
-		        	this.p.flip = "";
+		        	this.p.flip = "x";
 		    }
 
 		},
