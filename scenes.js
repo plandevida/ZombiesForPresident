@@ -23,8 +23,8 @@ function crearEscenas(Q) {
 
 	    btJugar.on("click",function() {
 	        Q.clearStages();
-	        //Q.stageScene('level1');
-	        Q.stageScene('level2');
+	        Q.stageScene('level1');
+	        //Q.stageScene('level2');
 	        //Q.stageScene('final');
 	    });
 
@@ -159,7 +159,7 @@ function crearEscenas(Q) {
 	    Q.audio.stop();
 	    Q.audio.play("main.mp3", { loop:true });
 
-	    Q.stageTMX('levelPrueba.tmx', stage);
+	    Q.stageTMX('level1.tmx', stage);
 
 	    Q.state.reset({ municion: 0, vidas:3 });
 
@@ -184,10 +184,7 @@ function crearEscenas(Q) {
 
 	    Q.stageTMX('level2.tmx', stage);
 
-	    Q.state.reset({ municion: 0, vidas:3 });
-
-		//var player = stage.insert(new Q.ZombiePlayer({ x:128, y: 0 }));
-		var player = stage.insert(new Q.ZombiePlayer({ x:6000, y: 300 }));
+		var player = stage.insert(new Q.ZombiePlayer({ x:128, y: 0 }));
 
 	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 	    stage.centerOn(500, 350); 
@@ -212,12 +209,13 @@ function crearEscenas(Q) {
 	    Q.state.set("vidas", 3);
 
 		var player = stage.insert(new Q.ZombiePlayer({ x:240, y:450 }));
-		stage.insert(new Q.Boss({ x: 1000, y: 450 }));
+		var boss = stage.insert(new Q.Boss({ x: 1000, y: 450 }));
 	
 		stage.add("viewport");
 
 	    stage.on("destroy", function() {
 			player.destroy();
+			boss.destroy();
 		});
 	});
 }

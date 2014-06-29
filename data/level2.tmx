@@ -1643,7 +1643,6 @@
   <object gid="266" x="5376" y="640"/>
   <object gid="26" x="2304" y="384"/>
   <object gid="26" x="2368" y="640"/>
-  <object gid="507" x="6208" y="640"/>
   <object gid="3" x="448" y="577"/>
   <object gid="3" x="449" y="513"/>
   <object gid="3" x="385" y="641"/>
@@ -1699,5 +1698,6 @@
   <object gid="511" x="3072" y="384"/>
   <object gid="511" x="3776" y="384"/>
   <object gid="511" x="5952" y="384"/>
+  <object gid="507" x="6200" y="642"/>
  </objectgroup>
 </map>

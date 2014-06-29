@@ -11,7 +11,7 @@ function crearEntidades(Q) {
 	var avisaDeFinal = false;
 
 	/**************************************************
-	* Zombie Principal
+	* Zombie
 	***************************************************/
 	Q.Sprite.extend("ZombiePlayer",{
 	    init: function(p) {
@@ -68,7 +68,6 @@ function crearEntidades(Q) {
 		    		this.p.dead = true;
 		    		this.debind();
 		    		this.p.type = Q.SPRITE_NONE;
-					this.del('2d');
 					this.del('zombieControls');
 					this.del('platformerControls');
 		    		this.play("dead");
@@ -91,70 +90,45 @@ function crearEntidades(Q) {
 
 		die: function() {
 			Q.state.dec("vidas",1);
-			console.log("me destruyo");
 
 			this.destroy();
 
 			if(avisaDeFinal) {
-				console.log("estamos en el final");
+				
 				if(Q.state.get("vidas") == 0) {
-					console.log("pierdo");
+					
 					avisaDeFinal = false;
 
 					var boss = Q("Boss").first();
-               		if (boss) { console.log("hay boss"); boss.play("win"); }
-               		else console.log("no hay boss");
+					boss.play("win");
+					Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false, winOrLose: "lose"});
+
                		
 				}
 				else {
-					console.log("no pierdo");
+					
 					var newZombiePlayer = new Q.ZombiePlayer({ x:240, y:450 });
     				Q.stage(0).insert(newZombiePlayer);	
     				Q.state.set("municion", 4);
 				}
 			}
 			else {
-				console.log("no estamos en el final");
+				
 				if(Q.state.get("vidas") == 0) {
-					console.log("pierdo");
+					
 					Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false, winOrLose: "lose"});
 				}
 				else {
-					console.log("no pierdo");
+					
 					var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:500 });
     				Q.stage(0).insert(newZombiePlayer);
     				Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
 				}
 			}
-
-			/*if(Q.state.get("vidas") == 0) {
-	    		if(this.has('platformerControls') && this.has('2d')) {
-	    			this.del('platformerControls'); 
-                	this.del('2d');
-                }
-                
-                avisaDeFinal = false;
-               	var boss = Q("Boss").first();
-               	boss.play("win");
-		    }
-		    this.destroy;
-
-    		if(avisaDeFinal) {
-    			var newZombiePlayer = new Q.ZombiePlayer({ x:240, y:450 });
-    			Q.stage(0).insert(newZombiePlayer);	
-    			Q.state.set("municion", 4);
-    		}
-    		else {
-    			var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:500 });
-    			Q.stage(0).insert(newZombiePlayer);
-    			Q.stage(0).follow( newZombiePlayer, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
-    		}*/
-
-    		
 		},
 
 	    step: function(dt) {
-	    	if(!this.p.dead) {	
+	    	if(!this.p.dead && !this.p.win) {	
 
 		        if(this.p.x <= 30) this.p.x = 30;
 
@@ -234,13 +208,11 @@ function crearEntidades(Q) {
 		init: function(p) {
 			this._super(p, {
 				sheet: "enemy2",
-				sprite: "enemy2",
-				points: [[-20,-60],[-20,64],[20,64],[20,-60]],
 				vx: 50,
 				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE | Q.SPRITE_DIRT | Q.SPRITE_PLAYER
 			});
 
-			this.add('2d, aiBounce, animation');
+			this.add('2d, aiBounce');
 
 			this.contador = 0;
 			this.limite = 3;
@@ -250,24 +222,11 @@ function crearEntidades(Q) {
 
 			if(this.contador >= this.limite) {
 				this.contador = 0;
-				newBullet = new Q.Bullet({ x: this.p.x, y: this.p.y-(this.p.h-60), vy: -200, angle: 90 });
+				newBullet = new Q.Bullet({ x: this.p.x, y: this.p.y - 35, vy: -200, angle: 90 });
 				Q.stage(0).insert(newBullet);
 			}
 
 			this.contador += dt;
-
-			if(this.p.vx > 0) {
-    			this.p.flip = "";
-    			this.play("walk");
-    		}
-    	    else if(this.p.vx < 0) {
-    	    	this.p.flip = "x";
-    	    	this.play("walk");
-    	    }
-    	    else {
-    	    	this.play("stand");
-    	    }
-
 		} 
 	});
 
@@ -488,14 +447,14 @@ function crearEntidades(Q) {
 				points: [[-20,-60],[-20,64],[20,64],[20,-60]],
 				vx: 150,
 				shooting: false,
-				direction: "right",
+				dead: false,
 				collisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_ACTIVE | Q.SPRITE_DIRT | Q.SPRITE_PLAYER
 			});
 
 			this.add('2d, aiBounce, animation');
 			this.add("tween");
 			this.on('hit');
-			this.on('win');
+			this.on('boss.die', 'die');
 
 			this.vidas = 3;
 			this.contador = 0;
@@ -506,69 +465,70 @@ function crearEntidades(Q) {
 
 		step: function(dt) {
 
-			if(this.p.vx > 0) {
-        		this.p.flip = "";
-		    }
-		    else if(this.p.vx < 0) {
-		        this.p.flip = "x";
-		    }
+			if(!this.p.dead) {
 
-			if(this.contador >= this.limite) {
-				this.contador = 0;				
-				this.p.y -= 250;
-			}
+				if(this.p.vx > 0) {
+		    		this.p.flip = "";
+			    }
+			    else if(this.p.vx < 0) {
+			        this.p.flip = "x";
+			    }
 
-
-			if(this.contadorDisp >= this.entreDisp) {
-				this.contadorDisp = 0;
-
-				var zombie = Q("ZombiePlayer").first();
-
-				if(zombie != null) {
-
-					this.p.shooting = true;
-
-					if(zombie.p.x < this.p.x) {
-
-						newBullet = new Q.Bullet({ x: this.p.x - 60, y: this.p.y - 10, vx: -150 });
-					}
-					else {
-
-						newBullet = new Q.Bullet({ x: this.p.x + 60, y: this.p.y - 10, vx: 150 });
-					}
-
-					Q.stage(0).insert(newBullet);
+				if(this.contador >= this.limite) {
+					this.contador = 0;				
+					this.p.y -= 250;
 				}
-			}
 
-			this.contador += dt;
-			this.contadorDisp += dt;
+
+				if(this.contadorDisp >= this.entreDisp) {
+					this.contadorDisp = 0;
+
+					var zombie = Q("ZombiePlayer").first();
+
+					if(zombie != null) {
+
+						if(zombie.p.x < this.p.x) {
+
+							newBullet = new Q.Bullet({ x: this.p.x - 60, y: this.p.y - 10, vx: -150 });
+						}
+						else {
+
+							newBullet = new Q.Bullet({ x: this.p.x + 60, y: this.p.y - 10, vx: 150 });
+						}
+
+						Q.stage(0).insert(newBullet);
+					}
+				}
+
+				this.contador += dt;
+				this.contadorDisp += dt;
+			}
 		},
 
 		hit: function(col) {
 
-			if(col.obj.isA("Miembros")) {
+			if(!this.p.dead) {
+				if(col.obj.isA("Miembros")) {
 
-				this.vidas--;
+					this.vidas--;
 
-				if(this.vidas == 0) {
-
-					this.destroy();
-
-					var zombie = Q("ZombiePlayer").first();
-
-					zombie.destroy();
-
-					avisaDeFinal = false;
-
-					Q.stageScene("UI", 1, { label: "-- YOU WIN --", button: "Play again", bg: false, music: false, winOrLose: "win"});
+					if(this.vidas == 0) {
+						this.p.dead = true;
+						this.del('aiBounce');
+						//this.del('2d');
+						this.play("dead");
+					}
 				}
 			}
 		},
 
-		win: function() {
-			console.log("he recibido el evento");
-			Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false, winOrLose: "lose"});
+		die: function() {
+
+			avisaDeFinal = false;
+			var zombie = Q("ZombiePlayer").first();
+			zombie.p.win = true;
+			zombie.play("win");
+			Q.stageScene("UI", 1, { label: "-- YOU WIN --", button: "Play again", bg: false, music: false, winOrLose: "win"});
 		}
 	});
 

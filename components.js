@@ -13,6 +13,7 @@ function crearComponentes(Q) {
 	        Q.input.on("up",   this, "up");
 
 	        this.entity.on("dig.done", this, "underground");
+	        this.entity.on("climb.done", this, "climbDone");
 		},
 
 		down: function() {
@@ -76,17 +77,23 @@ function crearComponentes(Q) {
 			if(Q.inputs['up'] && !this.entity.p.climbing) {
 
 				this.entity.p.climbing = true;
+				this.entity.p.positionToMove = [boxPosition[0], boxPosition[1] - 97];
 				this.entity.play("climb");
-
-				var that = this;
-	
-				setTimeout(function() { that.entity.p.x = boxPosition[0]; 
-					                    that.entity.p.y = boxPosition[1] - 95; 
-					                    that.entity.play("stand"); 
-					                    that.entity.p.climbing = false; },
-					       1000);
 			}
 			
+		},
+
+		climbDone: function() {
+
+			this.entity.play("stand"); 
+			var that = this;
+			setTimeout(function() {
+				that.entity.p.x = that.entity.p.positionToMove[0]; 
+				that.entity.p.y = that.entity.p.positionToMove[1];
+			}, 10);
+			this.entity.p.climbing = false;
+			 
+			//this.entity.p.climbing = false;
 		},
 
 		underground: function() {
@@ -160,7 +167,7 @@ function crearComponentes(Q) {
 
 							if(this.p.time >= this.p.shootTime) {
 								this.p.time = 0;
-								newBullet = new Q.Bullet({ x: this.p.x + 60, y: this.p.y - 10, vx: 100 });
+								newBullet = new Q.Bullet({ x: this.p.x + 60, y: this.p.y - 10, vx: 100, angle: 180 });
 								Q.stage(0).insert(newBullet);
 								setTimeout(function() { newBullet.destroy(); }, 4000);
 							}
