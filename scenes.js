@@ -1,25 +1,28 @@
 function crearEscenas(Q) {
+
 	Q.scene("MainMenu", function(stage) { 
-	          
+	    
+	    // Background
 	    stage.insert(new Q.Repeater({ asset: "zfp.png", w:1600, h:1000 }));
 
+	    // Botón PLAY
 	    var containerJugar = stage.insert(new Q.UI.Container({
 	            x: 240, y: 510
 	    }));
-
 	    var btJugar = containerJugar.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#b12929", label: "Play" })); 
 
+	    // Botón CONTROLS
 	    var container1 = stage.insert(new Q.UI.Container({
 	            x: 460 , y: 510
 	    }));
-	 
 	    var btControles = container1.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#b12929", label: "Controls" })); 
 
+	    // Boton CREDITS
 	    var containerCreditos = stage.insert(new Q.UI.Container({
 	            x: 580 , y: 510
 	    }));
-	 
 	    var btCreditos = containerCreditos.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#b12929", label: "Credits" }));        
+
 
 	    btJugar.on("click",function() {
 	        Q.clearStages();
@@ -40,19 +43,21 @@ function crearEscenas(Q) {
 	Q.scene("ContOrCred",function(stage) { 
 
 	    if(stage.options.label == "esCont") {    
+	    	// Cargamos los controles
 	    	stage.insert(new Q.Repeater({ asset: "cont.png",  w:1600, h:1000 }));
 	    }
 	    else if(stage.options.label == "esCred") {  
+	    	// Cargamos los créditos
 	    	stage.insert(new Q.Repeater({ asset: "creditos.png",  w:1600, h:1000 }));
 	    }
 
+	    // Boton BACK
 	    var container = stage.insert(new Q.UI.Container({
 	            x: 75, y: 510
 	    }));
-	 
 	    var button = container.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#b12929", label: "<= Back" })); 
 
-	     button.on("click",function() {
+	    button.on("click",function() {
 	        Q.clearStages();
 	        Q.stageScene('MainMenu');
 	    });
@@ -61,15 +66,18 @@ function crearEscenas(Q) {
 	Q.scene('UI',function(stage) {
 
 		if ( stage.options.winOrLose == "win" ) {
+
 			Q.audio.stop();
 	    	Q.audio.play("zob.mp3");
 		}
 		else if ( stage.options.winOrLose == "lose" ) {
+
 			Q.audio.stop();
 	    	Q.audio.play("risa.mp3");
 		}
 
 		if ( stage.options.bg === true ) {
+
 			stage.insert(new Q.Repeater( { asset: "zfp.png" } ));
 		}
 
@@ -83,17 +91,12 @@ function crearEscenas(Q) {
 		button.on("click",function() {
 			Q.clearStages();
 			Q.stageScene('MainMenu');
-			//Q.stageScene('HUD', 1);
-			/*if ( musicMainPlaying == false ) {
-				Q.audio.stop();
-				Q.audio.play('music_main.ogg', { loop: true });
-			}*/
 		});
 
 		container.fit(20);
 
 		var musicMainPlaying = false;
-		//Q.audio.stop('music_main.ogg');
+
 		if ( stage.options.music == true ) {
 			musicMainPlaying = true;
 			Q.audio.play('main.ogg', {loop: true});
@@ -103,37 +106,37 @@ function crearEscenas(Q) {
 	Q.scene("HUD",function(stage) {
 
 		Q.UI.Text.extend("Municion",{ 
-	      init: function(p) {
-	        this._super({
-	          label: "Municion: 0",
-	          color: "white",
-	          x: Q.width/2,
-	          y: 50
-	        });
+	        init: function(p) {
+	            this._super({
+	                label: "Municion: 0",
+	                color: "white",
+	                x: Q.width/2,
+	                y: 50
+	            });
 
-	        Q.state.on("change.municion",this,"municion");
-	      },
+	            Q.state.on("change.municion",this,"municion");
+	        },
 
-	      municion: function(municion) {
-	        this.p.label = "Municion: " + municion;
-	      }
+	        municion: function(municion) {
+	            this.p.label = "Municion: " + municion;
+	        }
 		});
 
 		Q.UI.Text.extend("Vidas",{ 
-	      init: function(p) {
-	        this._super({
-	          label: "Vidas: 3",
-	          color: "white",
-	          x: Q.width/2,
-	          y: 50
-	        });
+	        init: function(p) {
+	            this._super({
+	                label: "Vidas: 3",
+	                color: "white",
+	                x: Q.width/2,
+	                y: 50
+	            });
 
-	        Q.state.on("change.vidas",this,"vidas");
-	      },
+	            Q.state.on("change.vidas",this,"vidas");
+	        },
 
-	      vidas: function(vidas) {
-	        this.p.label = "Vidas: " + vidas;
-	      }
+	        vidas: function(vidas) {
+	            this.p.label = "Vidas: " + vidas;
+	        }
 		});
 
 	    var container = stage.insert(new Q.UI.Container({
@@ -163,7 +166,7 @@ function crearEscenas(Q) {
 
 		var player = stage.insert(new Q.ZombiePlayer());
 
-	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
+	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 64*100, maxY: 480 } );
 	    stage.centerOn(500, 350); 
 	    stage.viewport.offsetX = 0;
 	    stage.viewport.offsetY = 0;
@@ -187,7 +190,7 @@ function crearEscenas(Q) {
 
 		var player = stage.insert(new Q.ZombiePlayer({ x:128, y: 0 }));
 
-	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
+	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 64*100, maxY: 480 } );
 	    stage.centerOn(500, 350); 
 	    stage.viewport.offsetX = 0;
 	    stage.viewport.offsetY = 0;

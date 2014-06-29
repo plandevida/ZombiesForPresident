@@ -18,9 +18,9 @@ function crearEntidades(Q) {
 	      this._super(p, { 
 	      	sheet: "zombieR",
 	      	sprite: "zombie",
-	      	jumpSpeed: 0,
+	      	jumpSpeed: 0, // La velocidad de salto es 0 ya que nuestro personaje no va a poder saltar
 	      	x: 40,
-	      	y: 300,
+	      	y: 550,
 	      	dead: false,
 	      	defaultCollisionMask: Q.SPRITE_DEFAULT | Q.SPRITE_DIRT | Q.SPRITE_BOX | Q.SPRITE_ENEMY | Q.SPRITE_ACTIVE | Q.SPRITE_BULLET | Q.SPRITE_SPECIAL_STONE | Q.SPRITE_PLATAFORMA,
 	      	defaultPoints: [[-20,-60],[-20,64],[20,64],[20,-60]]
@@ -29,7 +29,7 @@ function crearEntidades(Q) {
 	      this.p.points = this.p.defaultPoints;
 	      this.p.collisionMask = this.p.defaultCollisionMask;
 
-	      this.add('2d, platformerControls, tween, animation, zombieControls'); 
+	      this.add('2d, platformerControls, animation, zombieControls'); 
 
 	      this.on("hit", "hit");
 	      this.on("zombie.die", "die");
@@ -56,13 +56,13 @@ function crearEntidades(Q) {
 					obj.p.disparado = true;
 					Q.stage(0).insert(obj);
 		        }
-
-		        setTimeout(function() { obj.destroy(); }, 2500);
 		    }
 		},
 
 		hit: function(collision) {
+
 			if(!this.p.dead) {
+
 				if(collision.obj.isA("Enemy") || collision.obj.isA("Bullet") || collision.obj.isA("Enemy2")) {
 
 		    		this.p.dead = true;
@@ -72,6 +72,7 @@ function crearEntidades(Q) {
 		        }
 
 		        if(collision.obj.isA("Puerta")) {
+
 		        	var player = this;
 					collision.obj.play("abrir");
 					setTimeout(function() { Q.stageScene("level2"); }, 1000);
@@ -92,7 +93,7 @@ function crearEntidades(Q) {
 			this.destroy();
 
 			if(avisaDeFinal) {
-				
+				// Si estamos en el nivel final y nos quedamos sin vidas hemos perdido
 				if(Q.state.get("vidas") == 0) {
 					
 					avisaDeFinal = false;
@@ -103,6 +104,7 @@ function crearEntidades(Q) {
 
                		
 				}
+				// Si nos queda alguna vida volvemos a aparecer con la munición recargada
 				else {
 					
 					var newZombiePlayer = new Q.ZombiePlayer({ x:240, y:450 });
@@ -111,11 +113,12 @@ function crearEntidades(Q) {
 				}
 			}
 			else {
-				
+				// Si no estamos en el nivel final y nos quedamos sin vidas perdemos
 				if(Q.state.get("vidas") == 0) {
 					
 					Q.stageScene("UI", 1, { label: "You lose!", button: "Play again", bg: false, music: false, winOrLose: "lose"});
 				}
+				// Sino reaparecemos al principio del nivel con una vida menos, pero manteniendo las balas
 				else {
 					
 					var newZombiePlayer = new Q.ZombiePlayer({ x:40, y:500 });
@@ -133,34 +136,42 @@ function crearEntidades(Q) {
 		        if(this.p.bajoTierra == 0 && !this.p.climbing) {
 		        
 		    		if(this.p.vx > 0) {
+
 		    			this.p.flip = "";
 		    			this.play("walk");
 		    		}
 		    	    else if(this.p.vx < 0) {
+
 		    	    	this.p.flip = "x";
 		    	    	this.play("walk");
 		    	    }
 		    	    else {
+
 		    	    	this.play("stand");
 		    	    }
 		   		}
 		   		if (this.p.bajoTierra == 2) {
+
 		   			if(this.p.vx > 0) {
+
 		    			this.p.flip = "";
 		    			this.play("walk_u");
 		    			this.p.points = this.p.undergroundRightPoints;
 		    		}
 		    	    else if(this.p.vx < 0) {
+
 		    	    	this.p.flip = "x";
 		    	    	this.play("walk_u");
 		    	    	this.p.points = this.p.undergroundLeftPoints;
 		    	    }
 		    	    else {
+
 		    	    	this.play("stand_u");
 		    	    }
 		   		}
 	   		}
 	   		else if (this.p.dead) {
+
 	   			this.del('zombieControls');
 				this.del('platformerControls');
 	   		}
@@ -173,7 +184,12 @@ function crearEntidades(Q) {
 	* Enemigos
 	***************************************************/
 
+	// Tipo de enemigo 1: este enemigo se mueve de derecha a izquierda, y cuando tiene a una determinada distancia al zombie
+	// le dispara
+	// Este comportamiento se implementa en el componente "comportamientoEnemigo"
+	// Puede ser destruido si es alcanzado por un miermbro que el zombie ha lanzado
 	Q.Sprite.extend("Enemy",{
+
 		init: function(p) {
 			this._super(p, {
 				sheet: "enemy1",
@@ -206,6 +222,8 @@ function crearEntidades(Q) {
 		}
 	});
 
+	// Tipo de enmigo 2: este enemigo se mueve de derecha a izquierda y dispara hacia arriba cada cierto tiempo
+	// No puede ser destruido
 	Q.Sprite.extend("Enemy2",{
 		init: function(p) {
 			this._super(p, {
@@ -232,6 +250,8 @@ function crearEntidades(Q) {
 		} 
 	});
 
+	// Tipo de enmigo 2: este enemigo se mueve de derecha a izquierda y dispara hacia abajo cada cierto tiempo
+	// No puede ser destruido
 	Q.Sprite.extend("Flying_enemy", {
 		init: function(p) {
 			this._super(p, {
@@ -258,7 +278,7 @@ function crearEntidades(Q) {
 
 			if(this.p.time > this.p.shootingTime) {
 				this.p.time = 0;
-				newBullet = new Q.Bullet({ sheet: "bullet2", sprite: "bullet2", x: this.p.x, y: this.p.y + 40, vy: 120 });
+				newBullet = new Q.Bullet({ sheet: "bullet2", sprite: "bullet2", x: this.p.x, y: this.p.y - 100, vy: 120 });
 				Q.stage(0).insert(newBullet);
 			}
 
@@ -316,6 +336,10 @@ function crearEntidades(Q) {
 	            }
 
 	        });
+	    },
+
+	    step: function(dt) {
+	    	if(this.p.x < 0) this.destroy();
 	    }
 	});
 
@@ -359,6 +383,8 @@ function crearEntidades(Q) {
 	/**************************************************
 	* Elementos de escenario con lógica
 	***************************************************/
+
+	// Las cajas son loas objetos  alos cuales el zombie puede subirse
 	Q.Sprite.extend("Box", {
 		init: function(p) {
 			this._super(p, {
@@ -372,6 +398,7 @@ function crearEntidades(Q) {
 		}
 	});
 
+	// La tierra es un tipo especial de suelo en el cual el zombie puede excavar y meterse bajo ella
 	Q.Sprite.extend("Dirt", {
 		init: function(p) {
 			this._super(p, {
@@ -382,7 +409,7 @@ function crearEntidades(Q) {
 		}
 	});
 
-    // Son bloques que dejan pasar las balas de los enemigos a través de ellos
+    // Son bloques que dejan pasar las balas de algunos enemigos a través de ellos
 	Q.Sprite.extend("SpecialStone", {
 		init: function(p) {
 			this._super(p, {
@@ -397,6 +424,7 @@ function crearEntidades(Q) {
 	* Puertas para pasar al siguiente nivel
 	***************************************************/
 
+	// Puerta por la que se pasa del primer nivel al segundo
 	Q.Sprite.extend("Puerta", {
 		init: function(p) {
 			this._super(p, {
@@ -408,6 +436,7 @@ function crearEntidades(Q) {
 		}
 	});
 
+	// Puerta por la que se pasa del segundo nivel al nivel final
 	Q.Sprite.extend("PuertaFinal", {
 		init: function(p) {
 			this._super(p, {
@@ -517,7 +546,6 @@ function crearEntidades(Q) {
 					if(this.vidas == 0) {
 						this.p.dead = true;
 						this.del('aiBounce');
-						//this.del('2d');
 						this.play("dead");
 					}
 				}
