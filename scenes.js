@@ -7,25 +7,23 @@ function crearEscenas(Q) {
 	            x: 240, y: 510
 	    }));
 
-	    var btJugar = containerJugar.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "Play" })); 
+	    var btJugar = containerJugar.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#b12929", label: "Play" })); 
 
 	    var container1 = stage.insert(new Q.UI.Container({
 	            x: 460 , y: 510
 	    }));
 	 
-	    var btControles = container1.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "Controls" })); 
+	    var btControles = container1.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#b12929", label: "Controls" })); 
 
 	    var containerCreditos = stage.insert(new Q.UI.Container({
 	            x: 580 , y: 510
 	    }));
 	 
-	    var btCreditos = containerCreditos.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "Creditos" }));        
+	    var btCreditos = containerCreditos.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#b12929", label: "Credits" }));        
 
 	    btJugar.on("click",function() {
 	        Q.clearStages();
 	        Q.stageScene('level1');
-	        //Q.stageScene('level2');
-	        //Q.stageScene('final');
 	    });
 
 	    btControles.on("click",function() {
@@ -49,10 +47,10 @@ function crearEscenas(Q) {
 	    }
 
 	    var container = stage.insert(new Q.UI.Container({
-	            x: 380, y: 450
+	            x: 75, y: 510
 	    }));
 	 
-	    var button = container.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#FF0000", label: "<= Back" })); 
+	    var button = container.insert(new Q.UI.Button({ x: 0, y: 40, fill: "#b12929", label: "<= Back" })); 
 
 	     button.on("click",function() {
 	        Q.clearStages();
