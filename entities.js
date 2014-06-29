@@ -68,8 +68,6 @@ function crearEntidades(Q) {
 		    		this.p.dead = true;
 		    		this.debind();
 		    		this.p.type = Q.SPRITE_NONE;
-					this.del('zombieControls');
-					this.del('platformerControls');
 		    		this.play("dead");
 		        }
 
@@ -161,6 +159,10 @@ function crearEntidades(Q) {
 		    	    	this.play("stand_u");
 		    	    }
 		   		}
+	   		}
+	   		else if (this.p.dead) {
+	   			this.del('zombieControls');
+				this.del('platformerControls');
 	   		}
 
 	    }
