@@ -182,6 +182,9 @@ function crearEscenas(Q) {
 
 	    Q.stageTMX('level2.tmx', stage);
 
+	    Q.state.set("municion", 0);
+	    Q.state.set("vidas", 3);
+
 		var player = stage.insert(new Q.ZombiePlayer({ x:128, y: 0 }));
 
 	    stage.add("viewport").follow( player, { x: true, y: false}, { minX: 0, minY: 0, maxX: 224*34, maxY: 480 } );
